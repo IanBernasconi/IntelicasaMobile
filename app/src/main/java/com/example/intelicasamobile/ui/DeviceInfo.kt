@@ -1,4 +1,4 @@
-package com.example.intelicasamobile
+package com.example.intelicasamobile.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +31,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.intelicasamobile.R
+import com.example.intelicasamobile.data.MainUiState
+import com.example.intelicasamobile.model.Device
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
@@ -38,7 +41,7 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 @Preview(name = "DeviceInfo")
 @Composable
 fun DeviceInfoPreview() {
-    DeviceInfo(device = devices[0])
+    DeviceInfo(device = MainUiState().devices[0])
 }
 
 @Composable
