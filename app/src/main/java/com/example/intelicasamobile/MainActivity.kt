@@ -118,32 +118,42 @@ fun DeviceCard(
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(dimensionResource(id = R.dimen.padding_small))) {
-            Image(painter = painterResource(id = device.imageResourceId), contentDescription = "", modifier= Modifier.size(dimensionResource(id = R.dimen.image_size)))
-            Text(text = stringResource(id = device.name) )
+            Image(painter = painterResource(id = device.deviceType.imageResourceId), contentDescription = "", modifier= Modifier.size(dimensionResource(id = R.dimen.image_size)))
+
+            Text(text = stringResource(id = device.name), modifier= Modifier.padding(start = dimensionResource(
+                id = R.dimen.padding_small))
+            )
         }
     }
 }
 
 data class Device(
-    @DrawableRes val imageResourceId: Int,
+    val deviceType: DeviceTypes,
     @StringRes val name: Int,
 )
 
+enum class DeviceTypes(
+   @DrawableRes  val imageResourceId: Int
+){
+    LAMP(R.drawable.lightbulb),
+    AIR_CONDITIONER(R.drawable.airconditioner),
+    OVEN(R.drawable.oven),
+    VACUUM_CLEANER(R.drawable.vacuumcleaner),
+    DOOR(R.drawable.door),
+}
+
 val devices = listOf(
-    Device(R.drawable.lightbulb, R.string.lamp),
-    Device(R.drawable.airconditioner, R.string.lamp),
-    Device(R.drawable.oven, R.string.lamp),
-    Device(R.drawable.vacuumcleaner, R.string.lamp),
-    Device(R.drawable.door, R.string.lamp),
-    Device(R.drawable.lightbulb, R.string.lamp),
-    Device(R.drawable.airconditioner, R.string.lamp),
-    Device(R.drawable.oven, R.string.lamp),
-    Device(R.drawable.vacuumcleaner, R.string.lamp),
-    Device(R.drawable.door, R.string.lamp),
-    Device(R.drawable.lightbulb, R.string.lamp),
-    Device(R.drawable.airconditioner, R.string.lamp),
-    Device(R.drawable.oven, R.string.lamp),
-    Device(R.drawable.vacuumcleaner, R.string.lamp),
-    Device(R.drawable.door, R.string.lamp),
+    Device(deviceType = DeviceTypes.LAMP, R.string.lamp),
+    Device(deviceType = DeviceTypes.AIR_CONDITIONER, R.string.air_conditioner),
+    Device(deviceType = DeviceTypes.OVEN, R.string.oven),
+    Device(deviceType = DeviceTypes.VACUUM_CLEANER, R.string.vacuum_cleaner),
+    Device(deviceType = DeviceTypes.DOOR, R.string.door),
+    Device(deviceType = DeviceTypes.LAMP, R.string.lamp),
+    Device(deviceType = DeviceTypes.AIR_CONDITIONER, R.string.air_conditioner),
+    Device(deviceType = DeviceTypes.OVEN, R.string.oven),
+    Device(deviceType = DeviceTypes.VACUUM_CLEANER, R.string.vacuum_cleaner),
+    Device(deviceType = DeviceTypes.DOOR, R.string.door),
+
+
 
 )

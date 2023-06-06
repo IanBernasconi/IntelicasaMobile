@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">IntelicasaMobile</string>
+    <string name="app_name">Intelicasa</string>
     <string name="lamp">Lamp</string>
+    <string name="air_conditioner">Air conditioner</string>
+    <string name="oven">Oven\n</string>
+    <string name="vacuum_cleaner">Vacuum cleaner\n</string>
+    <string name="door">Door</string>
 </resources>
