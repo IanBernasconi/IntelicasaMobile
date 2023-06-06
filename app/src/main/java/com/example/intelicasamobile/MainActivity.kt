@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +58,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
 @Composable
 fun IntelicasaApp() {
     Scaffold(
@@ -66,11 +68,11 @@ fun IntelicasaApp() {
     ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small) ),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
             contentPadding = it
         ) {
-            items(devices) {device->
+            items(devices) { device ->
                 DeviceCard(
                     device = device,
                     modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
@@ -117,7 +119,41 @@ fun IntellicasaTopAppBar(modifier: Modifier = Modifier) {
 fun DeviceCard(
     device: Device,
     modifier: Modifier = Modifier
-){
+) {
+    Card(modifier = modifier) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.padding_small))
+        ) {
+            Image(
+                painter = painterResource(id = device.deviceType.imageResourceId),
+                contentDescription = "",
+                modifier = Modifier.size(dimensionResource(id = R.dimen.image_size))
+            )
+
+            Text(
+                text = stringResource(id = device.name), modifier = Modifier.padding(
+                    start = dimensionResource(
+                        id = R.dimen.padding_small
+                    )
+                )
+            )
+        }
+    }
+}
+
+//@Preview(name = "DeviceInfo")
+@Composable
+fun DeviceInfoPreview() {
+    DeviceInfo(device = devices[0])
+}
+
+@Composable
+fun DeviceInfo(
+    device: Device,
+    modifier: Modifier = Modifier
+) {
     Card(modifier = modifier) {
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -134,11 +170,16 @@ fun DeviceCard(
 data class Device(
     val deviceType: DeviceTypes,
     @StringRes val name: Int,
+    val meta: Meta = Meta()
+)
+
+data class Meta(
+    val category: DeviceTypes = DeviceTypes.LAMP,
 )
 
 enum class DeviceTypes(
-   @DrawableRes  val imageResourceId: Int
-){
+    @DrawableRes val imageResourceId: Int
+) {
     LAMP(R.drawable.lightbulb),
     AIR_CONDITIONER(R.drawable.airconditioner),
     OVEN(R.drawable.oven),
