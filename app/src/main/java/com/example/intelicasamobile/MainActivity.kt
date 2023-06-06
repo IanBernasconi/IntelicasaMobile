@@ -52,22 +52,23 @@ class MainActivity : ComponentActivity() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
 @Composable
 fun IntelicasaApp() {
     Scaffold(
         topBar = {
             IntellicasaTopAppBar()
         }
-    ) { it ->
+    ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small) ),
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
             contentPadding = it
         ) {
-            items(devices) {
+            items(devices) {device->
                 DeviceCard(
-                    device = it,
+                    device = device,
                     modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
                 )
             }
@@ -130,17 +131,19 @@ data class Device(
 
 val devices = listOf(
     Device(R.drawable.lightbulb, R.string.lamp),
+    Device(R.drawable.airconditioner, R.string.lamp),
+    Device(R.drawable.oven, R.string.lamp),
+    Device(R.drawable.vacuumcleaner, R.string.lamp),
+    Device(R.drawable.door, R.string.lamp),
     Device(R.drawable.lightbulb, R.string.lamp),
+    Device(R.drawable.airconditioner, R.string.lamp),
+    Device(R.drawable.oven, R.string.lamp),
+    Device(R.drawable.vacuumcleaner, R.string.lamp),
+    Device(R.drawable.door, R.string.lamp),
     Device(R.drawable.lightbulb, R.string.lamp),
-    Device(R.drawable.lightbulb, R.string.lamp),
-    Device(R.drawable.lightbulb, R.string.lamp),
-    Device(R.drawable.lightbulb, R.string.lamp),
-    Device(R.drawable.lightbulb, R.string.lamp),
-    Device(R.drawable.lightbulb, R.string.lamp),
-    Device(R.drawable.lightbulb, R.string.lamp),
-    Device(R.drawable.lightbulb, R.string.lamp),
-    Device(R.drawable.lightbulb, R.string.lamp),
-
-
+    Device(R.drawable.airconditioner, R.string.lamp),
+    Device(R.drawable.oven, R.string.lamp),
+    Device(R.drawable.vacuumcleaner, R.string.lamp),
+    Device(R.drawable.door, R.string.lamp),
 
 )
