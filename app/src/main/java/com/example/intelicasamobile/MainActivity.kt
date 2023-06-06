@@ -7,16 +7,15 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,8 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 class MainActivity : ComponentActivity() {
@@ -52,7 +52,6 @@ class MainActivity : ComponentActivity() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
 @Composable
 fun IntelicasaApp() {
     Scaffold(
@@ -153,7 +152,74 @@ val devices = listOf(
     Device(deviceType = DeviceTypes.OVEN, R.string.oven),
     Device(deviceType = DeviceTypes.VACUUM_CLEANER, R.string.vacuum_cleaner),
     Device(deviceType = DeviceTypes.DOOR, R.string.door),
+)
 
+data class Rutine(
+    @StringRes val name: Int,
+    @DrawableRes val imageResourceId: Int = R.drawable.play
+)
 
+val rutines = listOf(
+    Rutine(R.string.rutine1),
+    Rutine(R.string.rutine1),
+    Rutine(R.string.rutine1),
+    Rutine(R.string.rutine1),
+    Rutine(R.string.rutine1),
+    Rutine(R.string.rutine1),
 
 )
+
+@Composable
+fun RutineCard(
+    rutine: Rutine,
+    modifier: Modifier = Modifier
+){
+    Card(modifier = modifier) {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = modifier
+                    .align(Alignment.CenterStart)
+            ) {
+                Text(
+                    text = stringResource(id = rutine.name),
+                    fontSize = 24.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
+            Image(
+                painter = painterResource(rutine.imageResourceId),
+                contentDescription = null,
+                modifier = modifier
+                    .align(Alignment.CenterEnd)
+                    .size(dimensionResource(id = R.dimen.image_size))
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun RutineListPreview(){
+    IntelicasaMobileTheme {
+        Scaffold {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small) ),
+                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+                contentPadding = it
+            ) {
+                items(rutines) {rutine->
+                    RutineCard(
+                        rutine = rutine,
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+
