@@ -6,14 +6,17 @@ import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
@@ -30,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -204,7 +208,7 @@ data class Rutine(
     @StringRes val name: Int,
 )
 
-val rutines = listOf(
+val routines = listOf(
     Rutine(R.string.rutine1),
     Rutine(R.string.rutine1),
     Rutine(R.string.rutine1),
@@ -215,12 +219,16 @@ val rutines = listOf(
 )
 
 @Composable
-fun RutineCard(
+fun RoutineCard(
     rutine: Rutine,
     modifier: Modifier = Modifier
 ){
-    Card(modifier = modifier) {
-        Box(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = modifier,
+    ) {
+        Box(
+            modifier = Modifier.fillMaxWidth().background(Color.Black)
+        ) {
             Row(
                 modifier = modifier
                     .align(Alignment.CenterStart)
@@ -228,8 +236,10 @@ fun RutineCard(
                 Text(
                     text = stringResource(id = rutine.name),
                     fontSize = 24.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Color(0xFFFFFFFF),
                 )
+                Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)))
                 IconButton(
                     onClick = { /*TODO*/ },
                 ) {
@@ -246,20 +256,51 @@ fun RutineCard(
     }
 }
 
+
+@Composable
+fun CategoryCard(title: Int) {
+    Card() {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(dimensionResource(id = R.dimen.padding_small)),
+                horizontalArrangement = Arrangement.Center,
+
+            ) {
+                Text(
+                    text = stringResource(id = title),
+                    fontSize = 32.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color(0xFF000000),
+                )
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun RutineListPreview(){
+fun HomePreview(){
     IntelicasaMobileTheme {
         Scaffold {
-            LazyVerticalGrid(
+                LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small) ),
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
                 contentPadding = it
             ) {
-                items(rutines) {rutine->
-                    RutineCard(
+                item(span = {
+                    GridItemSpan(maxLineSpan)
+                }) {
+                    CategoryCard(title = R.string.routines)
+                }
+
+                items(routines) {rutine->
+                    RoutineCard(
                         rutine = rutine,
                         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
                     )
