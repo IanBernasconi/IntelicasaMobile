@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.intelicasamobile.data.MainUiState
-import com.example.intelicasamobile.ui.DeviceCard
+import com.example.intelicasamobile.ui.devices.DeviceCard
 import com.example.intelicasamobile.ui.IntellicasaTopAppBar
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
