@@ -7,10 +7,40 @@
     <string name="vacuum_cleaner">Vacuum cleaner\n</string>
     <string name="door">Door</string>
     <string name="mode">Mode</string>
-    <string name="temperature">Temperature</string>
-    <string name="vertical_swing">Vertical Swing</string>
-    <string name="horizontal_swing">Horizontal Swing</string>
-    <string name="fan_speed">Fan Speed</string>
     <string name="routines">Rutinas</string>
     <string name="devices">Devices</string>
+    <string name="temperature">Temperature</string>
+
+
+    <!-- AC Info -->
+    <string name="AC_vertical_swing">Vertical Swing</string>
+    <string name="AC_horizontal_swing">Horizontal Swing</string>
+    <string name="AC_fan_speed">Fan Speed</string>
+
+    <!-- AC Modes -->
+    <string name="ACM_fan">Fan</string>
+    <string name="ACM_cool">Cool</string>
+    <string name="ACM_heat">Heat</string>
+
+    <!-- Oven Info -->
+    <string name="OI_temperature">Temperature</string>
+    <string name="OI_heat_mode">Heat Mode</string>
+    <string name="OI_grill_mode">Grill Mode</string>
+    <string name="OI_convection_mode">Convection Mode</string>
+
+    <!-- Oven Heat Modes -->
+    <string name="OHM_conventional">Conventional</string>
+    <string name="OHM_top">Top</string>
+    <string name="OHM_bottom">Bottom</string>
+
+    <!-- Oven Grill Modes -->
+    <string name="OGM_off">Off</string>
+    <string name="OGM_full">Full</string>
+    <string name="OGM_eco">Eco</string>
+
+    <!-- Oven Convection Modes -->
+    <string name="OCM_off">Off</string>
+    <string name="OCM_full">Full</string>
+    <string name="OCM_eco">Eco</string>
+
 </resources>

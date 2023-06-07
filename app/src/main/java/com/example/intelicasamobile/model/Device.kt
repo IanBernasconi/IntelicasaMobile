@@ -20,3 +20,9 @@ class LightDevice(val state: LightState = LightState()) : Device(
     name = R.string.lamp,
     meta = Meta(category = DeviceTypes.LAMP),
 )
+
+class OvenDevice(val state: OvenState = OvenState()) : Device(
+    deviceType = DeviceTypes.OVEN,
+    name = R.string.oven,
+    meta = Meta(category = DeviceTypes.OVEN),
+)
