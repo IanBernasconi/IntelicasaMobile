@@ -54,15 +54,17 @@ fun RoutineCard(
                     Text(
                         text = stringResource(id = routine.name),
                         fontSize = 24.sp,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        color = Color.White,
                     )
+                    Spacer(modifier = Modifier.size(50.dp))
                     IconButton(
                         onClick = { /*TODO*/ },
                     ) {
                         Icon(
                             imageVector = Icons.Filled.PlayArrow,
                             contentDescription = "Play",
-                            tint = MaterialTheme.colorScheme.secondary,
+                            tint = Color.White,
                             modifier = Modifier.size(100.dp)
                         )
                     }

@@ -21,6 +21,7 @@ import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.Datasource.devices
 import com.example.intelicasamobile.data.Datasource.routines
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
+import com.example.intelicasamobile.ui.devices.DeviceCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
