@@ -1,5 +1,6 @@
 package com.example.intelicasamobile
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,6 +20,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.intelicasamobile.data.MainUiState
 import com.example.intelicasamobile.ui.DeviceCard
+import com.example.intelicasamobile.ui.Home
 import com.example.intelicasamobile.ui.IntellicasaTopAppBar
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
@@ -40,29 +42,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview(showBackground = true, name = "Intelicasa")
 @Composable
 fun IntelicasaApp() {
-    Scaffold(
-        topBar = {
-            IntellicasaTopAppBar()
-        }
-    ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-            contentPadding = it
-        ) {
-            items(MainUiState().devices) { device ->
-                DeviceCard(
-                    device = device,
-                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
-                )
-            }
-        }
-    }
+    Home()
 }
 
 

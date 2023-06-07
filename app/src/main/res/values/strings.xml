@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IntelicasaMobile</string>
+    <string name="app_name">Intelicasa</string>
     <string name="lamp">Lamp</string>
     <string name="rutine1">Salir</string>
     <string name="air_conditioner">Air conditioner</string>
@@ -7,4 +7,5 @@
     <string name="vacuum_cleaner">Vacuum cleaner\n</string>
     <string name="door">Door</string>
     <string name="routines">Rutinas</string>
+    <string name="devices">Devices</string>
 </resources>
