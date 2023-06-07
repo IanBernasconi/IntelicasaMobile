@@ -30,7 +30,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.model.Device
+import com.example.intelicasamobile.model.LightDevice
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
@@ -38,13 +38,13 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
 @Composable
 fun LightDeviceInfo(
-    device: Device,
+    device: LightDevice,
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
 ) {
-    var localIntensity by remember { mutableStateOf(0) }
-    var localColor by remember { mutableStateOf(Color.White) }
+    var intensity by remember { mutableStateOf(device.state.brightness) }
+    var localColor by remember { mutableStateOf(device.state.color) }
     var showColorPicker by remember { mutableStateOf(false) }
     val colorController = rememberColorPickerController()
     IntelicasaMobileTheme() {
@@ -73,9 +73,9 @@ fun LightDeviceInfo(
                             color = Color.Transparent
                         ) {
                             Slider(
-                                value = localIntensity.toFloat(),
+                                value = intensity.toFloat(),
                                 onValueChange = { value ->
-                                    localIntensity = value.toInt()
+                                    intensity = value.toInt()
                                 },
                                 steps = 1,
                                 enabled = !(disabled || loading),

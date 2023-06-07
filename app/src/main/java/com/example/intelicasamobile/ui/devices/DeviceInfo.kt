@@ -22,13 +22,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.MainUiState
+import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.Device
+import com.example.intelicasamobile.model.LightDevice
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Preview(name = "DeviceInfo")
 @Composable
 fun DeviceInfoPreview() {
-    DeviceInfo(device = MainUiState().devices[0])
+    DeviceInfo(device = MainUiState().devices[1])
 }
 
 @Composable
@@ -62,13 +64,9 @@ fun DeviceInfo(
                                 .align(Alignment.CenterVertically)
                         )
                     }
-                    when (device.meta.category.name) {
-                        "LAMP" -> LightDeviceInfo(device = device)
-//            "AIR_CONDITIONER" -> ACDeviceInfo(device = device)
-//            "OVEN" -> OvenDeviceInfo(device = device)
-//            "VACUUM_CLEANER" -> VacuumDeviceInfo(device = device)
-//            "DOOR" -> DoorDeviceInfo(device = device)
-//            else -> DevicePower(device = device)
+                    when (device) {
+                        is LightDevice -> LightDeviceInfo(device = device)
+                        is ACDevice -> ACDeviceInfo(device = device)
                     }
                 }
             }

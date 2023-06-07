@@ -6,4 +6,9 @@
     <string name="oven">Oven\n</string>
     <string name="vacuum_cleaner">Vacuum cleaner\n</string>
     <string name="door">Door</string>
+    <string name="mode">Mode</string>
+    <string name="temperature">Temperature</string>
+    <string name="vertical_swing">Vertical Swing</string>
+    <string name="horizontal_swing">Horizontal Swing</string>
+    <string name="fan_speed">Fan Speed</string>
 </resources>
