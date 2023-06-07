@@ -8,12 +8,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,37 +39,59 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 fun RoutineCard(
     routine: Routine,
     modifier: Modifier = Modifier
-){
-    Card(
-        modifier = modifier,
-    ){
-        Box(
-            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.primary)
-        ){
-            Row(
-                modifier = modifier
-                    .align(Alignment.CenterStart)
-            ){
-                Text(
-                    text = stringResource(id = routine.name),
-                    fontSize = 24.sp,
-                    textAlign = TextAlign.Center,
-                    color =Color.White
-                )
-                Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)))
-                IconButton(
-                    onClick ={/*TODO*/},
-                ){
-                    Icon(
-                        imageVector = Icons.Filled.PlayArrow,
-                        contentDescription = "Play",
-                        tint = Color.White,
-                        modifier = Modifier.size(100.dp)
+) {
+    IntelicasaMobileTheme() {
+        Card(modifier = modifier) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary)
+            ) {
+                Row(
+                    modifier = modifier
+                        .align(Alignment.CenterStart)
+                ) {
+                    Text(
+                        text = stringResource(id = routine.name),
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Center
                     )
+                    IconButton(
+                        onClick = { /*TODO*/ },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.PlayArrow,
+                            contentDescription = "Play",
+                            tint = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.size(100.dp)
+                        )
+                    }
                 }
-            }
 
+            }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = false)
+@Composable
+fun RoutineListPreview() {
+    IntelicasaMobileTheme {
+        Scaffold {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+                contentPadding = it
+            ) {
+                items(MainUiState().routines) { routine ->
+                    RoutineCard(
+                        routine = routine,
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                    )
+                }
+            }
+        }
+    }
+}
