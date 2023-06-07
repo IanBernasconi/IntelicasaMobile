@@ -4,4 +4,5 @@ import androidx.annotation.StringRes
 
 data class Routine(
     @StringRes val name: Int,
+
 )

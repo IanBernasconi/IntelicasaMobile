@@ -29,8 +29,5 @@ object Datasource {
     val routines = listOf(
         Routine(R.string.rutine1),
         Routine(R.string.rutine1),
-        Routine(R.string.rutine1),
-        Routine(R.string.rutine1),
-        Routine(R.string.rutine1),
-    )
+        )
 }

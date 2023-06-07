@@ -3,23 +3,27 @@ package com.example.intelicasamobile
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.tooling.preview.Device
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.intelicasamobile.data.MainUiState
-import com.example.intelicasamobile.ui.devices.DeviceCard
+import androidx.navigation.compose.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.intelicasamobile.ui.DevicesScreen
+import com.example.intelicasamobile.ui.HomeScreen
+import com.example.intelicasamobile.ui.IntellicasaBottomAppBar
 import com.example.intelicasamobile.ui.IntellicasaTopAppBar
+import com.example.intelicasamobile.ui.MainViewModel
+import com.example.intelicasamobile.ui.MenuScreen
+import com.example.intelicasamobile.ui.RoutinesScreen
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 
@@ -40,26 +44,61 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+enum class Screens() {
+    HOME,
+    DEVICES,
+    ROUTINES,
+    MENU
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, name = "Intelicasa")
 @Composable
-fun IntelicasaApp() {
-    Scaffold(
-        topBar = {
-            IntellicasaTopAppBar()
-        }
-    ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-            contentPadding = it
-        ) {
-            items(MainUiState().devices) { device ->
-                DeviceCard(
-                    device = device,
-                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+fun IntelicasaApp(
+    viewModel: MainViewModel = MainViewModel(),
+    navController: NavHostController = rememberNavController()
+) {
+    IntelicasaMobileTheme {
+        Scaffold(
+            topBar = {
+                IntellicasaTopAppBar()
+            },
+            bottomBar = {
+                IntellicasaBottomAppBar(
+                    navController = navController,
+                    onHomeButtonClicked = {
+                        navController.navigate(Screens.HOME.name)
+                    },
+                    onDevicesButtonClicked = {
+                        navController.navigate(Screens.DEVICES.name)
+                    },
+                    onRoutinesButtonClicked = {
+                        navController.navigate(Screens.ROUTINES.name)
+                    },
+                    onMenuButtonClicked = {
+                        navController.navigate(Screens.MENU.name)
+                    }
                 )
+            }
+        ) {innerPadding->
+            NavHost(
+                navController = navController,
+                startDestination = Screens.HOME.name,
+                modifier= Modifier.padding(innerPadding)
+            ){
+               composable(route= Screens.HOME.name){
+                   HomeScreen()
+               }
+                composable(route= Screens.DEVICES.name){
+                    DevicesScreen()
+                }
+                composable(route= Screens.ROUTINES.name){
+                    RoutinesScreen()
+                }
+                composable(route= Screens.MENU.name){
+                    MenuScreen()
+                }
             }
         }
     }

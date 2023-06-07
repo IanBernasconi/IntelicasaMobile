@@ -14,11 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.intelicasamobile.R
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
 @Composable
-fun IntellicasaTopAppBar(modifier: Modifier = Modifier) {
+fun IntellicasaTopAppBar() {
     CenterAlignedTopAppBar(
         title = {
             Row(
@@ -26,14 +28,9 @@ fun IntellicasaTopAppBar(modifier: Modifier = Modifier) {
             ) {
                 Image(
                     modifier = Modifier
-                        .size(dimensionResource(id = R.dimen.image_size))
+                        .size(dimensionResource(id = R.dimen.logo_size))
                         .padding(dimensionResource(id = R.dimen.padding_small)),
-                    painter = painterResource(R.drawable.ic_launcher_background),
-
-                    // Content Description is not needed here - image is decorative, and setting a
-                    // null content description allows accessibility services to skip this element
-                    // during navigation.
-
+                    painter = painterResource(R.drawable.logointeli),
                     contentDescription = null
                 )
                 Text(
@@ -42,7 +39,6 @@ fun IntellicasaTopAppBar(modifier: Modifier = Modifier) {
                 )
             }
         },
-        modifier = modifier
+        modifier = Modifier
     )
 }
-

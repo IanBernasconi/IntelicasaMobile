@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -32,15 +33,12 @@ import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.MainUiState
 import com.example.intelicasamobile.model.Routine
-import com.example.intelicasamobile.ui.theme.BlueDarken2
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Composable
-
 fun RoutineCard(
     routine: Routine,
     modifier: Modifier = Modifier
-
 ) {
     IntelicasaMobileTheme() {
         Card(modifier = modifier) {
@@ -56,15 +54,17 @@ fun RoutineCard(
                     Text(
                         text = stringResource(id = routine.name),
                         fontSize = 24.sp,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        color = Color.White,
                     )
+                    Spacer(modifier = Modifier.size(50.dp))
                     IconButton(
                         onClick = { /*TODO*/ },
                     ) {
                         Icon(
                             imageVector = Icons.Filled.PlayArrow,
                             contentDescription = "Play",
-                            tint = MaterialTheme.colorScheme.secondary,
+                            tint = Color.White,
                             modifier = Modifier.size(100.dp)
                         )
                     }
