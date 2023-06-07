@@ -63,8 +63,8 @@ fun ACDeviceInfo(
     val dropdownModeStateHolder = rememberDropdownSelectorState(
         items = ACMode.values().map {
             DropdownSelectorItem(
-                label = it.name.lowercase().replaceFirstChar { char -> char.uppercase() },
-                value = it,
+                label = stringResource(id = it.nameResId),
+                value = it.value,
                 icon = it.imageResourceId
             )
         }, label = "Modo", initialItem =
@@ -142,7 +142,7 @@ fun ACDeviceInfo(
                         horizontalAlignment = Alignment.Start
                     ) {
                         Text(
-                            text = stringResource(id = R.string.vertical_swing),
+                            text = stringResource(id = R.string.AC_vertical_swing),
                             style = TextStyle(fontSize = 16.sp)
                         )
                     }
@@ -186,7 +186,7 @@ fun ACDeviceInfo(
                         horizontalAlignment = Alignment.Start
                     ) {
                         Text(
-                            text = stringResource(id = R.string.horizontal_swing),
+                            text = stringResource(id = R.string.AC_horizontal_swing),
                             style = TextStyle(fontSize = 16.sp)
                         )
                     }
@@ -236,7 +236,7 @@ fun ACDeviceInfo(
                         horizontalAlignment = Alignment.Start
                     ) {
                         Text(
-                            text = stringResource(id = R.string.fan_speed),
+                            text = stringResource(id = R.string.AC_fan_speed),
                             style = TextStyle(fontSize = 16.sp)
                         )
                     }

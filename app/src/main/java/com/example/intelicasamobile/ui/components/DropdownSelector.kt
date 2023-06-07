@@ -6,13 +6,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,26 +17,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.ACMode
 
 @Preview(showBackground = true)
 @Composable
 fun DropdownPreview() {
-    val mode = ACMode.VENTILACION
+    val mode = ACMode.FAN
     val dropdownModeStateHolder = rememberDropdownSelectorState(
         items = ACMode.values().map {
             DropdownSelectorItem(
-                label = it.name.lowercase().replaceFirstChar { char -> char.uppercase() },
+                label = stringResource(id = it.nameResId),
                 value = it,
                 icon = it.imageResourceId
             )
         }, label = "Modo", initialItem =
         DropdownSelectorItem(
-            label = mode.name.lowercase().replaceFirstChar { char -> char.uppercase() },
+            label = stringResource(id = mode.nameResId),
             value = mode,
             icon = mode.imageResourceId
         )
