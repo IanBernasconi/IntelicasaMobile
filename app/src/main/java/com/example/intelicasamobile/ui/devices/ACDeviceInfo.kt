@@ -80,12 +80,23 @@ fun ACDeviceInfo(
             color = MaterialTheme.colorScheme.primary
         ) {
             Column(modifier = modifier) {
+
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
                         .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    StateInfo(isOn = device.state.isOn)
+                }
+
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Column(
                         modifier = Modifier.fillMaxWidth(0.5f),
@@ -135,7 +146,7 @@ fun ACDeviceInfo(
                         .fillMaxWidth()
                         .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Column(
                         modifier = Modifier.fillMaxWidth(0.5f),
@@ -179,7 +190,7 @@ fun ACDeviceInfo(
                         .fillMaxWidth()
                         .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Column(
                         modifier = Modifier.fillMaxWidth(0.5f),
@@ -229,7 +240,7 @@ fun ACDeviceInfo(
                         .fillMaxWidth()
                         .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Column(
                         modifier = Modifier.fillMaxWidth(0.5f),

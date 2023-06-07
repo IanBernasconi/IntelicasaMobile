@@ -11,6 +11,8 @@
     <string name="devices">Devices</string>
     <string name="temperature">Temperature</string>
 
+    <string name="device_state">State</string>
+
 
     <!-- AC Info -->
     <string name="AC_vertical_swing">Vertical Swing</string>
@@ -42,5 +44,9 @@
     <string name="OCM_off">Off</string>
     <string name="OCM_full">Full</string>
     <string name="OCM_eco">Eco</string>
+
+    <!-- Vacuum Cleaner Modes -->
+    <string name="VCM_mop">Mop</string>
+    <string name="VCM_vacuum">Vacuum</string>
 
 </resources>

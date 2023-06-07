@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.R
@@ -35,6 +36,12 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
+
+@Preview
+@Composable
+fun LightDeviceInfoPreview() {
+    LightDeviceInfo(device = LightDevice())
+}
 
 @Composable
 fun LightDeviceInfo(
@@ -52,6 +59,17 @@ fun LightDeviceInfo(
             color = MaterialTheme.colorScheme.primary
         ) {
             Column(modifier = modifier) {
+
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    StateInfo(isOn = device.state.isOn)
+                }
+
                 Row(
                     modifier = modifier
                         .fillMaxWidth()

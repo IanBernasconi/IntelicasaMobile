@@ -43,8 +43,17 @@ enum class OvenConvectionMode(
     @StringRes val nameResId: Int
 ) {
     //TODO CHANGE VALUES
-
     OFF(R.drawable.convectionmodeoff, "convection", nameResId = R.string.OCM_off),
     ECO(R.drawable.ecomode, "convection_eco", nameResId = R.string.OCM_eco),
     CONVENTIONAL(R.drawable.convectionmodenormal, "convection_ventilated", nameResId = R.string.OCM_full)
+}
+
+enum class VacuumCleanMode(
+    @DrawableRes val imageResourceId: Int,
+    val value : String,
+    @StringRes val nameResId: Int
+) {
+    //TODO CHANGE VALUES
+    MOP(R.drawable.mopmode, "mop", nameResId = R.string.VCM_mop),
+    VACUUM(R.drawable.vacuummode, "vacuum", nameResId = R.string.VCM_vacuum),
 }

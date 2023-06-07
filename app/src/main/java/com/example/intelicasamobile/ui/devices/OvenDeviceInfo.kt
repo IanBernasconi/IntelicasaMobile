@@ -98,6 +98,17 @@ fun OvenDeviceInfo(
             color = MaterialTheme.colorScheme.primary
         ) {
             Column(modifier = modifier) {
+
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    StateInfo(isOn = device.state.isOn)
+                }
+
                 Row(
                     modifier = modifier
                         .fillMaxWidth()

@@ -26,3 +26,15 @@ class OvenDevice(val state: OvenState = OvenState()) : Device(
     name = R.string.oven,
     meta = Meta(category = DeviceTypes.OVEN),
 )
+
+class DoorDevice(val state: DoorState = DoorState()) : Device(
+    deviceType = DeviceTypes.DOOR,
+    name = R.string.door,
+    meta = Meta(category = DeviceTypes.DOOR),
+)
+
+class VacuumDevice(val state: VacuumState = VacuumState()) : Device(
+    deviceType = DeviceTypes.VACUUM_CLEANER,
+    name = R.string.vacuum_cleaner,
+    meta = Meta(category = DeviceTypes.VACUUM_CLEANER),
+)
