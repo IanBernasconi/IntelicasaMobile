@@ -33,7 +33,8 @@ fun HomeScreen() {
     ) {
         val state1 = rememberLazyGridState()
         val state2 = rememberLazyGridState()
-        Column(){
+        Column {
+            CategoryCard(title = R.string.routines)
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 state = state1,
@@ -41,12 +42,6 @@ fun HomeScreen() {
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
                 contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
             ) {
-                item(span = {
-                    GridItemSpan(maxLineSpan)
-                }) {
-                    CategoryCard(title = R.string.routines)
-                }
-
                 items(routines) { routine ->
                     RoutineHomeCard(
                         routine = routine,
@@ -54,7 +49,7 @@ fun HomeScreen() {
                     )
                 }
             }
-
+            CategoryCard(title = R.string.devices)
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 state = state2,
@@ -62,12 +57,6 @@ fun HomeScreen() {
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
                 contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
             ) {
-                item(span = {
-                    GridItemSpan(maxLineSpan)
-                }) {
-                    CategoryCard(title = R.string.devices)
-                }
-
                 items(devices) { device ->
                     DeviceCard(
                         device = device,

@@ -27,7 +27,7 @@ object Datasource {
 
 
     val routines = listOf(
-        Routine(R.string.routine1, List(2) { DeviceTypes.LAMP;DeviceTypes.DOOR}),
-        Routine(R.string.routine1, List(3) { DeviceTypes.LAMP;DeviceTypes.LAMP; DeviceTypes.DOOR}),
-        )
+        Routine(R.string.routine1, devices.subList(0, 3)),
+        Routine(R.string.routine1, devices.subList(3, 6)),
+    )
 }
