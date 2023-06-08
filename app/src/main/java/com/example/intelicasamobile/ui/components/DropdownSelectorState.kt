@@ -21,6 +21,7 @@ class DropdownSelectorStateHolder(
     val items: List<DropdownSelectorItem>,
     val label: String,
     private val initialItem: DropdownSelectorItem? = null,
+    val onItemSelected: (DropdownSelectorItem) -> Unit,
 ) {
     var enabled by mutableStateOf(true)
     var value by mutableStateOf(initialItem?.label ?: "")
@@ -53,6 +54,7 @@ fun rememberDropdownSelectorState(
     items: List<DropdownSelectorItem>,
     label: String,
     initialItem: DropdownSelectorItem? = null,
+    onItemSelected: (DropdownSelectorItem) -> Unit
 ) = remember {
-    DropdownSelectorStateHolder(items, label, initialItem)
+    DropdownSelectorStateHolder(items, label, initialItem, onItemSelected)
 }

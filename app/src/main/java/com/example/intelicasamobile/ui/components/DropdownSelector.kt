@@ -38,8 +38,9 @@ fun DropdownPreview() {
         DropdownSelectorItem(
             label = stringResource(id = mode.nameResId),
             value = mode,
-            icon = mode.imageResourceId
-        )
+            icon = mode.imageResourceId,
+        ),
+        onItemSelected = { }
     )
     DropdownSelector(stateHolder = dropdownModeStateHolder)
 }
@@ -77,6 +78,7 @@ fun DropdownSelector(stateHolder: DropdownSelectorStateHolder) {
                 DropdownMenuItem(onClick = {
                     stateHolder.onSelectedIndex(index)
                     stateHolder.onEnabled(false)
+                    stateHolder.onItemSelected(item)
                 },
                     text = {
                         Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
@@ -88,7 +90,6 @@ fun DropdownSelector(stateHolder: DropdownSelectorStateHolder) {
                                         .size(35.dp)
                                 )
                             }
-
                             Text(
                                 text = item.label
                             )

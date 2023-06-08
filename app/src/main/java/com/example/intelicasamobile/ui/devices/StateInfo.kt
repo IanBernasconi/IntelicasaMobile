@@ -50,51 +50,50 @@ import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun StateInfoPreview() {
-    StateInfo(isOn = true)
+    StateInfo(isOn = true, setIsOn = { })
 }
 
 @Composable
 fun StateInfo(
     isOn: Boolean,
+    setIsOn: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
 ) {
     IntelicasaMobileTheme() {
-        Surface(
-            color = MaterialTheme.colorScheme.primary
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
-            Row(
-                modifier = modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+            Column(
+                modifier = modifier
+                    .fillMaxWidth(0.5f)
+                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                horizontalAlignment = Alignment.Start
             ) {
-                Column(
-                    modifier = modifier.fillMaxWidth(0.5f),
-                    horizontalAlignment = Alignment.Start
+                Text(
+                    text = stringResource(id = R.string.device_state),
+                    style = TextStyle(fontSize = 16.sp)
+                )
+            }
+
+            Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Button(
+                    onClick = { setIsOn(!isOn) },
+                    enabled = !disabled && !loading,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.device_state),
-                        style = TextStyle(fontSize = 16.sp)
+                    Image(
+                        painterResource(id = if (isOn) R.drawable.poweron else R.drawable.poweroff),
+                        contentDescription = if (isOn) "Turn off" else "Turn on",
+                        modifier = Modifier.size(35.dp)
                     )
                 }
-
-                Column(modifier = modifier, horizontalAlignment = Alignment.Start) {
-                    Button(
-                        onClick = { /*TODO*/ },
-                        enabled = !disabled && !loading
-                    ) {
-                        Image(
-                            painterResource(id = if (isOn) R.drawable.poweron else R.drawable.poweroff),
-                            contentDescription = if (isOn) "Turn off" else "Turn on",
-                            modifier = Modifier.size(35.dp)
-                        )
-                    }
-                }
-
             }
         }
     }

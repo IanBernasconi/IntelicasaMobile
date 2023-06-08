@@ -4,15 +4,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.outlined.DoorFront
+import androidx.compose.material.icons.outlined.DoorSliding
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.LockOpen
+import androidx.compose.material.icons.outlined.MeetingRoom
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -46,7 +48,7 @@ import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DoorDeviceInfoPreview() {
     DoorDeviceInfo(device = DoorDevice(DoorState()))
@@ -63,52 +65,56 @@ fun DoorDeviceInfo(
     var open by remember { mutableStateOf(device.state.isOpen) }
 
     IntelicasaMobileTheme() {
-        Surface(
-            color = MaterialTheme.colorScheme.primary
-        ) {
-            Column(modifier = modifier) {
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
-                        Button(
-                            onClick = { /*TODO*/ },
-                            elevation = ButtonDefaults.buttonElevation(20.dp, 10.dp, 10.dp, 10.dp, 0.dp),
-                            shape = RoundedCornerShape(5.dp),
-                            enabled = !disabled && !loading && !locked
+        Column(modifier = modifier) {
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
+                    Button(
+                        onClick = { /*TODO*/ },
+                        elevation = ButtonDefaults.buttonElevation(
+                            20.dp, 10.dp, 10.dp, 10.dp, 0.dp
+                        ),
+                        shape = RoundedCornerShape(5.dp),
+                        enabled = !disabled && !loading && !locked
+                    ) {
+                        Column(
+                            modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    imageVector = Icons.Filled.Email,
-                                    contentDescription = "Open",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(35.dp)
-                                )
-                                Text(text = if (open) "Close" else "Open")
-                            }
+                            Icon(
+                                imageVector = if (open) Icons.Outlined.DoorFront else Icons.Outlined.DoorFront, //TODO DoorOpen
+                                contentDescription = "Open",
+                                tint = Color.White,
+                                modifier = Modifier.size(35.dp)
+                            )
+                            Text(text = if (open) "Close" else "Open")
                         }
                     }
+                }
 
-                    Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
-                        Button(
-                            onClick = { /*TODO*/ },
-                            elevation = ButtonDefaults.buttonElevation(20.dp, 10.dp, 10.dp, 10.dp, 0.dp),
-                            shape = RoundedCornerShape(5.dp),
-                            enabled = !disabled && !loading && !open
+                Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
+                    Button(
+                        onClick = { /*TODO*/ },
+                        elevation = ButtonDefaults.buttonElevation(
+                            20.dp, 10.dp, 10.dp, 10.dp, 0.dp
+                        ),
+                        shape = RoundedCornerShape(5.dp),
+                        enabled = !disabled && !loading && !open
+                    ) {
+                        Column(
+                            modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    imageVector = Icons.Filled.Lock,
-                                    contentDescription = "Lock",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(35.dp)
-                                )
-                                Text(text = "Lock")
-                            }
+                            Icon(
+                                imageVector = if (locked) Icons.Outlined.LockOpen else Icons.Outlined.Lock,
+                                contentDescription = "Lock",
+                                tint = Color.White,
+                                modifier = Modifier.size(35.dp)
+                            )
+                            Text(text = "Lock")
                         }
                     }
                 }

@@ -8,14 +8,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,122 +35,123 @@ import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LightDeviceInfoPreview() {
-    LightDeviceInfo(device = LightDevice())
+    LightDeviceInfo(
+        brightness = LightDevice().state.brightness,
+        color = LightDevice().state.color,
+        isOn = LightDevice().state.isOn,
+        setBrightness = { },
+        setColor = { },
+        setIsOn = { }
+    )
 }
 
 @Composable
 fun LightDeviceInfo(
-    device: LightDevice,
+    brightness: Int,
+    color: Color,
+    isOn: Boolean,
+    setBrightness: (Int) -> Unit,
+    setColor: (Color) -> Unit,
+    setIsOn: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
 ) {
-    var intensity by remember { mutableStateOf(device.state.brightness) }
-    var localColor by remember { mutableStateOf(device.state.color) }
-    var showColorPicker by remember { mutableStateOf(false) }
+    var localIntensity by remember { mutableStateOf(brightness) }
+    var localColor by remember { mutableStateOf(color) }
     val colorController = rememberColorPickerController()
     IntelicasaMobileTheme() {
-        Surface(
-            color = MaterialTheme.colorScheme.primary
-        ) {
-            Column(modifier = modifier) {
+        Column(modifier = modifier) {
 
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                StateInfo(
+                    isOn = isOn,
+                    setIsOn = setIsOn,
+                    modifier = modifier,
+                    disabled = disabled,
+                    loading = loading
+                )
+            }
+
+
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    StateInfo(isOn = device.state.isOn)
+                    Text(
+                        text = "Intensidad",
+                        style = TextStyle(fontSize = 16.sp)
+                    )
                 }
 
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
-                        Text(text = "Intensidad", style = TextStyle(fontSize = 16.sp))
-                    }
-
-                    Column(
-                        modifier = Modifier,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        Surface(
-                            modifier = Modifier.width(90.dp),
-                            shape = RoundedCornerShape(8.dp),
-                            color = Color.Transparent
-                        ) {
-                            Slider(
-                                value = intensity.toFloat(),
-                                onValueChange = { value ->
-                                    intensity = value.toInt()
-                                },
-                                steps = 1,
-                                enabled = !(disabled || loading),
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = SliderDefaults.colors(
-                                    thumbColor = MaterialTheme.colorScheme.secondary,
-                                    activeTrackColor = MaterialTheme.colorScheme.secondary,
-                                    inactiveTrackColor = MaterialTheme.colorScheme.background
-                                )
+                        Slider(
+                            value = localIntensity.toFloat(),
+                            onValueChange = { localIntensity = it.toInt() },
+                            onValueChangeFinished = { setBrightness(localIntensity) },
+                            steps = 0,
+                            enabled = !(disabled || loading),
+                            modifier = Modifier.width(150.dp),
+                            colors = SliderDefaults.colors(
+                                thumbColor = MaterialTheme.colorScheme.primary,
+                                activeTrackColor = MaterialTheme.colorScheme.primary,
+                                inactiveTrackColor = MaterialTheme.colorScheme.secondary
                             )
-                        }
+                        )
+
                     }
                 }
+            }
 
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
-                        Text(text = "Color", style = TextStyle(fontSize = 16.sp))
-                    }
-
-                    Column(
-                        modifier = Modifier,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Button(
-                            onClick = { showColorPicker = true },
-                            modifier = Modifier
-                                .size(40.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = localColor)
-                        ) {}
-
-                        if (showColorPicker) {
-                            AlertDialog(
-                                onDismissRequest = { showColorPicker = false },
-                                confirmButton = {
-                                    HsvColorPicker(
-                                        modifier = Modifier
-                                            .width(250.dp)
-                                            .height(250.dp)
-                                            .padding(5.dp),
-                                        controller = colorController,
-                                        onColorChanged = { colorEnvelope: ColorEnvelope ->
-                                            val color: Color = colorEnvelope.color
-                                            val hexCode: String = colorEnvelope.hexCode
-                                            localColor = color
-                                            showColorPicker = false
-                                        }
-                                    )
-                                },
-                                modifier = Modifier.padding(0.dp)
-                            )
-
+                    HsvColorPicker(modifier = Modifier
+                        .width(250.dp)
+                        .height(250.dp)
+                        .padding(5.dp),
+                        controller = colorController,
+                        onColorChanged = { colorEnvelope: ColorEnvelope ->
+                            localColor = colorEnvelope.color
+                            setColor(colorEnvelope.color)
                         }
-                    }
+                    )
                 }
             }
         }

@@ -12,7 +12,7 @@
     <string name="temperature">Temperature</string>
 
     <string name="device_state">State</string>
-
+    <string name="room">Room</string>
 
     <!-- AC Info -->
     <string name="AC_vertical_swing">Vertical Swing</string>
@@ -45,8 +45,25 @@
     <string name="OCM_full">Full</string>
     <string name="OCM_eco">Eco</string>
 
+    <!-- Vacuum Cleaner State -->
+    <string name="VS_cleaning">Cleaning</string>
+    <string name="VS_charging">Charging</string>
+    <string name="VS_paused">Paused</string>
+
+    <!-- Vacuum Cleaner Info -->
+    <string name="VCI_no_room_message">The device must be linked to a room</string>
+
     <!-- Vacuum Cleaner Modes -->
     <string name="VCM_mop">Mop</string>
     <string name="VCM_vacuum">Vacuum</string>
+
+    <!-- Vacuum Cleaner Actions -->
+    <string name="VCA_pause">Pause</string>
+    <string name="VCA_clean">Clean</string>
+    <string name="VCA_charge">Charge</string>
+
+
+
+
 
 </resources>
