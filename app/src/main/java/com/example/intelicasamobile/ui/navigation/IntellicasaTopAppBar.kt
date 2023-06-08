@@ -1,4 +1,4 @@
-package com.example.intelicasamobile.ui
+package com.example.intelicasamobile.ui.navigation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row

@@ -1,4 +1,4 @@
-package com.example.intelicasamobile.ui
+package com.example.intelicasamobile.ui.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -17,6 +17,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.intelicasamobile.model.Screen
+import com.example.intelicasamobile.ui.DevicesScreen
+import com.example.intelicasamobile.ui.HomeScreen
+import com.example.intelicasamobile.ui.MenuScreen
+import com.example.intelicasamobile.ui.RoutinesScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -28,10 +32,10 @@ fun IntellicasaBottomAppBar(
     onRoutinesButtonClicked: () -> Unit = {},
     onMenuButtonClicked: () -> Unit = {},
     screens: List<Screen> = listOf(
-        Screen("Home", "home", Icons.Filled.Home){ HomeScreen()},
-        Screen("Devices", "devices", Icons.Filled.Menu){ DevicesScreen()},
-        Screen("Routines", "routines", Icons.Filled.Menu){ RoutinesScreen()},
-        Screen("Menu", "menu", Icons.Filled.Menu){ MenuScreen()},
+        Screen("Home", "home", Icons.Filled.Home){ HomeScreen() },
+        Screen("Devices", "devices", Icons.Filled.Menu){ DevicesScreen() },
+        Screen("Routines", "routines", Icons.Filled.Menu){ RoutinesScreen() },
+        Screen("Menu", "menu", Icons.Filled.Menu){ MenuScreen() },
     )
 ) {
 
