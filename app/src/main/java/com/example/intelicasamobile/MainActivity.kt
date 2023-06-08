@@ -1,6 +1,7 @@
 package com.example.intelicasamobile
 
 import android.os.Bundle
+import android.os.ParcelFileDescriptor
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,14 +52,17 @@ enum class Screens() {
     MENU
 }
 
+enum class WindowsSizeClass { COMPACT, MEDIUM, EXPANDED }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, name = "Intelicasa")
 @Composable
 fun IntelicasaApp(
     viewModel: MainViewModel = MainViewModel(),
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+//    windowsSizeClass: WindowsSizeClass
 ) {
+
     IntelicasaMobileTheme {
         Scaffold(
             topBar = {
@@ -81,32 +85,28 @@ fun IntelicasaApp(
                     }
                 )
             }
-        ) {innerPadding->
+        ) { innerPadding ->
             NavHost(
                 navController = navController,
                 startDestination = Screens.HOME.name,
-                modifier= Modifier.padding(innerPadding)
-            ){
-               composable(route= Screens.HOME.name){
-                   HomeScreen()
-               }
-                composable(route= Screens.DEVICES.name){
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                composable(route = Screens.HOME.name) {
+                    HomeScreen()
+                }
+                composable(route = Screens.DEVICES.name) {
                     DevicesScreen()
                 }
-                composable(route= Screens.ROUTINES.name){
+                composable(route = Screens.ROUTINES.name) {
                     RoutinesScreen()
                 }
-                composable(route= Screens.MENU.name){
+                composable(route = Screens.MENU.name) {
                     MenuScreen()
                 }
             }
         }
     }
 }
-
-
-
-
 
 
 

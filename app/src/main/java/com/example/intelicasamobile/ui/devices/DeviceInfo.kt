@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,7 +25,10 @@ import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.MainUiState
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.Device
+import com.example.intelicasamobile.model.DoorDevice
 import com.example.intelicasamobile.model.LightDevice
+import com.example.intelicasamobile.model.OvenDevice
+import com.example.intelicasamobile.model.VacuumDevice
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Preview(name = "DeviceInfo")
@@ -40,33 +44,33 @@ fun DeviceInfo(
 ) {
     IntelicasaMobileTheme() {
         Card(modifier = modifier) {
-            Box(modifier = modifier.background(MaterialTheme.colorScheme.primary)) {
+            Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
                 Column {
-                    Row(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .padding(dimensionResource(id = R.dimen.padding_small)),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = device.deviceType.imageResourceId),
-                            contentDescription = "",
-                            modifier = Modifier.size(dimensionResource(id = R.dimen.image_size))
+                    DeviceInfoHeader(device = device)
+                    when (device) {
+                        is LightDevice -> LightDeviceInfo(
+                            brightness = device.state.brightness, setBrightness = { },
+                            color = device.state.color, setColor = { },
+                            isOn = device.state.isOn, setIsOn = { }
+                        )
+                        is ACDevice -> ACDeviceInfo(
+                            temperature = device.state.temperature, setTemperature = { },
+                            isOn = device.state.isOn, setIsOn = { },
+                            mode = device.state.mode, setMode = { },
+                            fanSpeed = device.state.fanSpeed, setFanSpeed = { },
+                            verticalSwing = device.state.verticalSwing, setVerticalSwing = { },
+                            horizontalSwing = device.state.horizontalSwing, setHorizontalSwing = { }
                         )
 
-                        Text(
-                            text = stringResource(id = device.name), modifier = Modifier
-                                .padding(
-                                    start = dimensionResource(
-                                        id = R.dimen.padding_small
-                                    )
-                                )
-                                .align(Alignment.CenterVertically)
+                        is VacuumDevice -> VacuumDeviceInfo(device = device)
+                        is OvenDevice -> OvenDeviceInfo(
+                            temperature = device.state.temperature, setTemperature = { },
+                            isOn = device.state.isOn, setIsOn = { },
+                            heatMode = device.state.heatMode, setHeatMode = { },
+                            grillMode = device.state.grillMode, setGrillMode = { },
+                            convectionMode = device.state.convectionMode, setConvectionMode = { }
                         )
-                    }
-                    when (device) {
-                        is LightDevice -> LightDeviceInfo(device = device)
-                        is ACDevice -> ACDeviceInfo(device = device)
+                        is DoorDevice -> DoorDeviceInfo(device = device)
                     }
                 }
             }

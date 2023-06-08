@@ -11,7 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,41 +25,62 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.model.ACDevice
-import com.example.intelicasamobile.model.ACMode
+import com.example.intelicasamobile.model.OvenConvectionMode
 import com.example.intelicasamobile.model.OvenDevice
+import com.example.intelicasamobile.model.OvenGrillMode
 import com.example.intelicasamobile.model.OvenHeatMode
 import com.example.intelicasamobile.ui.components.DropdownSelector
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
-import kotlin.math.floor
 
 @Preview(showBackground = true)
 @Composable
 fun OvenDeviceInfoPreview() {
     IntelicasaMobileTheme {
         OvenDeviceInfo(
-            device = OvenDevice(),
+            isOn = OvenDevice().state.isOn,
+            temperature = OvenDevice().state.temperature,
+            convectionMode = OvenDevice().state.convectionMode,
+            grillMode = OvenDevice().state.grillMode,
+            heatMode = OvenDevice().state.heatMode,
+            setIsOn = { },
+            setTemperature = { },
+            setConvectionMode = { },
+            setGrillMode = { },
+            setHeatMode = { },
+
             modifier = Modifier,
             disabled = false,
             loading = false,
-        )
+
+            )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OvenDeviceInfo(
-    device: OvenDevice,
+    isOn: Boolean,
+    temperature: Int,
+    convectionMode: OvenConvectionMode,
+    grillMode: OvenGrillMode,
+    heatMode: OvenHeatMode,
+    setIsOn: (Boolean) -> Unit,
+    setTemperature: (Int) -> Unit,
+    setConvectionMode: (OvenConvectionMode) -> Unit,
+    setGrillMode: (OvenGrillMode) -> Unit,
+    setHeatMode: (OvenHeatMode) -> Unit,
+
+
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
 ) {
-    var temperature by remember { mutableStateOf(device.state.temperature) }
-    var convectionMode by remember { mutableStateOf(device.state.convectionMode) }
-    var grillMode by remember { mutableStateOf(device.state.grillMode) }
-    var heatMode by remember { mutableStateOf(device.state.heatMode) }
+    var localTemperature by remember { mutableStateOf(temperature) }
+    var localConvectionMode by remember { mutableStateOf(convectionMode) }
+    var localGrillMode by remember { mutableStateOf(grillMode) }
+    var localHeatMode by remember { mutableStateOf(heatMode) }
 
     val dropdownHeatModeStateHolder = rememberDropdownSelectorState(
         items = OvenHeatMode.values().map {
@@ -69,7 +89,14 @@ fun OvenDeviceInfo(
                 value = it.value,
                 icon = it.imageResourceId
             )
-        }, label = stringResource(id = R.string.OI_heat_mode)
+        },
+        label = stringResource(id = R.string.OI_heat_mode),
+        onItemSelected = { setHeatMode(it.value as OvenHeatMode) },
+        initialItem = DropdownSelectorItem(
+            label = stringResource(id = localHeatMode.nameResId),
+            value = localHeatMode,
+            icon = localHeatMode.imageResourceId
+        )
     )
 
     val dropdownConvectionModeStateHolder = rememberDropdownSelectorState(
@@ -79,7 +106,13 @@ fun OvenDeviceInfo(
                 value = it.value,
                 icon = it.imageResourceId
             )
-        }, label = stringResource(id = R.string.OI_convection_mode)
+        }, label = stringResource(id = R.string.OI_convection_mode),
+        onItemSelected = { setConvectionMode(it.value as OvenConvectionMode) },
+        initialItem = DropdownSelectorItem(
+            label = stringResource(id = localConvectionMode.nameResId),
+            value = localConvectionMode,
+            icon = localConvectionMode.imageResourceId
+        )
     )
 
     val dropdownGrillModeStateHolder = rememberDropdownSelectorState(
@@ -89,93 +122,103 @@ fun OvenDeviceInfo(
                 value = it.value,
                 icon = it.imageResourceId
             )
-        }, label = stringResource(id = R.string.OI_grill_mode)
+        }, label = stringResource(id = R.string.OI_grill_mode),
+        onItemSelected = { setGrillMode(it.value as OvenGrillMode) },
+        initialItem = DropdownSelectorItem(
+            label = stringResource(id = localGrillMode.nameResId),
+            value = localGrillMode,
+            icon = localGrillMode.imageResourceId
+        )
     )
 
 
     IntelicasaMobileTheme {
-        Surface(
-            color = MaterialTheme.colorScheme.primary
-        ) {
-            Column(modifier = modifier) {
+        Column(modifier = modifier) {
 
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                StateInfo(isOn = isOn, setIsOn = setIsOn, disabled = disabled, loading = loading)
+            }
+
+
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    StateInfo(isOn = device.state.isOn)
+                    Text(
+                        text = stringResource(id = R.string.temperature),
+                        style = TextStyle(fontSize = 16.sp)
+                    )
                 }
 
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                Column(
+                    modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
                 ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(0.5f),
-                        horizontalAlignment = Alignment.Start
+                    Row(
+                        modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = stringResource(id = R.string.temperature),
-                            style = TextStyle(fontSize = 16.sp)
+                            text = "${Math.floor(localTemperature.toDouble())}°C",
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
+                        Slider(value = localTemperature.toFloat(),
+                            onValueChange = { localTemperature.toInt() },
+                            valueRange = 90f..220f,
+                            steps = 1,
+                            enabled = !(disabled || loading),
+                            modifier = Modifier.width(125.dp),
+                            colors = SliderDefaults.colors(
+                                thumbColor = MaterialTheme.colorScheme.primary,
+                                activeTrackColor = MaterialTheme.colorScheme.primary,
+                                inactiveTrackColor = MaterialTheme.colorScheme.secondary
+                            ),
+                            onValueChangeFinished = { setTemperature(localTemperature) }
                         )
                     }
-
-                    Column(modifier = Modifier) {
-                        Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = "${floor(temperature)}°C",
-                                modifier = Modifier.padding(end = 4.dp)
-                            )
-                            Slider(
-                                value = temperature,
-                                onValueChange = { value -> temperature = value },
-                                valueRange = 90f..230f,
-                                steps = 1,
-                                enabled = !(disabled || loading),
-                                modifier = Modifier.width(150.dp),
-                                colors = SliderDefaults.colors(
-                                    thumbColor = MaterialTheme.colorScheme.secondary,
-                                    activeTrackColor = MaterialTheme.colorScheme.secondary,
-                                    inactiveTrackColor = MaterialTheme.colorScheme.background
-                                ),
-                                onValueChangeFinished = {} //{ setTemperature() }
-                            )
-                        }
-                    }
                 }
+            }
 
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    DropdownSelector(stateHolder = dropdownHeatModeStateHolder)
-                }
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                DropdownSelector(stateHolder = dropdownHeatModeStateHolder)
+            }
 
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    DropdownSelector(stateHolder = dropdownConvectionModeStateHolder)
-                }
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                DropdownSelector(stateHolder = dropdownConvectionModeStateHolder)
+            }
 
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    DropdownSelector(stateHolder = dropdownGrillModeStateHolder)
-                }
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                DropdownSelector(stateHolder = dropdownGrillModeStateHolder)
             }
         }
     }
