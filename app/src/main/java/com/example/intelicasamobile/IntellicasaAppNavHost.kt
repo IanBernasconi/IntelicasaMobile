@@ -2,8 +2,10 @@ package com.example.intelicasamobile
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bed
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -33,8 +35,8 @@ fun IntelicasaAppNavHost(
 ) {
     val screens = listOf(
         Screen("Home", "home", Icons.Filled.Home) { HomeScreen() },
-        Screen("Devices", "devices", Icons.Filled.Home){ DevicesScreen() },
-        Screen("Routines", "routines", Icons.Filled.Home){ RoutinesScreen() },
+        Screen("Devices", "devices", Icons.Filled.Bed){ DevicesScreen() },
+        Screen("Routines", "routines", Icons.Filled.PlayArrow){ RoutinesScreen() },
         Screen("Menu", "menu", Icons.Filled.Menu){ MenuScreen() },
     )
 

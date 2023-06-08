@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
 }
 
 
-enum class WindowsSizeClass { COMPACT, MEDIUM, EXPANDED }
 
 
 
