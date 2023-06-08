@@ -8,7 +8,7 @@
     <string name="door">Door</string>
     <string name="mode">Mode</string>
     <string name="routines">Rutinas</string>
-    <string name="devices">Devices</string>
+    <string name="devices">Dispositivos</string>
     <string name="temperature">Temperature</string>
 
     <string name="device_state">State</string>
