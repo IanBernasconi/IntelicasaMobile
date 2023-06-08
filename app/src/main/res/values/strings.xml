@@ -8,13 +8,36 @@
     <string name="door">Door</string>
     <string name="mode">Mode</string>
     <string name="routines">Rutinas</string>
-    <string name="devices">Devices</string>
-    <string name="temperature">Temperature</string>
+    <string name="devices">Dispositivos</string>
+    <string name="delete">Delete</string>
+
+    <string name="auto_mode">Auto</string>
 
     <string name="device_state">State</string>
     <string name="room">Room</string>
 
+    <!-- DEVICES -->
+    <string name="turn_on">Turn on</string>
+    <string name="turn_off">Turn off</string>
+
+    <!-- Lamp Info -->
+    <string name="LI_brightness">Brightness</string>
+    <string name="LI_color">Color</string>
+
+    <!-- Door states -->
+    <string name="DS_open">Open</string>
+    <string name="DS_closed">Closed</string>
+    <string name="DS_locked">Locked</string>
+    <string name="DS_unlocked">Unlocked</string>
+
+    <!-- Door actions -->
+    <string name="DA_open">Open</string>
+    <string name="DA_close">Close</string>
+    <string name="DA_lock">Lock</string>
+    <string name="DA_unlock">Unlock</string>
+
     <!-- AC Info -->
+    <string name="AC_temperature">Temperature</string>
     <string name="AC_vertical_swing">Vertical Swing</string>
     <string name="AC_horizontal_swing">Horizontal Swing</string>
     <string name="AC_fan_speed">Fan Speed</string>

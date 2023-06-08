@@ -23,11 +23,14 @@ object Datasource {
         Device(deviceType = DeviceTypes.OVEN, R.string.oven),
         Device(deviceType = DeviceTypes.VACUUM_CLEANER, R.string.vacuum_cleaner),
         Device(deviceType = DeviceTypes.DOOR, R.string.door),
+        Device(deviceType = DeviceTypes.OVEN, R.string.oven),
+        Device(deviceType = DeviceTypes.VACUUM_CLEANER, R.string.vacuum_cleaner),
+        Device(deviceType = DeviceTypes.DOOR, R.string.door),
     )
 
 
     val routines = listOf(
-        Routine(R.string.routine1, List(2) { DeviceTypes.LAMP;DeviceTypes.DOOR}),
-        Routine(R.string.routine1, List(3) { DeviceTypes.LAMP;DeviceTypes.LAMP; DeviceTypes.DOOR}),
-        )
+        Routine(R.string.routine1, devices.subList(0, 3)),
+        Routine(R.string.routine1, devices.subList(3, 6)),
+    )
 }

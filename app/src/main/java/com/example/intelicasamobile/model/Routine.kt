@@ -5,5 +5,5 @@ import androidx.annotation.StringRes
 
 data class Routine(
     @StringRes val name: Int,
-    val devicesTypes: List<DeviceTypes>
+    val devices: List<Device>
 )

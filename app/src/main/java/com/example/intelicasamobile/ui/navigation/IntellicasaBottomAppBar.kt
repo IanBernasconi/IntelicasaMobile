@@ -11,6 +11,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -41,7 +42,7 @@ fun IntellicasaBottomAppBar(
 
     val backStackEntry by navController.currentBackStackEntryAsState()
 
-    NavigationBar(containerColor = MaterialTheme.colorScheme.primary) {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.tertiary) {
         screens.forEach { screen ->
             val selected = screen.route == backStackEntry?.destination?.route
             NavigationBarItem(
@@ -56,10 +57,10 @@ fun IntellicasaBottomAppBar(
                     }
                 } },
                 label = {
-                    Text(text = screen.title, fontWeight = FontWeight.SemiBold)
+                    Text(text = screen.title, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary)
                 },
                 icon = {
-                    Icon(imageVector = screen.icon, contentDescription = screen.title)
+                    Icon(imageVector = screen.icon, contentDescription = screen.title, tint = MaterialTheme.colorScheme.onTertiary)
                 }
             )
         }

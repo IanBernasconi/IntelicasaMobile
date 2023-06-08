@@ -6,11 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -24,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,10 +35,11 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 @Preview(showBackground = true)
 @Composable
 fun LightDeviceInfoPreview() {
+    val device = LightDevice()
     LightDeviceInfo(
-        brightness = LightDevice().state.brightness,
-        color = LightDevice().state.color,
-        isOn = LightDevice().state.isOn,
+        brightness = device.state.brightness,
+        color = device.state.color,
+        isOn = device.state.isOn,
         setBrightness = { },
         setColor = { },
         setIsOn = { }
@@ -97,7 +95,7 @@ fun LightDeviceInfo(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = "Intensidad",
+                        text = stringResource(id = R.string.LI_brightness),
                         style = TextStyle(fontSize = 16.sp)
                     )
                 }

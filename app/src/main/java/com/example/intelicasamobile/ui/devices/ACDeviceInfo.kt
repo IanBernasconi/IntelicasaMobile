@@ -84,21 +84,17 @@ fun ACDeviceInfo(
     var localVerticalSwing by remember { mutableStateOf(verticalSwing) }
     var localHorizontalSwing by remember { mutableStateOf(horizontalSwing) }
 
-    val dropdownModeStateHolder = rememberDropdownSelectorState(
-        items = ACMode.values().map {
-            DropdownSelectorItem(
-                label = stringResource(id = it.nameResId),
-                value = it.value,
-                icon = it.imageResourceId
-            )
-        }, label = "Modo", initialItem =
+    val dropdownModeStateHolder = rememberDropdownSelectorState(items = ACMode.values().map {
         DropdownSelectorItem(
-            label = stringResource(id = localMode.nameResId),
-            value = localMode,
-            icon = localMode.imageResourceId
-        ),
-        onItemSelected = { localMode = it.value as ACMode; setMode(it.value) }
-    )
+            label = stringResource(id = it.nameResId),
+            value = it.value,
+            icon = it.imageResourceId
+        )
+    }, label = stringResource(id = R.string.mode), initialItem = DropdownSelectorItem(
+        label = stringResource(id = localMode.nameResId),
+        value = localMode,
+        icon = localMode.imageResourceId
+    ), onItemSelected = { localMode = it.value as ACMode; setMode(it.value) })
 
     IntelicasaMobileTheme {
         Column(modifier = modifier) {
@@ -126,14 +122,13 @@ fun ACDeviceInfo(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = stringResource(id = R.string.temperature),
+                        text = stringResource(id = R.string.AC_temperature),
                         style = TextStyle(fontSize = 16.sp)
                     )
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.End
+                    modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
                 ) {
                     Row(
                         modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
@@ -141,11 +136,10 @@ fun ACDeviceInfo(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = "${Math.floor(localTemperature.toDouble())}°C",
+                            text = "${floor(localTemperature.toDouble())}°C",
                             modifier = Modifier.padding(end = 4.dp)
                         )
-                        Slider(
-                            value = localTemperature,
+                        Slider(value = localTemperature,
                             onValueChange = { localTemperature = it },
                             valueRange = 18f..38f,
                             steps = 1,
@@ -156,8 +150,7 @@ fun ACDeviceInfo(
                                 activeTrackColor = MaterialTheme.colorScheme.primary,
                                 inactiveTrackColor = MaterialTheme.colorScheme.secondary
                             ),
-                            onValueChangeFinished = { setTemperature(localTemperature) }
-                        )
+                            onValueChangeFinished = { setTemperature(localTemperature) })
                     }
                 }
             }
@@ -191,8 +184,7 @@ fun ACDeviceInfo(
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.End
+                    modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
                 ) {
                     Row(
                         modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
@@ -200,8 +192,9 @@ fun ACDeviceInfo(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = if (localVerticalSwing != 0) "${localVerticalSwing}°" else "Auto",
-                            modifier = Modifier.padding(end = 4.dp)
+                            text = if (localVerticalSwing != 0) "${localVerticalSwing}°" else stringResource(
+                                id = R.string.auto_mode
+                            ), modifier = Modifier.padding(end = 4.dp)
                         )
                         Slider(
                             value = localVerticalSwing.toFloat(),
@@ -241,8 +234,7 @@ fun ACDeviceInfo(
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.End
+                    modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
                 ) {
                     Row(
                         modifier = Modifier
@@ -252,8 +244,9 @@ fun ACDeviceInfo(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = if (localHorizontalSwing != -135) "${localHorizontalSwing}°" else "Auto",
-                            modifier = Modifier.padding(end = 4.dp)
+                            text = if (localHorizontalSwing != -135) "${localHorizontalSwing}°" else stringResource(
+                                id = R.string.auto_mode
+                            ), modifier = Modifier.padding(end = 4.dp)
                         )
                         Slider(
                             value = localHorizontalSwing.toFloat(),
@@ -301,8 +294,7 @@ fun ACDeviceInfo(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = "${localFanSpeed}°",
-                            modifier = Modifier.padding(end = 4.dp)
+                            text = "${localFanSpeed}°", modifier = Modifier.padding(end = 4.dp)
                         )
                         Slider(
                             value = localFanSpeed.toFloat(),

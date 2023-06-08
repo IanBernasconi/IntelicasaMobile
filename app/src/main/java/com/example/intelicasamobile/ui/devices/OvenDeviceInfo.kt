@@ -37,13 +37,14 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 @Preview(showBackground = true)
 @Composable
 fun OvenDeviceInfoPreview() {
+    val device = OvenDevice()
     IntelicasaMobileTheme {
         OvenDeviceInfo(
-            isOn = OvenDevice().state.isOn,
-            temperature = OvenDevice().state.temperature,
-            convectionMode = OvenDevice().state.convectionMode,
-            grillMode = OvenDevice().state.grillMode,
-            heatMode = OvenDevice().state.heatMode,
+            isOn = device.state.isOn,
+            temperature = device.state.temperature,
+            convectionMode = device.state.convectionMode,
+            grillMode = device.state.grillMode,
+            heatMode = device.state.heatMode,
             setIsOn = { },
             setTemperature = { },
             setConvectionMode = { },
@@ -82,54 +83,59 @@ fun OvenDeviceInfo(
     var localGrillMode by remember { mutableStateOf(grillMode) }
     var localHeatMode by remember { mutableStateOf(heatMode) }
 
-    val dropdownHeatModeStateHolder = rememberDropdownSelectorState(
-        items = OvenHeatMode.values().map {
-            DropdownSelectorItem(
-                label = stringResource(id = it.nameResId),
-                value = it.value,
-                icon = it.imageResourceId
+    val dropdownHeatModeStateHolder =
+        rememberDropdownSelectorState(
+            items = OvenHeatMode.values().map {
+                DropdownSelectorItem(
+                    label = stringResource(id = it.nameResId),
+                    value = it.value,
+                    icon = it.imageResourceId
+                )
+            },
+            label = stringResource(id = R.string.OI_heat_mode),
+            onItemSelected = { localHeatMode = it.value as OvenHeatMode; setHeatMode(it.value) },
+            initialItem = DropdownSelectorItem(
+                label = stringResource(id = localHeatMode.nameResId),
+                value = localHeatMode,
+                icon = localHeatMode.imageResourceId
             )
-        },
-        label = stringResource(id = R.string.OI_heat_mode),
-        onItemSelected = { setHeatMode(it.value as OvenHeatMode) },
-        initialItem = DropdownSelectorItem(
-            label = stringResource(id = localHeatMode.nameResId),
-            value = localHeatMode,
-            icon = localHeatMode.imageResourceId
         )
-    )
 
-    val dropdownConvectionModeStateHolder = rememberDropdownSelectorState(
-        items = OvenHeatMode.values().map {
-            DropdownSelectorItem(
-                label = stringResource(id = it.nameResId),
-                value = it.value,
-                icon = it.imageResourceId
+    val dropdownConvectionModeStateHolder =
+        rememberDropdownSelectorState(
+            items = OvenHeatMode.values().map {
+                DropdownSelectorItem(
+                    label = stringResource(id = it.nameResId),
+                    value = it.value,
+                    icon = it.imageResourceId
+                )
+            }, label = stringResource(id = R.string.OI_convection_mode),
+            onItemSelected = {
+                localConvectionMode = it.value as OvenConvectionMode; setConvectionMode(it.value)
+            }, initialItem = DropdownSelectorItem(
+                label = stringResource(id = localConvectionMode.nameResId),
+                value = localConvectionMode,
+                icon = localConvectionMode.imageResourceId
             )
-        }, label = stringResource(id = R.string.OI_convection_mode),
-        onItemSelected = { setConvectionMode(it.value as OvenConvectionMode) },
-        initialItem = DropdownSelectorItem(
-            label = stringResource(id = localConvectionMode.nameResId),
-            value = localConvectionMode,
-            icon = localConvectionMode.imageResourceId
         )
-    )
 
-    val dropdownGrillModeStateHolder = rememberDropdownSelectorState(
-        items = OvenHeatMode.values().map {
-            DropdownSelectorItem(
-                label = stringResource(id = it.nameResId),
-                value = it.value,
-                icon = it.imageResourceId
+    val dropdownGrillModeStateHolder =
+        rememberDropdownSelectorState(
+            items = OvenHeatMode.values().map {
+                DropdownSelectorItem(
+                    label = stringResource(id = it.nameResId),
+                    value = it.value,
+                    icon = it.imageResourceId
+                )
+            },
+            label = stringResource(id = R.string.OI_grill_mode),
+            onItemSelected = { localGrillMode = it.value as OvenGrillMode; setGrillMode(it.value) },
+            initialItem = DropdownSelectorItem(
+                label = stringResource(id = localGrillMode.nameResId),
+                value = localGrillMode,
+                icon = localGrillMode.imageResourceId
             )
-        }, label = stringResource(id = R.string.OI_grill_mode),
-        onItemSelected = { setGrillMode(it.value as OvenGrillMode) },
-        initialItem = DropdownSelectorItem(
-            label = stringResource(id = localGrillMode.nameResId),
-            value = localGrillMode,
-            icon = localGrillMode.imageResourceId
         )
-    )
 
 
     IntelicasaMobileTheme {
@@ -160,7 +166,7 @@ fun OvenDeviceInfo(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = stringResource(id = R.string.temperature),
+                        text = stringResource(id = R.string.OI_temperature),
                         style = TextStyle(fontSize = 16.sp)
                     )
                 }
@@ -178,7 +184,7 @@ fun OvenDeviceInfo(
                             modifier = Modifier.padding(end = 4.dp)
                         )
                         Slider(value = localTemperature.toFloat(),
-                            onValueChange = { localTemperature.toInt() },
+                            onValueChange = { localTemperature = it.toInt() },
                             valueRange = 90f..220f,
                             steps = 1,
                             enabled = !(disabled || loading),
@@ -188,8 +194,7 @@ fun OvenDeviceInfo(
                                 activeTrackColor = MaterialTheme.colorScheme.primary,
                                 inactiveTrackColor = MaterialTheme.colorScheme.secondary
                             ),
-                            onValueChangeFinished = { setTemperature(localTemperature) }
-                        )
+                            onValueChangeFinished = { setTemperature(localTemperature) })
                     }
                 }
             }
