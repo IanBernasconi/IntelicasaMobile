@@ -23,8 +23,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.intelicasamobile.R
@@ -78,11 +78,11 @@ fun DoorDeviceInfo(
                         ) {
                             Icon(
                                 imageVector = if (localIsOpen) Icons.Outlined.DoorFront else Icons.Outlined.DoorFront, //TODO DoorOpen
-                                contentDescription = "Open",
+                                contentDescription = if (localIsOpen) stringResource(id = R.string.DS_open) else stringResource(id = R.string.DS_closed),
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(35.dp)
                             )
-                            Text(text = if (localIsOpen) "Close" else "Open")
+                            Text(text = if (localIsOpen) stringResource(id = R.string.DA_open) else stringResource(id = R.string.DA_close))
                         }
                     }
                 }
@@ -101,11 +101,11 @@ fun DoorDeviceInfo(
                         ) {
                             Icon(
                                 imageVector = if (localIsLocked) Icons.Outlined.LockOpen else Icons.Outlined.Lock,
-                                contentDescription = "Lock",
-                                tint = MaterialTheme.colorScheme.onTertiary,
+                                contentDescription = if (localIsLocked) stringResource(id = R.string.DS_locked) else stringResource(id = R.string.DS_unlocked),
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(35.dp)
                             )
-                            Text(text = "Lock")
+                            Text(text = if (localIsLocked) stringResource(id = R.string.DA_unlock) else stringResource(id = R.string.DA_lock))
                         }
                     }
                 }

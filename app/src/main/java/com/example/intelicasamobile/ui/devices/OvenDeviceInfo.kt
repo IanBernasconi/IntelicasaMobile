@@ -166,7 +166,7 @@ fun OvenDeviceInfo(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = stringResource(id = R.string.temperature),
+                        text = stringResource(id = R.string.OI_temperature),
                         style = TextStyle(fontSize = 16.sp)
                     )
                 }

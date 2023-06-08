@@ -122,7 +122,7 @@ fun ACDeviceInfo(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = stringResource(id = R.string.temperature),
+                        text = stringResource(id = R.string.AC_temperature),
                         style = TextStyle(fontSize = 16.sp)
                     )
                 }
@@ -136,7 +136,7 @@ fun ACDeviceInfo(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = "${Math.floor(localTemperature.toDouble())}°C",
+                            text = "${floor(localTemperature.toDouble())}°C",
                             modifier = Modifier.padding(end = 4.dp)
                         )
                         Slider(value = localTemperature,

@@ -46,7 +46,7 @@ fun DeviceInfoHeader(
         ) {
             Image(
                 painter = painterResource(id = device.deviceType.imageResourceId),
-                contentDescription = "",
+                contentDescription = stringResource(id = device.deviceType.nameResId),
                 modifier = Modifier.size(dimensionResource(id = R.dimen.image_size))
             )
 
@@ -63,7 +63,7 @@ fun DeviceInfoHeader(
             IconButton(onClick = { onDelete() }) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = "Delete",
+                    contentDescription = stringResource(id = R.string.delete),
                     modifier = Modifier.size(25.dp)
                 )
             }
