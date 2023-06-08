@@ -6,11 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -38,10 +34,11 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 @Preview(showBackground = true)
 @Composable
 fun LightDeviceInfoPreview() {
+    val device = LightDevice()
     LightDeviceInfo(
-        brightness = LightDevice().state.brightness,
-        color = LightDevice().state.color,
-        isOn = LightDevice().state.isOn,
+        brightness = device.state.brightness,
+        color = device.state.color,
+        isOn = device.state.isOn,
         setBrightness = { },
         setColor = { },
         setIsOn = { }
