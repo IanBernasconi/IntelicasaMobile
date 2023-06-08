@@ -6,7 +6,7 @@ import com.example.intelicasamobile.R
 open class Device(
     val deviceType: DeviceTypes,
     @StringRes val name: Int,
-    val meta: Meta,
+    val meta: Meta = Meta(),
 )
 
 data class ACDevice(val state: ACState = ACState()) : Device(
