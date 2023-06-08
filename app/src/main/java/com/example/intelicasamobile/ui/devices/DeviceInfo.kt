@@ -1,27 +1,13 @@
 package com.example.intelicasamobile.ui.devices
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.MainUiState
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.Device
@@ -46,7 +32,7 @@ fun DeviceInfo(
         Card(modifier = modifier) {
             Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
                 Column {
-                    DeviceInfoHeader(device = device)
+                    DeviceInfoHeader(device = device, onDelete = {})
                     when (device) {
                         is LightDevice -> LightDeviceInfo(
                             brightness = device.state.brightness, setBrightness = { },
@@ -62,7 +48,12 @@ fun DeviceInfo(
                             horizontalSwing = device.state.horizontalSwing, setHorizontalSwing = { }
                         )
 
-                        is VacuumDevice -> VacuumDeviceInfo(device = device)
+                        is VacuumDevice -> VacuumDeviceInfo(
+                            batteryPercentage = device.state.batteryPerc,
+                            state = device.state.state, setState = { },
+                            mode = device.state.mode, setMode = { },
+                            location = device.state.location, setLocation = { },
+                        )
                         is OvenDevice -> OvenDeviceInfo(
                             temperature = device.state.temperature, setTemperature = { },
                             isOn = device.state.isOn, setIsOn = { },
@@ -70,7 +61,10 @@ fun DeviceInfo(
                             grillMode = device.state.grillMode, setGrillMode = { },
                             convectionMode = device.state.convectionMode, setConvectionMode = { }
                         )
-                        is DoorDevice -> DoorDeviceInfo(device = device)
+                        is DoorDevice -> DoorDeviceInfo(
+                            isLocked = device.state.isLocked, setIsLocked = { },
+                            isOpen = device.state.isOpen, setIsOpen = { }
+                        )
                     }
                 }
             }
