@@ -14,6 +14,7 @@ import androidx.compose.material.icons.outlined.LockOpen
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -78,7 +79,7 @@ fun DoorDeviceInfo(
                             Icon(
                                 imageVector = if (localIsOpen) Icons.Outlined.DoorFront else Icons.Outlined.DoorFront, //TODO DoorOpen
                                 contentDescription = "Open",
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(35.dp)
                             )
                             Text(text = if (localIsOpen) "Close" else "Open")
@@ -101,7 +102,7 @@ fun DoorDeviceInfo(
                             Icon(
                                 imageVector = if (localIsLocked) Icons.Outlined.LockOpen else Icons.Outlined.Lock,
                                 contentDescription = "Lock",
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onTertiary,
                                 modifier = Modifier.size(35.dp)
                             )
                             Text(text = "Lock")
