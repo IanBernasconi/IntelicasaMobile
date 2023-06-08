@@ -1,4 +1,4 @@
-package com.example.intelicasamobile.ui
+package com.example.intelicasamobile.ui.routines
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +36,7 @@ import com.example.intelicasamobile.model.Routine
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Composable
-fun RoutineCard(
+fun RoutineHomeCard(
     routine: Routine,
     modifier: Modifier = Modifier
 ) {
@@ -88,7 +88,7 @@ fun RoutineListPreview() {
                 contentPadding = it
             ) {
                 items(MainUiState().routines) { routine ->
-                    RoutineCard(
+                    RoutineHomeCard(
                         routine = routine,
                         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
                     )

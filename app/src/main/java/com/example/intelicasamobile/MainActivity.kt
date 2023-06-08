@@ -6,6 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -18,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.intelicasamobile.model.Screen
 import com.example.intelicasamobile.ui.DevicesScreen
 import com.example.intelicasamobile.ui.HomeScreen
 import com.example.intelicasamobile.ui.IntellicasaBottomAppBar
@@ -45,12 +49,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class Screens() {
-    HOME,
-    DEVICES,
-    ROUTINES,
-    MENU
-}
 
 enum class WindowsSizeClass { COMPACT, MEDIUM, EXPANDED }
 
@@ -62,6 +60,12 @@ fun IntelicasaApp(
     navController: NavHostController = rememberNavController(),
 //    windowsSizeClass: WindowsSizeClass
 ) {
+    val screens = listOf(
+        Screen("Home", "home", Icons.Filled.Home) { HomeScreen() },
+        Screen("Devices", "devices", Icons.Filled.Home){ DevicesScreen() },
+        Screen("Routines", "routines", Icons.Filled.Home){ RoutinesScreen()},
+        Screen("Menu", "menu", Icons.Filled.Menu){ MenuScreen()},
+    )
 
     IntelicasaMobileTheme {
         Scaffold(
@@ -71,42 +75,28 @@ fun IntelicasaApp(
             bottomBar = {
                 IntellicasaBottomAppBar(
                     navController = navController,
-                    onHomeButtonClicked = {
-                        navController.navigate(Screens.HOME.name)
-                    },
-                    onDevicesButtonClicked = {
-                        navController.navigate(Screens.DEVICES.name)
-                    },
-                    onRoutinesButtonClicked = {
-                        navController.navigate(Screens.ROUTINES.name)
-                    },
-                    onMenuButtonClicked = {
-                        navController.navigate(Screens.MENU.name)
-                    }
+                    screens = screens
                 )
             }
-        ) { innerPadding ->
+        ) {innerPadding->
             NavHost(
                 navController = navController,
-                startDestination = Screens.HOME.name,
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                composable(route = Screens.HOME.name) {
-                    HomeScreen()
-                }
-                composable(route = Screens.DEVICES.name) {
-                    DevicesScreen()
-                }
-                composable(route = Screens.ROUTINES.name) {
-                    RoutinesScreen()
-                }
-                composable(route = Screens.MENU.name) {
-                    MenuScreen()
+                startDestination = screens.first().route,
+                modifier= Modifier.padding(innerPadding)
+            ){
+                screens.forEach{screen->
+                    composable(route= screen.route){
+                        screen.content()
+                    }
                 }
             }
         }
     }
 }
+
+
+
+
 
 
 

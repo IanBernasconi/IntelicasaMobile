@@ -21,6 +21,8 @@ import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.Datasource.devices
 import com.example.intelicasamobile.data.Datasource.routines
 import com.example.intelicasamobile.ui.devices.DeviceCard
+import com.example.intelicasamobile.ui.routines.RoutineCard
+import com.example.intelicasamobile.ui.routines.RoutineHomeCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -46,7 +48,7 @@ fun HomeScreen() {
                 }
 
                 items(routines) { routine ->
-                    RoutineCard(
+                    RoutineHomeCard(
                         routine = routine,
                         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
                     )
