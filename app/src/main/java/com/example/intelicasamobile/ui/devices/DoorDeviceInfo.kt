@@ -88,7 +88,7 @@ fun DoorDeviceInfo(
                             Icon(
                                 imageVector = if (open) Icons.Outlined.DoorFront else Icons.Outlined.DoorFront, //TODO DoorOpen
                                 contentDescription = "Open",
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(35.dp)
                             )
                             Text(text = if (open) "Close" else "Open")
@@ -111,7 +111,7 @@ fun DoorDeviceInfo(
                             Icon(
                                 imageVector = if (locked) Icons.Outlined.LockOpen else Icons.Outlined.Lock,
                                 contentDescription = "Lock",
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onTertiary,
                                 modifier = Modifier.size(35.dp)
                             )
                             Text(text = "Lock")
