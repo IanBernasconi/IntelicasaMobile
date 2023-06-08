@@ -118,121 +118,124 @@ fun VacuumDeviceInfo(
     )
 
     IntelicasaMobileTheme {
-        Surface(
-            color = Color.White
-        ) {
-            Column(modifier = modifier) {
+        Column(modifier = modifier) {
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(0.5f),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        text = stringResource(id = localState.nameResId),
+                        style = TextStyle(fontSize = 16.sp)
+                    )
+                }
 
+                Row(modifier = Modifier) {
+                    Icon(
+                        imageVector = when (batteryPercentage) {
+                            in 0..5 -> Icons.Outlined.Battery0Bar
+                            in 6..15 -> Icons.Outlined.Battery1Bar
+                            in 15..30 -> Icons.Outlined.Battery2Bar
+                            in 31..45 -> Icons.Outlined.Battery3Bar
+                            in 45..60 -> Icons.Outlined.Battery4Bar
+                            in 61..75 -> Icons.Outlined.Battery5Bar
+                            in 75..90 -> Icons.Outlined.Battery6Bar
+                            else -> Icons.Outlined.BatteryFull
+                        }, contentDescription = null, modifier = Modifier.width(24.dp)
+                    )
+                    Text(
+                        text = "${batteryPercentage}%", style = TextStyle(fontSize = 16.sp)
+                    )
+                }
+            }
+
+            if (localLocation != "") {
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
                         .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(0.5f),
-                        horizontalAlignment = Alignment.Start
-                    ) {
-                        Text(
-                            text = stringResource(id = localState.nameResId),
-                            style = TextStyle(fontSize = 16.sp)
-                        )
-                    }
-
-                    Row(modifier = Modifier) {
-                        Icon(
-                            imageVector = when (batteryPercentage) {
-                                in 0..5 -> Icons.Outlined.Battery0Bar
-                                in 6..15 -> Icons.Outlined.Battery1Bar
-                                in 15..30 -> Icons.Outlined.Battery2Bar
-                                in 31..45 -> Icons.Outlined.Battery3Bar
-                                in 45..60 -> Icons.Outlined.Battery4Bar
-                                in 61..75 -> Icons.Outlined.Battery5Bar
-                                in 75..90 -> Icons.Outlined.Battery6Bar
-                                else -> Icons.Outlined.BatteryFull
-                            }, contentDescription = null, modifier = Modifier.width(24.dp)
-                        )
-                        Text(
-                            text = "${batteryPercentage}%", style = TextStyle(fontSize = 16.sp)
-                        )
-                    }
+                    Text(text = stringResource(id = R.string.VCI_no_room_message))
                 }
-
-                if (localLocation != "") {
-                    Row(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        Text(text = stringResource(id = R.string.VCI_no_room_message))
-                    }
-                } else {
-                    Row(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        Button(
-                            onClick = { setState(VacuumStateEnum.CLEANING); localState = VacuumStateEnum.CLEANING },
-                            elevation = ButtonDefaults.buttonElevation(
-                                20.dp, 10.dp, 10.dp, 10.dp, 0.dp
-                            ),
-                            shape = RoundedCornerShape(5.dp),
-                            enabled = !disabled && !loading && localState != VacuumStateEnum.CLEANING
-                        ) {
-                            if (batteryPercentage > 5) {
-                                Icon(
-                                    imageVector = Icons.Outlined.BatteryAlert,
-                                    contentDescription = null,
-                                    modifier = Modifier.width(24.dp)
-                                )
-                            } else {
-                                Text(text = stringResource(id = R.string.VCA_clean))
-                            }
-                        }
-                        Button(
-                            onClick = { setState(VacuumStateEnum.PAUSED); localState = VacuumStateEnum.PAUSED },
-                            elevation = ButtonDefaults.buttonElevation(
-                                20.dp, 10.dp, 10.dp, 10.dp, 0.dp
-                            ),
-                            shape = RoundedCornerShape(5.dp),
-                            enabled = !disabled && !loading && localState == VacuumStateEnum.CLEANING
-                        ) {
-                            Text(text = stringResource(id = R.string.VCA_pause))
-                        }
-                        Button(
-                            onClick = { setState(VacuumStateEnum.CHARGING); localState = VacuumStateEnum.CHARGING },
-                            elevation = ButtonDefaults.buttonElevation(
-                                20.dp, 10.dp, 10.dp, 10.dp, 0.dp
-                            ),
-                            shape = RoundedCornerShape(5.dp),
-                            enabled = !disabled && !loading && localState != VacuumStateEnum.CHARGING
-                        ) {
-                            Text(text = stringResource(id = R.string.VCA_charge))
-                        }
-                    }
-                }
-
+            } else {
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
                         .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    DropdownSelector(stateHolder = dropdownModeStateHolder)
+                    Button(
+                        onClick = {
+                            setState(VacuumStateEnum.CLEANING); localState =
+                            VacuumStateEnum.CLEANING
+                        },
+                        elevation = ButtonDefaults.buttonElevation(
+                            20.dp, 10.dp, 10.dp, 10.dp, 0.dp
+                        ),
+                        shape = RoundedCornerShape(5.dp),
+                        enabled = !disabled && !loading && localState != VacuumStateEnum.CLEANING
+                    ) {
+                        if (batteryPercentage > 5) {
+                            Icon(
+                                imageVector = Icons.Outlined.BatteryAlert,
+                                contentDescription = null,
+                                modifier = Modifier.width(24.dp)
+                            )
+                        } else {
+                            Text(text = stringResource(id = R.string.VCA_clean))
+                        }
+                    }
+                    Button(
+                        onClick = {
+                            setState(VacuumStateEnum.PAUSED); localState = VacuumStateEnum.PAUSED
+                        },
+                        elevation = ButtonDefaults.buttonElevation(
+                            20.dp, 10.dp, 10.dp, 10.dp, 0.dp
+                        ),
+                        shape = RoundedCornerShape(5.dp),
+                        enabled = !disabled && !loading && localState == VacuumStateEnum.CLEANING
+                    ) {
+                        Text(text = stringResource(id = R.string.VCA_pause))
+                    }
+                    Button(
+                        onClick = {
+                            setState(VacuumStateEnum.CHARGING); localState =
+                            VacuumStateEnum.CHARGING
+                        },
+                        elevation = ButtonDefaults.buttonElevation(
+                            20.dp, 10.dp, 10.dp, 10.dp, 0.dp
+                        ),
+                        shape = RoundedCornerShape(5.dp),
+                        enabled = !disabled && !loading && localState != VacuumStateEnum.CHARGING
+                    ) {
+                        Text(text = stringResource(id = R.string.VCA_charge))
+                    }
                 }
+            }
 
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    DropdownSelector(stateHolder = dropdownLocationStateHolder)
-                }
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                DropdownSelector(stateHolder = dropdownModeStateHolder)
+            }
+
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                DropdownSelector(stateHolder = dropdownLocationStateHolder)
             }
         }
     }

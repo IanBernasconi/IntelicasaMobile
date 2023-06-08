@@ -56,7 +56,7 @@ fun IntellicasaBottomAppBar(
                 },
                 icon = {
                     Icon(imageVector = screen.icon, contentDescription = screen.title)
-                }
+                },
             )
         }
     }

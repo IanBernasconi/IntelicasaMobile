@@ -11,6 +11,10 @@
     <string name="devices">Dispositivos</string>
     <string name="temperature">Temperature</string>
 
+    <string name="delete">Delete</string>
+
+    <string name="auto_mode">Auto</string>
+
     <string name="device_state">State</string>
     <string name="room">Room</string>
 

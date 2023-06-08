@@ -36,40 +36,40 @@ fun DeviceInfo(
                     when (device) {
                         is LightDevice -> LightDeviceInfo(
                             brightness = device.state.brightness,
-                            setBrightness = { device.state.setBrightness(it) },
+                            setBrightness = { device.setBrightness(it) },
                             color = device.state.color,
-                            setColor = { device.state.setColor(it) },
+                            setColor = { device.setColor(it) },
                             isOn = device.state.isOn,
-                            setIsOn = { device.state.setIsOn(it) }
+                            setIsOn = { device.setIsOn(it) }
                         )
 
                         is ACDevice -> ACDeviceInfo(
-                            temperature = device.state.temperature, setTemperature = { device.state.setTemperature(it) },
-                            isOn = device.state.isOn, setIsOn = { device.state.setIsOn(it) },
-                            mode = device.state.mode, setMode = { device.state.setMode(it)},
-                            fanSpeed = device.state.fanSpeed, setFanSpeed = { device.state.setFanSpeed(it) },
-                            verticalSwing = device.state.verticalSwing, setVerticalSwing = { device.state.setVerticalSwing(it) },
-                            horizontalSwing = device.state.horizontalSwing, setHorizontalSwing = { device.state.setHorizontalSwing(it) }
+                            temperature = device.state.temperature, setTemperature = { device.setTemperature(it) },
+                            isOn = device.state.isOn, setIsOn = { device.setIsOn(it) },
+                            mode = device.state.mode, setMode = { device.setMode(it)},
+                            fanSpeed = device.state.fanSpeed, setFanSpeed = { device.setFanSpeed(it) },
+                            verticalSwing = device.state.verticalSwing, setVerticalSwing = { device.setVerticalSwing(it) },
+                            horizontalSwing = device.state.horizontalSwing, setHorizontalSwing = { device.setHorizontalSwing(it) }
                         )
 
                         is VacuumDevice -> VacuumDeviceInfo(
                             batteryPercentage = device.state.batteryPerc,
-                            state = device.state.state, setState = { device.state.setState(it) },
-                            mode = device.state.mode, setMode = { device.state.setMode(it) },
-                            location = device.state.location, setLocation = { device.state.setLocation(it) },
+                            state = device.state.state, setState = { device.setState(it) },
+                            mode = device.state.mode, setMode = { device.setMode(it) },
+                            location = device.state.location, setLocation = { device.setLocation(it) },
                         )
 
                         is OvenDevice -> OvenDeviceInfo(
-                            temperature = device.state.temperature, setTemperature = { device.state.setTemperature(it) },
-                            isOn = device.state.isOn, setIsOn = { device.state.setIsOn(it) },
-                            heatMode = device.state.heatMode, setHeatMode = { device.state.setHeatMode(it) },
-                            grillMode = device.state.grillMode, setGrillMode = { device.state.setGrillMode(it) },
-                            convectionMode = device.state.convectionMode, setConvectionMode = { device.state.setConvectionMode(it) }
+                            temperature = device.state.temperature, setTemperature = { device.setTemperature(it) },
+                            isOn = device.state.isOn, setIsOn = { device.setIsOn(it) },
+                            heatMode = device.state.heatMode, setHeatMode = { device.setHeatMode(it) },
+                            grillMode = device.state.grillMode, setGrillMode = { device.setGrillMode(it) },
+                            convectionMode = device.state.convectionMode, setConvectionMode = { device.setConvectionMode(it) }
                         )
 
                         is DoorDevice -> DoorDeviceInfo(
-                            isLocked = device.state.isLocked, setIsLocked = { device.state.setLocked(it) },
-                            isOpen = device.state.isOpen, setIsOpen = { device.state.setOpen(it) }
+                            isLocked = device.state.isLocked, setIsLocked = { device.setLocked(it) },
+                            isOpen = device.state.isOpen, setIsOpen = { device.setOpen(it) }
                         )
                     }
                 }
