@@ -1,8 +1,10 @@
 package com.example.intelicasamobile.ui.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bed
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +24,10 @@ import com.example.intelicasamobile.ui.DevicesScreen
 import com.example.intelicasamobile.ui.HomeScreen
 import com.example.intelicasamobile.ui.MenuScreen
 import com.example.intelicasamobile.ui.RoutinesScreen
+import com.example.intelicasamobile.ui.TabletDevicesScreen
+import com.example.intelicasamobile.ui.TabletHomeScreen
+import com.example.intelicasamobile.ui.TabletMenuScreen
+import com.example.intelicasamobile.ui.TabletRoutinesScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -33,10 +39,10 @@ fun IntellicasaBottomAppBar(
     onRoutinesButtonClicked: () -> Unit = {},
     onMenuButtonClicked: () -> Unit = {},
     screens: List<Screen> = listOf(
-        Screen("Home", "home", Icons.Filled.Home){ HomeScreen() },
-        Screen("Devices", "devices", Icons.Filled.Menu){ DevicesScreen() },
-        Screen("Routines", "routines", Icons.Filled.Menu){ RoutinesScreen() },
-        Screen("Menu", "menu", Icons.Filled.Menu){ MenuScreen() },
+        Screen("Home", "home", Icons.Filled.Home, tabletContent = { TabletHomeScreen() }, content =  { HomeScreen() }),
+        Screen("Devices", "devices", Icons.Filled.Bed, tabletContent = { TabletDevicesScreen() }, content =  { DevicesScreen() }),
+        Screen("Routines", "routines", Icons.Filled.PlayArrow, tabletContent = { TabletRoutinesScreen() }, content =  { RoutinesScreen() }),
+        Screen("Menu", "menu", Icons.Filled.Menu, tabletContent = { TabletMenuScreen() }, content =  { MenuScreen() })
     )
 ) {
 

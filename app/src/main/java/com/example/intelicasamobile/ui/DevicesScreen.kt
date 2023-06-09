@@ -17,3 +17,13 @@ fun DevicesScreen() {
         Text(text = "Devices")
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun TabletDevicesScreen() {
+    Surface(
+        color = MaterialTheme.colorScheme.background
+    ) {
+        Text(text = "Tablet Devices")
+    }
+}

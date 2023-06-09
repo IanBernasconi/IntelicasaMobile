@@ -27,6 +27,10 @@ import com.example.intelicasamobile.ui.HomeScreen
 import com.example.intelicasamobile.ui.MainViewModel
 import com.example.intelicasamobile.ui.MenuScreen
 import com.example.intelicasamobile.ui.RoutinesScreen
+import com.example.intelicasamobile.ui.TabletDevicesScreen
+import com.example.intelicasamobile.ui.TabletHomeScreen
+import com.example.intelicasamobile.ui.TabletMenuScreen
+import com.example.intelicasamobile.ui.TabletRoutinesScreen
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,11 +42,13 @@ fun IntelicasaAppNavHost(
     windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
 ) {
     val screens = listOf(
-        Screen("Home", "home", Icons.Filled.Home) { HomeScreen() },
-        Screen("Devices", "devices", Icons.Filled.Bed) { DevicesScreen() },
-        Screen("Routines", "routines", Icons.Filled.PlayArrow) { RoutinesScreen() },
-        Screen("Menu", "menu", Icons.Filled.Menu) { MenuScreen() },
+        Screen("Home", "home", Icons.Filled.Home, tabletContent = { TabletHomeScreen() }, content =  { HomeScreen() }),
+        Screen("Devices", "devices", Icons.Filled.Bed, tabletContent = { TabletDevicesScreen() }, content =  { DevicesScreen() }),
+        Screen("Routines", "routines", Icons.Filled.PlayArrow, tabletContent = { TabletRoutinesScreen()}, content =  { RoutinesScreen() }),
+        Screen("Menu", "menu", Icons.Filled.Menu, tabletContent = { TabletMenuScreen()}, content =  { MenuScreen() })
     )
+
+
     val navigationType: AppNavigationType
     val backStackEntry by navController.currentBackStackEntryAsState()
     when (windowSize) {
@@ -81,15 +87,14 @@ fun IntelicasaAppNavHost(
                             navController = navController,
                             backStackEntry = backStackEntry
                         )
-                    }, content = {
-                        Column() {
-                            AppNavHost(navController, screens)
-                        }
-                    })
+                    }
+                    ){
+                        AppNavHost(navController, screens,windowSize)
+                    }
                 }
             }
         }) { innerPadding ->
-            AppNavHost(navController, screens, modifier = Modifier.padding(innerPadding))
+            AppNavHost(navController, screens,windowSize, modifier = Modifier.padding(innerPadding))
         }
     }
 }
@@ -98,14 +103,32 @@ fun IntelicasaAppNavHost(
 private fun AppNavHost(
     navController: NavHostController,
     screens: List<Screen>,
-    modifier: Modifier = Modifier,
+    windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
+    modifier: Modifier = Modifier
+
 ) {
     NavHost(
         navController = navController, startDestination = screens.first().route, modifier = modifier
     ) {
         screens.forEach { screen ->
             composable(route = screen.route) {
-                screen.content()
+                when (windowSize) {
+                    WindowWidthSizeClass.Compact -> {
+                        screen.content()
+                    }
+
+                    WindowWidthSizeClass.Medium -> {
+                        screen.content()
+                    }
+
+                    WindowWidthSizeClass.Expanded -> {
+                        screen.tabletContent()
+                    }
+
+                    else -> {
+                        screen.content()
+                    }
+                }
             }
         }
     }

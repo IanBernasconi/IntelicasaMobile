@@ -16,6 +16,7 @@ data class Screen (
     val title: String,
     val route: String,
     val icon: ImageVector,
-    val content: @Composable () -> Unit
+    val content: @Composable () -> Unit,
+    val tabletContent: @Composable () -> Unit = content
     )
 
