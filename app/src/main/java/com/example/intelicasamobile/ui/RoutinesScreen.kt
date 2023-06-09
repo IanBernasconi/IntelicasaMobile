@@ -56,3 +56,32 @@ fun RoutinesScreen() {
         }
     }
 }
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun TabletRoutinesScreen() {
+    IntelicasaMobileTheme() {
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
+            val state = rememberLazyGridState()
+            Column {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(300.dp),
+                    state = state,
+                    contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
+                    verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+                ) {
+                    items(Datasource.routines) { routine ->
+                        RoutineCard(
+                            routine = routine,
+                            Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                        )
+                    }
+                }
+            }
+        }
+    }
+}

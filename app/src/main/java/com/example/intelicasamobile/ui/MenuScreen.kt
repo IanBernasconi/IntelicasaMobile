@@ -35,6 +35,25 @@ fun MenuScreen() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun TabletMenuScreen() {
+    Surface(
+        color = MaterialTheme.colorScheme.background
+    ) {
+        Column(
+            modifier= Modifier
+                .fillMaxSize()
+                .padding(dimensionResource(id = R.dimen.padding_medium))
+        ) {
+            Text(text = "Tablet Menu", style = MaterialTheme.typography.bodyLarge)
+            NotificationButton()
+        }
+
+    }
+}
+
 @Composable
 fun NotificationButton() {
     val context = LocalContext.current
@@ -45,3 +64,4 @@ fun NotificationButton() {
         Text(text = "Send Notification")
     }
 }
+

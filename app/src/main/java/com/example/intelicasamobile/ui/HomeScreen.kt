@@ -68,3 +68,48 @@ fun HomeScreen() {
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun TabletHomeScreen() {
+    Surface(
+        color = MaterialTheme.colorScheme.background
+    ) {
+        val state1 = rememberLazyGridState()
+        val state2 = rememberLazyGridState()
+        Column {
+            CategoryCard(title = R.string.routines)
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                state = state1,
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+                contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
+            ) {
+                items(routines) { routine ->
+                    RoutineHomeCard(
+                        routine = routine,
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                    )
+                }
+            }
+            CategoryCard(title = R.string.devices)
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                state = state2,
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+                contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
+            ) {
+                items(devices) { device ->
+                    DeviceCard(
+                        device = device,
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                    )
+                }
+            }
+
+        }
+    }
+}
