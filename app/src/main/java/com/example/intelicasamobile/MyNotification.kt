@@ -9,9 +9,9 @@ import androidx.core.app.NotificationCompat
 
 class MyNotification(
     var context: Context, var title: String, var message: String){
-    val channelID: String = "com.example.intelicasamobile"
-    val channelName: String = "Intelicasa"
-    val notificationManager=context.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private val channelID: String = "com.example.intelicasamobile"
+    private val channelName: String = "Intelicasa"
+    private val notificationManager=context.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     lateinit var notificationChannel: NotificationChannel
     lateinit var notificationBuilder: NotificationCompat.Builder
 

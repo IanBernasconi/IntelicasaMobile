@@ -83,7 +83,7 @@ fun OvenDeviceInfo(
         )
 
     val dropdownConvectionModeStateHolder =
-        rememberDropdownSelectorState(items = OvenHeatMode.values().map {
+        rememberDropdownSelectorState(items = OvenConvectionMode.values().map {
             DropdownSelectorItem(
                 label = stringResource(id = it.nameResId),
                 value = it,
@@ -100,7 +100,7 @@ fun OvenDeviceInfo(
 
     val dropdownGrillModeStateHolder =
         rememberDropdownSelectorState(
-            items = OvenHeatMode.values().map {
+            items = OvenGrillMode.values().map {
                 DropdownSelectorItem(
                     label = stringResource(id = it.nameResId),
                     value = it,

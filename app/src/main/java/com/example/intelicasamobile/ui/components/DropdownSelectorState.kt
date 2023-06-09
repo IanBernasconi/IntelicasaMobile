@@ -3,6 +3,7 @@ package com.example.intelicasamobile.ui.components
 import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
@@ -18,35 +19,36 @@ class DropdownSelectorItem(
 )
 
 class DropdownSelectorStateHolder(
-    val items: List<DropdownSelectorItem>,
+    private val items: List<DropdownSelectorItem>,
     val label: String,
-    private val initialItem: DropdownSelectorItem? = null,
+    initialItem: DropdownSelectorItem? = null,
     val onItemSelected: (DropdownSelectorItem) -> Unit,
 ) {
-    var enabled by mutableStateOf(true)
     var value by mutableStateOf(initialItem?.label ?: "")
     var expanded by mutableStateOf(false)
-    var selectedIndex by mutableStateOf(0)
+    var selectedItem by mutableStateOf(initialItem)
     var size by mutableStateOf(Size.Zero)
     val icon: ImageVector
-        @Composable get() = if (enabled) {
-            Icons.Filled.ArrowDropDown
+        @Composable get() = if (expanded) {
+            Icons.Filled.ArrowDropUp
         } else {
             Icons.Filled.ArrowDropDown
         }
 
-    fun onEnabled(newValue: Boolean) {
-        enabled = newValue
+    fun onExpanded(newValue: Boolean) {
+        expanded = newValue
     }
 
-    fun onSelectedIndex(newValue: Int) {
-        selectedIndex = newValue
-        value = items[newValue].label
+    fun onSelected(newValue: DropdownSelectorItem) {
+        selectedItem = newValue
+        value = newValue.label
     }
 
     fun onSize(newValue: Size) {
         size = newValue
     }
+
+    fun getItemsToDisplay() = items.filter { it.value != selectedItem?.value }
 }
 
 @Composable

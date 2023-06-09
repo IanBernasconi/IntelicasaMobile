@@ -72,10 +72,11 @@ fun ACDeviceInfo(
             value = it,
             icon = it.imageResourceId
         )
-    }, label = stringResource(id = R.string.mode), initialItem = DropdownSelectorItem(
-        label = stringResource(id = uiState.mode.nameResId),
-        value = uiState.mode,
-        icon = uiState.mode.imageResourceId
+    }, label = stringResource(id = R.string.mode),
+        initialItem = DropdownSelectorItem(
+            label = stringResource(id = uiState.mode.nameResId),
+            value = uiState.mode,
+            icon = uiState.mode.imageResourceId
     ), onItemSelected = { state.setMode(it.value as ACMode) })
 
     IntelicasaMobileTheme {
