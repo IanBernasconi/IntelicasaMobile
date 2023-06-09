@@ -24,6 +24,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.VacuumCleanMode
 import com.example.intelicasamobile.model.VacuumDevice
@@ -53,10 +55,7 @@ fun VacummDeviceInfoPreview() {
     val device = VacuumDevice()
     IntelicasaMobileTheme {
         VacuumDeviceInfo(
-            state = device.state,
-            setState = {},
-            setMode = {},
-            setLocation = {},
+            state = device,
             modifier = Modifier,
             disabled = false,
             loading = false,
@@ -67,32 +66,26 @@ fun VacummDeviceInfoPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VacuumDeviceInfo(
-    state: VacuumState,
-    setState: (VacuumStateEnum) -> Unit,
-    setMode: (VacuumCleanMode) -> Unit,
-    setLocation: (String) -> Unit,
-
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
+    state: VacuumDevice = viewModel()
 ) {
-    var localState by remember { mutableStateOf(state.state) }
-    var localMode by remember { mutableStateOf(state.mode) }
-    var localLocation by remember { mutableStateOf(state.location) }
+    val uiState by state.state.collectAsState()
 
     val dropdownModeStateHolder = rememberDropdownSelectorState(
         items = VacuumCleanMode.values().map {
             DropdownSelectorItem(
                 label = stringResource(id = it.nameResId),
-                value = it.value,
+                value = it,
                 icon = it.imageResourceId
             )
         }, label = stringResource(id = R.string.mode),
-        onItemSelected = { localMode = it.value as VacuumCleanMode; setMode(localMode) },
+        onItemSelected = { state.setMode(it.value as VacuumCleanMode) },
         initialItem = DropdownSelectorItem(
-            label = stringResource(id = localMode.nameResId),
-            value = localMode.value,
-            icon = localMode.imageResourceId
+            label = stringResource(id = uiState.mode.nameResId),
+            value = uiState.mode,
+            icon = uiState.mode.imageResourceId
         )
     )
 
@@ -100,14 +93,14 @@ fun VacuumDeviceInfo(
         items = VacuumCleanMode.values().map {
             DropdownSelectorItem(
                 label = stringResource(id = it.nameResId),
-                value = it.value,
+                value = it,
                 icon = it.imageResourceId
             )
         }, label = stringResource(id = R.string.room),
-        onItemSelected = { localLocation = it.value as String; setLocation(localLocation) },
+        onItemSelected = { state.setLocation(it.value as String) },
         initialItem = DropdownSelectorItem(
-            label = localLocation,
-            value = localLocation,
+            label = uiState.location,
+            value = uiState.location,
             icon = null
         )
     )
@@ -126,14 +119,14 @@ fun VacuumDeviceInfo(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = stringResource(id = localState.nameResId),
+                        text = stringResource(id = uiState.state.nameResId),
                         style = TextStyle(fontSize = 16.sp)
                     )
                 }
 
                 Row(modifier = Modifier) {
                     Icon(
-                        imageVector = when (state.batteryLevel) {
+                        imageVector = when (uiState.batteryLevel) {
                             in 0..5 -> Icons.Outlined.Battery0Bar
                             in 6..15 -> Icons.Outlined.Battery1Bar
                             in 15..30 -> Icons.Outlined.Battery2Bar
@@ -145,12 +138,12 @@ fun VacuumDeviceInfo(
                         }, contentDescription = null, modifier = Modifier.width(24.dp)
                     )
                     Text(
-                        text = "${state.batteryLevel}%", style = TextStyle(fontSize = 16.sp)
+                        text = "${uiState.batteryLevel}%", style = TextStyle(fontSize = 16.sp)
                     )
                 }
             }
 
-            if (localLocation != "") {
+            if (uiState.location != "") {
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
@@ -168,16 +161,15 @@ fun VacuumDeviceInfo(
                 ) {
                     Button(
                         onClick = {
-                            setState(VacuumStateEnum.CLEANING); localState =
-                            VacuumStateEnum.CLEANING
+                            state.setState(VacuumStateEnum.CLEANING)
                         },
                         elevation = ButtonDefaults.buttonElevation(
                             20.dp, 10.dp, 10.dp, 10.dp, 0.dp
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        enabled = !disabled && !loading && localState != VacuumStateEnum.CLEANING
+                        enabled = !disabled && !loading && uiState.state != VacuumStateEnum.CLEANING
                     ) {
-                        if (state.batteryLevel > 5) {
+                        if (uiState.batteryLevel > 5) {
                             Icon(
                                 imageVector = Icons.Outlined.BatteryAlert,
                                 contentDescription = null,
@@ -189,26 +181,25 @@ fun VacuumDeviceInfo(
                     }
                     Button(
                         onClick = {
-                            setState(VacuumStateEnum.PAUSED); localState = VacuumStateEnum.PAUSED
+                            state.setState(VacuumStateEnum.PAUSED)
                         },
                         elevation = ButtonDefaults.buttonElevation(
                             20.dp, 10.dp, 10.dp, 10.dp, 0.dp
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        enabled = !disabled && !loading && localState == VacuumStateEnum.CLEANING
+                        enabled = !disabled && !loading && uiState.state == VacuumStateEnum.CLEANING
                     ) {
                         Text(text = stringResource(id = R.string.VCA_pause))
                     }
                     Button(
                         onClick = {
-                            setState(VacuumStateEnum.CHARGING); localState =
-                            VacuumStateEnum.CHARGING
+                            state.setState(VacuumStateEnum.CHARGING)
                         },
                         elevation = ButtonDefaults.buttonElevation(
                             20.dp, 10.dp, 10.dp, 10.dp, 0.dp
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        enabled = !disabled && !loading && localState != VacuumStateEnum.CHARGING
+                        enabled = !disabled && !loading && uiState.state != VacuumStateEnum.CHARGING
                     ) {
                         Text(text = stringResource(id = R.string.VCA_charge))
                     }

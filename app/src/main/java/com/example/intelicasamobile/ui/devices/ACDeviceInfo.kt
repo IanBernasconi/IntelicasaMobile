@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.ACMode
@@ -40,13 +42,7 @@ fun ACDeviceInfoPreview() {
     val device = ACDevice()
     IntelicasaMobileTheme {
         ACDeviceInfo(
-            state = device.state,
-            setTemperature = {},
-            setMode = {},
-            setFanSpeed = {},
-            setVerticalSwing = {},
-            setHorizontalSwing = {},
-            setIsOn = {},
+            state = device,
             modifier = Modifier,
             disabled = false,
             loading = false,
@@ -57,35 +53,30 @@ fun ACDeviceInfoPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ACDeviceInfo(
-    state: ACState,
-    setTemperature: (Float) -> Unit,
-    setMode: (ACMode) -> Unit,
-    setFanSpeed: (Int) -> Unit,
-    setVerticalSwing: (Int) -> Unit,
-    setHorizontalSwing: (Int) -> Unit,
-    setIsOn: (Boolean) -> Unit,
-
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
+    state: ACDevice = viewModel(),
 ) {
-    var localTemperature by remember { mutableStateOf(state.temperature) }
-    var localMode by remember { mutableStateOf(state.mode) }
-    var localFanSpeed by remember { mutableStateOf(state.fanSpeed) }
-    var localVerticalSwing by remember { mutableStateOf(state.verticalSwing) }
-    var localHorizontalSwing by remember { mutableStateOf(state.horizontalSwing) }
+
+    val uiState by state.state.collectAsState()
+
+    var localTemperature by remember { mutableStateOf(uiState.temperature) }
+    var localFanSpeed by remember { mutableStateOf(uiState.fanSpeed) }
+    var localVerticalSwing by remember { mutableStateOf(uiState.verticalSwing) }
+    var localHorizontalSwing by remember { mutableStateOf(uiState.horizontalSwing) }
 
     val dropdownModeStateHolder = rememberDropdownSelectorState(items = ACMode.values().map {
         DropdownSelectorItem(
             label = stringResource(id = it.nameResId),
-            value = it.value,
+            value = it,
             icon = it.imageResourceId
         )
     }, label = stringResource(id = R.string.mode), initialItem = DropdownSelectorItem(
-        label = stringResource(id = localMode.nameResId),
-        value = localMode,
-        icon = localMode.imageResourceId
-    ), onItemSelected = { localMode = it.value as ACMode; setMode(it.value) })
+        label = stringResource(id = uiState.mode.nameResId),
+        value = uiState.mode,
+        icon = uiState.mode.imageResourceId
+    ), onItemSelected = { state.setMode(it.value as ACMode) })
 
     IntelicasaMobileTheme {
         Column(modifier = modifier) {
@@ -96,7 +87,7 @@ fun ACDeviceInfo(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                StateInfo(isOn = state.isOn, setIsOn = setIsOn)
+                StateInfo(isOn = uiState.isOn, setIsOn = { state.setIsOn(it) })
             }
 
             Row(
@@ -141,7 +132,7 @@ fun ACDeviceInfo(
                                 activeTrackColor = MaterialTheme.colorScheme.primary,
                                 inactiveTrackColor = MaterialTheme.colorScheme.secondary
                             ),
-                            onValueChangeFinished = { setTemperature(localTemperature) })
+                            onValueChangeFinished = { state.setTemperature(localTemperature) })
                     }
                 }
             }
@@ -191,7 +182,7 @@ fun ACDeviceInfo(
                             value = localVerticalSwing.toFloat(),
                             onValueChange = { localVerticalSwing = floor(it).toInt() },
                             enabled = !disabled && !loading,
-                            onValueChangeFinished = { setVerticalSwing(localVerticalSwing) },
+                            onValueChangeFinished = { state.setVerticalSwing(localVerticalSwing) },
                             modifier = Modifier.width(125.dp),
                             valueRange = 0f..90f,
                             steps = 3,
@@ -243,7 +234,7 @@ fun ACDeviceInfo(
                             value = localHorizontalSwing.toFloat(),
                             onValueChange = { localHorizontalSwing = floor(it).toInt() },
                             enabled = !disabled && !loading,
-                            onValueChangeFinished = { setHorizontalSwing(localHorizontalSwing) },
+                            onValueChangeFinished = { state.setHorizontalSwing(localHorizontalSwing) },
                             modifier = Modifier.width(125.dp),
                             valueRange = 0f..90f,
                             steps = 3,
@@ -291,7 +282,7 @@ fun ACDeviceInfo(
                             value = localFanSpeed.toFloat(),
                             onValueChange = { localFanSpeed = floor(it).toInt() },
                             enabled = !disabled && !loading,
-                            onValueChangeFinished = { setFanSpeed(localFanSpeed) },
+                            onValueChangeFinished = { state.setFanSpeed(localFanSpeed) },
                             modifier = Modifier.width(125.dp),
                             valueRange = 0f..5f,
                             steps = 5,

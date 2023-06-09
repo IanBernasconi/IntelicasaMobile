@@ -4,39 +4,42 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import com.example.intelicasamobile.R
 
-open class State()
+open class State() {}
 
-class LightState(
-    var brightness: Int = 0, var color: Color = Color.White, var isOn: Boolean = false
+data class LightState(
+    val brightness: Int = 0,
+    val color: Color = Color.White,
+    val isOn: Boolean = false
 ) : State()
 
 
-class ACState(
-    var isOn: Boolean = false,
-    var temperature: Float = 0f,
-    var mode: ACMode = ACMode.FAN,
-    var fanSpeed: Int = 0,
-    var verticalSwing: Int = 0,
-    var horizontalSwing: Int = -135
+data class ACState(
+    val isOn: Boolean = false,
+    val temperature: Float = 0f,
+    val mode: ACMode = ACMode.FAN,
+    val fanSpeed: Int = 0,
+    val verticalSwing: Int = 0,
+    val horizontalSwing: Int = -135
 ) : State()
 
-class OvenState(
-    var isOn: Boolean = false,
-    var temperature: Int = 90,
-    var heatMode: OvenHeatMode = OvenHeatMode.CONVENTIONAL,
-    var grillMode: OvenGrillMode = OvenGrillMode.CONVENTIONAL,
-    var convectionMode: OvenConvectionMode = OvenConvectionMode.CONVENTIONAL
+data class OvenState(
+    val isOn: Boolean = false,
+    val temperature: Int = 90,
+    val heatMode: OvenHeatMode = OvenHeatMode.CONVENTIONAL,
+    val grillMode: OvenGrillMode = OvenGrillMode.CONVENTIONAL,
+    val convectionMode: OvenConvectionMode = OvenConvectionMode.CONVENTIONAL
 ) : State()
 
-class DoorState(
-    var isLocked: Boolean = false, var isOpen: Boolean = false
+data class DoorState(
+    val isLocked: Boolean = false,
+    val isOpen: Boolean = false
 ) : State()
 
-class VacuumState(
-    var batteryLevel: Int = 0,
-    var state: VacuumStateEnum = VacuumStateEnum.CHARGING,
-    var mode: VacuumCleanMode = VacuumCleanMode.VACUUM,
-    var location: String = "" //TODO update with location
+data class VacuumState(
+    val batteryLevel: Int = 0,
+    val state: VacuumStateEnum = VacuumStateEnum.CHARGING,
+    val mode: VacuumCleanMode = VacuumCleanMode.VACUUM,
+    val location: String = "" //TODO update with location
 ) : State()
 
 enum class VacuumStateEnum(

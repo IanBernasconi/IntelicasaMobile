@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.OvenConvectionMode
 import com.example.intelicasamobile.model.OvenDevice
@@ -41,13 +43,7 @@ fun OvenDeviceInfoPreview() {
     val device = OvenDevice()
     IntelicasaMobileTheme {
         OvenDeviceInfo(
-            state = device.state,
-            setIsOn = { },
-            setTemperature = { },
-            setConvectionMode = { },
-            setGrillMode = { },
-            setHeatMode = { },
-
+            state = device,
             modifier = Modifier,
             disabled = false,
             loading = false,
@@ -58,57 +54,48 @@ fun OvenDeviceInfoPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OvenDeviceInfo(
-    state: OvenState,
-    setIsOn: (Boolean) -> Unit,
-    setTemperature: (Int) -> Unit,
-    setConvectionMode: (OvenConvectionMode) -> Unit,
-    setGrillMode: (OvenGrillMode) -> Unit,
-    setHeatMode: (OvenHeatMode) -> Unit,
-
-
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
+    state: OvenDevice = viewModel(),
 ) {
-    var localTemperature by remember { mutableStateOf(state.temperature) }
-    var localConvectionMode by remember { mutableStateOf(state.convectionMode) }
-    var localGrillMode by remember { mutableStateOf(state.grillMode) }
-    var localHeatMode by remember { mutableStateOf(state.heatMode) }
+
+    val uiState by state.state.collectAsState()
+
+    var localTemperature by remember { mutableStateOf(uiState.temperature) }
 
     val dropdownHeatModeStateHolder =
         rememberDropdownSelectorState(
             items = OvenHeatMode.values().map {
                 DropdownSelectorItem(
                     label = stringResource(id = it.nameResId),
-                    value = it.value,
+                    value = it,
                     icon = it.imageResourceId
                 )
             },
             label = stringResource(id = R.string.OI_heat_mode),
-            onItemSelected = { localHeatMode = it.value as OvenHeatMode; setHeatMode(it.value) },
+            onItemSelected = { state.setHeatMode(it.value as OvenHeatMode) },
             initialItem = DropdownSelectorItem(
-                label = stringResource(id = localHeatMode.nameResId),
-                value = localHeatMode,
-                icon = localHeatMode.imageResourceId
+                label = stringResource(id = uiState.heatMode.nameResId),
+                value = uiState.heatMode,
+                icon = uiState.heatMode.imageResourceId
             )
         )
 
     val dropdownConvectionModeStateHolder =
-        rememberDropdownSelectorState(
-            items = OvenHeatMode.values().map {
-                DropdownSelectorItem(
-                    label = stringResource(id = it.nameResId),
-                    value = it.value,
-                    icon = it.imageResourceId
-                )
-            }, label = stringResource(id = R.string.OI_convection_mode),
-            onItemSelected = {
-                localConvectionMode = it.value as OvenConvectionMode; setConvectionMode(it.value)
-            }, initialItem = DropdownSelectorItem(
-                label = stringResource(id = localConvectionMode.nameResId),
-                value = localConvectionMode,
-                icon = localConvectionMode.imageResourceId
+        rememberDropdownSelectorState(items = OvenHeatMode.values().map {
+            DropdownSelectorItem(
+                label = stringResource(id = it.nameResId),
+                value = it,
+                icon = it.imageResourceId
             )
+        }, label = stringResource(id = R.string.OI_convection_mode), onItemSelected = {
+            state.setConvectionMode(it.value as OvenConvectionMode)
+        }, initialItem = DropdownSelectorItem(
+            label = stringResource(id = uiState.convectionMode.nameResId),
+            value = uiState.convectionMode,
+            icon = uiState.convectionMode.imageResourceId
+        )
         )
 
     val dropdownGrillModeStateHolder =
@@ -116,16 +103,16 @@ fun OvenDeviceInfo(
             items = OvenHeatMode.values().map {
                 DropdownSelectorItem(
                     label = stringResource(id = it.nameResId),
-                    value = it.value,
+                    value = it,
                     icon = it.imageResourceId
                 )
             },
             label = stringResource(id = R.string.OI_grill_mode),
-            onItemSelected = { localGrillMode = it.value as OvenGrillMode; setGrillMode(it.value) },
+            onItemSelected = { state.setGrillMode(it.value as OvenGrillMode) },
             initialItem = DropdownSelectorItem(
-                label = stringResource(id = localGrillMode.nameResId),
-                value = localGrillMode,
-                icon = localGrillMode.imageResourceId
+                label = stringResource(id = uiState.grillMode.nameResId),
+                value = uiState.grillMode,
+                icon = uiState.grillMode.imageResourceId
             )
         )
 
@@ -140,7 +127,12 @@ fun OvenDeviceInfo(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                StateInfo(isOn = state.isOn, setIsOn = setIsOn, disabled = disabled, loading = loading)
+                StateInfo(
+                    isOn = uiState.isOn,
+                    setIsOn = { state.setIsOn(it) },
+                    disabled = disabled,
+                    loading = loading
+                )
             }
 
 
@@ -186,7 +178,7 @@ fun OvenDeviceInfo(
                                 activeTrackColor = MaterialTheme.colorScheme.primary,
                                 inactiveTrackColor = MaterialTheme.colorScheme.secondary
                             ),
-                            onValueChangeFinished = { setTemperature(localTemperature) })
+                            onValueChangeFinished = { state.setTemperature(localTemperature) })
                     }
                 }
             }

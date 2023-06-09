@@ -13,8 +13,8 @@ import com.example.intelicasamobile.model.Routine
 
 object Datasource {
     val devices = listOf(
-        LightDevice(state = LightState(brightness = 1, color = Color.Red)),
-        ACDevice(state = ACState(temperature = 20f)),
+        LightDevice(LightState(brightness = 1, color = Color.Red)),
+        ACDevice(ACState(temperature = 20f)),
         Device(deviceType = DeviceTypes.OVEN, R.string.oven),
         Device(deviceType = DeviceTypes.VACUUM_CLEANER, R.string.vacuum_cleaner),
         Device(deviceType = DeviceTypes.DOOR, R.string.door),
@@ -27,7 +27,6 @@ object Datasource {
         Device(deviceType = DeviceTypes.VACUUM_CLEANER, R.string.vacuum_cleaner),
         Device(deviceType = DeviceTypes.DOOR, R.string.door),
     )
-
 
     val routines = listOf(
         Routine(R.string.routine1, devices.subList(0, 3)),

@@ -12,6 +12,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.LightDevice
 import com.example.intelicasamobile.model.LightState
@@ -38,25 +40,22 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 fun LightDeviceInfoPreview() {
     val device = LightDevice()
     LightDeviceInfo(
-        state = device.state,
-        setBrightness = { },
-        setColor = { },
-        setIsOn = { }
+        state = device
     )
 }
 
 @Composable
 fun LightDeviceInfo(
-    state: LightState,
-    setBrightness: (Int) -> Unit,
-    setColor: (Color) -> Unit,
-    setIsOn: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
+    state: LightDevice = viewModel(),
 ) {
-    var localIntensity by remember { mutableStateOf(state.brightness) }
-    var localColor by remember { mutableStateOf(state.color) }
+
+    val uiState by state.state.collectAsState()
+
+    var localIntensity by remember { mutableStateOf(uiState.brightness) }
+    var localColor by remember { mutableStateOf(uiState.color) }
     val colorController = rememberColorPickerController()
     IntelicasaMobileTheme() {
         Column(modifier = modifier) {
@@ -69,8 +68,8 @@ fun LightDeviceInfo(
                 horizontalArrangement = Arrangement.Center
             ) {
                 StateInfo(
-                    isOn = state.isOn,
-                    setIsOn = setIsOn,
+                    isOn = uiState.isOn,
+                    setIsOn = { state.setIsOn(it) },
                     modifier = modifier,
                     disabled = disabled,
                     loading = loading
@@ -108,7 +107,7 @@ fun LightDeviceInfo(
                         Slider(
                             value = localIntensity.toFloat(),
                             onValueChange = { localIntensity = it.toInt() },
-                            onValueChangeFinished = { setBrightness(localIntensity) },
+                            onValueChangeFinished = { state.setBrightness(localIntensity) },
                             steps = 0,
                             enabled = !(disabled || loading),
                             modifier = Modifier.width(150.dp),
@@ -144,7 +143,7 @@ fun LightDeviceInfo(
                         controller = colorController,
                         onColorChanged = { colorEnvelope: ColorEnvelope ->
                             localColor = colorEnvelope.color
-                            setColor(colorEnvelope.color)
+                            state.setColor(colorEnvelope.color)
                         }
                     )
                 }

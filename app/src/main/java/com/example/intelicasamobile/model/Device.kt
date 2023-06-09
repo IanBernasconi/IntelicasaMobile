@@ -2,120 +2,163 @@ package com.example.intelicasamobile.model
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.ViewModel
 import com.example.intelicasamobile.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 open class Device(
     val deviceType: DeviceTypes,
     @StringRes val name: Int,
     val meta: Meta = Meta(),
-)
+) : ViewModel()
 
-data class ACDevice(val state: ACState = ACState()) : Device(
+data class ACDevice(
+
+    val initialState: ACState = ACState(),
+
+    ) : Device(
     DeviceTypes.AIR_CONDITIONER,
     R.string.air_conditioner,
     meta = Meta(category = DeviceTypes.AIR_CONDITIONER)
 ) {
+
+    private val _state: MutableStateFlow<ACState> = MutableStateFlow(ACState())
+    val state: StateFlow<ACState> = _state.asStateFlow()
+
     fun setIsOn(isOn: Boolean) {
-        state.isOn = isOn
+        _state.update { it.copy(isOn = isOn) }
     }
 
     fun setTemperature(temperature: Float) {
-        state.temperature = temperature
+        _state.update { it.copy(temperature = temperature) }
     }
 
     fun setMode(mode: ACMode) {
-        state.mode = mode
+        _state.update { it.copy(mode = mode) }
     }
 
     fun setFanSpeed(fanSpeed: Int) {
-        state.fanSpeed = fanSpeed
+        _state.update { it.copy(fanSpeed = fanSpeed) }
     }
 
     fun setVerticalSwing(verticalSwing: Int) {
-        state.verticalSwing = verticalSwing
+        _state.update { it.copy(verticalSwing = verticalSwing) }
     }
 
     fun setHorizontalSwing(horizontalSwing: Int) {
-        state.horizontalSwing = horizontalSwing
+        _state.update { it.copy(horizontalSwing = horizontalSwing) }
     }
 }
 
-data class LightDevice(val state: LightState = LightState()) : Device(
+data class LightDevice(
+
+    val initialState: LightState = LightState(),
+
+    ) : Device(
     deviceType = DeviceTypes.LAMP,
     name = R.string.lamp,
     meta = Meta(category = DeviceTypes.LAMP)
 ) {
+
+    private val _state: MutableStateFlow<LightState> = MutableStateFlow(initialState)
+    val state: StateFlow<LightState> = _state.asStateFlow()
+
+    fun setIsOn(isOn: Boolean) {
+        _state.update { it.copy(isOn = isOn) }
+    }
+
     fun setBrightness(brightness: Int) {
-        state.brightness = brightness
+        _state.update { it.copy(brightness = brightness) }
     }
 
     fun setColor(color: Color) {
-        state.color = color
-    }
-
-    fun setIsOn(isOn: Boolean) {
-        state.isOn = isOn
+        _state.update { it.copy(color = color) }
     }
 }
 
-data class OvenDevice(val state: OvenState = OvenState()) : Device(
+data class OvenDevice(
+
+    val initialState: OvenState = OvenState(),
+
+    ) : Device(
     deviceType = DeviceTypes.OVEN,
     name = R.string.oven,
     meta = Meta(category = DeviceTypes.OVEN)
 ) {
+
+    private val _state: MutableStateFlow<OvenState> = MutableStateFlow(initialState)
+    val state: StateFlow<OvenState> = _state.asStateFlow()
+
     fun setIsOn(isOn: Boolean) {
-        state.isOn = isOn
+        _state.update { it.copy(isOn = isOn) }
     }
 
     fun setTemperature(temperature: Int) {
-        state.temperature = temperature
+        _state.update { it.copy(temperature = temperature) }
     }
 
     fun setHeatMode(heatMode: OvenHeatMode) {
-        state.heatMode = heatMode
+        _state.update { it.copy(heatMode = heatMode) }
     }
 
     fun setGrillMode(grillMode: OvenGrillMode) {
-        state.grillMode = grillMode
+        _state.update { it.copy(grillMode = grillMode) }
     }
 
     fun setConvectionMode(convectionMode: OvenConvectionMode) {
-        state.convectionMode = convectionMode
+        _state.update { it.copy(convectionMode = convectionMode) }
     }
 }
 
-data class DoorDevice(val state: DoorState = DoorState()) : Device(
-    deviceType = DeviceTypes.DOOR,
-    name = R.string.door,
-    meta = Meta(category = DeviceTypes.DOOR)
+data class DoorDevice(
+
+    val initialState: DoorState = DoorState(),
+
+    ) : Device(
+    deviceType = DeviceTypes.DOOR, name = R.string.door, meta = Meta(category = DeviceTypes.DOOR)
 ) {
+
+    private val _state: MutableStateFlow<DoorState> = MutableStateFlow(initialState)
+    val state: StateFlow<DoorState> = _state.asStateFlow()
+
     fun setLocked(isLocked: Boolean) {
-        state.isLocked = isLocked
+        _state.update { it.copy(isLocked = isLocked) }
     }
 
     fun setOpen(isOpen: Boolean) {
-        state.isOpen = isOpen
+        _state.update { it.copy(isOpen = isOpen) }
     }
 }
 
-data class VacuumDevice(val state: VacuumState = VacuumState()) : Device(
+data class VacuumDevice(
+
+    val initialState: VacuumState = VacuumState(),
+
+    ) : Device(
     deviceType = DeviceTypes.VACUUM_CLEANER,
     name = R.string.vacuum_cleaner,
     meta = Meta(category = DeviceTypes.VACUUM_CLEANER)
 ) {
+
+    private val _state: MutableStateFlow<VacuumState> = MutableStateFlow(initialState)
+    val state: StateFlow<VacuumState> = _state.asStateFlow()
+
     fun setBatteryPerc(batteryLevel: Int) {
-        state.batteryLevel = batteryLevel
+        _state.update { it.copy(batteryLevel = batteryLevel) }
     }
 
     fun setState(newState: VacuumStateEnum) {
-        state.state = newState
+        _state.update { it.copy(state = newState) }
     }
 
     fun setMode(mode: VacuumCleanMode) {
-        state.mode = mode
+        _state.update { it.copy(mode = mode) }
     }
 
     fun setLocation(location: String) {
-        state.location = location
+        _state.update { it.copy(location = location) }
     }
 }

@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,7 +28,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.DoorDevice
 import com.example.intelicasamobile.model.DoorState
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
@@ -37,22 +40,19 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 fun DoorDeviceInfoPreview() {
     val device = DoorDevice()
     DoorDeviceInfo(
-        state = device.state,
-        setIsLocked = { },
-        setIsOpen = { })
+        state = device
+    )
 }
 
 @Composable
 fun DoorDeviceInfo(
-    state: DoorState,
-    setIsLocked: (Boolean) -> Unit,
-    setIsOpen: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
+    state: DoorDevice = viewModel(),
 ) {
-    var localIsLocked by remember { mutableStateOf(state.isLocked) }
-    var localIsOpen by remember { mutableStateOf(state.isOpen) }
+
+    val uiState by state.state.collectAsState()
 
     IntelicasaMobileTheme() {
         Column(modifier = modifier) {
@@ -65,46 +65,58 @@ fun DoorDeviceInfo(
             ) {
                 Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
                     Button(
-                        onClick = { setIsOpen(!localIsOpen); localIsOpen = !localIsOpen },
+                        onClick = { state.setOpen(!uiState.isOpen) },
                         elevation = ButtonDefaults.buttonElevation(
                             20.dp, 10.dp, 10.dp, 10.dp, 0.dp
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        enabled = !disabled && !loading && !localIsLocked
+                        enabled = !disabled && !loading && !uiState.isLocked
                     ) {
                         Column(
                             modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Icon(
-                                imageVector = if (localIsOpen) Icons.Outlined.DoorFront else Icons.Outlined.DoorFront, //TODO DoorOpen
-                                contentDescription = if (localIsOpen) stringResource(id = R.string.DS_open) else stringResource(id = R.string.DS_closed),
+                                imageVector = if (uiState.isOpen) Icons.Outlined.DoorFront else Icons.Outlined.DoorFront, //TODO DoorOpen
+                                contentDescription = if (uiState.isOpen) stringResource(id = R.string.DS_open) else stringResource(
+                                    id = R.string.DS_closed
+                                ),
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(35.dp)
                             )
-                            Text(text = if (localIsOpen) stringResource(id = R.string.DA_open) else stringResource(id = R.string.DA_close))
+                            Text(
+                                text = if (uiState.isOpen) stringResource(id = R.string.DA_open) else stringResource(
+                                    id = R.string.DA_close
+                                )
+                            )
                         }
                     }
                 }
 
                 Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
                     Button(
-                        onClick = { setIsLocked(!localIsLocked); localIsLocked = !localIsLocked },
+                        onClick = { state.setLocked(!uiState.isLocked) },
                         elevation = ButtonDefaults.buttonElevation(
                             20.dp, 10.dp, 10.dp, 10.dp, 0.dp
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        enabled = !disabled && !loading && !localIsOpen
+                        enabled = !disabled && !loading && !uiState.isOpen
                     ) {
                         Column(
                             modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Icon(
-                                imageVector = if (localIsLocked) Icons.Outlined.LockOpen else Icons.Outlined.Lock,
-                                contentDescription = if (localIsLocked) stringResource(id = R.string.DS_locked) else stringResource(id = R.string.DS_unlocked),
+                                imageVector = if (uiState.isLocked) Icons.Outlined.LockOpen else Icons.Outlined.Lock,
+                                contentDescription = if (uiState.isLocked) stringResource(id = R.string.DS_locked) else stringResource(
+                                    id = R.string.DS_unlocked
+                                ),
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(35.dp)
                             )
-                            Text(text = if (localIsLocked) stringResource(id = R.string.DA_unlock) else stringResource(id = R.string.DA_lock))
+                            Text(
+                                text = if (uiState.isLocked) stringResource(id = R.string.DA_unlock) else stringResource(
+                                    id = R.string.DA_lock
+                                )
+                            )
                         }
                     }
                 }

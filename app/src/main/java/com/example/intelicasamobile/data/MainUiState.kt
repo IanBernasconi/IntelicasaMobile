@@ -5,6 +5,8 @@ import com.example.intelicasamobile.model.Routine
 
 
 class MainUiState {
+
     val devices: List<Device> = Datasource.devices
     val routines: List<Routine> = Datasource.routines
+
 }

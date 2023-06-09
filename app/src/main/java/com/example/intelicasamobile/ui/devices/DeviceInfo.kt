@@ -35,42 +35,23 @@ fun DeviceInfo(
                     DeviceInfoHeader(device = device, onDelete = {})
                     when (device) {
                         is LightDevice -> LightDeviceInfo(
-                            state = device.state,
-                            setBrightness = { device.setBrightness(it) },
-                            setColor = { device.setColor(it) },
-                            setIsOn = { device.setIsOn(it) }
+                            state = device
                         )
 
                         is ACDevice -> ACDeviceInfo(
-                            state = device.state,
-                            setTemperature = { device.setTemperature(it) },
-                            setIsOn = { device.setIsOn(it) },
-                            setMode = { device.setMode(it)},
-                            setFanSpeed = { device.setFanSpeed(it) },
-                            setVerticalSwing = { device.setVerticalSwing(it) },
-                            setHorizontalSwing = { device.setHorizontalSwing(it) }
+                            state = device
                         )
 
                         is VacuumDevice -> VacuumDeviceInfo(
-                            state = device.state,
-                            setState = { device.setState(it) },
-                            setMode = { device.setMode(it) },
-                            setLocation = { device.setLocation(it) },
+                            state = device
                         )
 
                         is OvenDevice -> OvenDeviceInfo(
-                            state = device.state,
-                            setTemperature = { device.setTemperature(it) },
-                            setIsOn = { device.setIsOn(it) },
-                            setHeatMode = { device.setHeatMode(it) },
-                            setGrillMode = { device.setGrillMode(it) },
-                            setConvectionMode = { device.setConvectionMode(it) }
+                            state = device
                         )
 
                         is DoorDevice -> DoorDeviceInfo(
-                            state  = device.state,
-                            setIsLocked = { device.setLocked(it) },
-                            setIsOpen = { device.setOpen(it) }
+                            state  = device
                         )
                     }
                 }
