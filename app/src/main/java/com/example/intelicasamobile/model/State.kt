@@ -33,7 +33,7 @@ class DoorState(
 ) : State()
 
 class VacuumState(
-    var batteryPerc: Int = 0,
+    var batteryLevel: Int = 0,
     var state: VacuumStateEnum = VacuumStateEnum.CHARGING,
     var mode: VacuumCleanMode = VacuumCleanMode.VACUUM,
     var location: String = "" //TODO update with location

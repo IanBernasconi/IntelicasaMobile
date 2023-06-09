@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.VacuumCleanMode
 import com.example.intelicasamobile.model.VacuumDevice
+import com.example.intelicasamobile.model.VacuumState
 import com.example.intelicasamobile.model.VacuumStateEnum
 import com.example.intelicasamobile.ui.components.DropdownSelector
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
@@ -52,12 +53,9 @@ fun VacummDeviceInfoPreview() {
     val device = VacuumDevice()
     IntelicasaMobileTheme {
         VacuumDeviceInfo(
-            batteryPercentage = device.state.batteryPerc,
-            state = device.state.state,
+            state = device.state,
             setState = {},
-            mode = device.state.mode,
             setMode = {},
-            location = device.state.location,
             setLocation = {},
             modifier = Modifier,
             disabled = false,
@@ -69,21 +67,18 @@ fun VacummDeviceInfoPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VacuumDeviceInfo(
-    batteryPercentage: Int,
-    state: VacuumStateEnum,
+    state: VacuumState,
     setState: (VacuumStateEnum) -> Unit,
-    mode: VacuumCleanMode,
     setMode: (VacuumCleanMode) -> Unit,
-    location: String,
     setLocation: (String) -> Unit,
 
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
 ) {
-    var localState by remember { mutableStateOf(state) }
-    var localMode by remember { mutableStateOf(mode) }
-    var localLocation by remember { mutableStateOf(location) }
+    var localState by remember { mutableStateOf(state.state) }
+    var localMode by remember { mutableStateOf(state.mode) }
+    var localLocation by remember { mutableStateOf(state.location) }
 
     val dropdownModeStateHolder = rememberDropdownSelectorState(
         items = VacuumCleanMode.values().map {
@@ -138,7 +133,7 @@ fun VacuumDeviceInfo(
 
                 Row(modifier = Modifier) {
                     Icon(
-                        imageVector = when (batteryPercentage) {
+                        imageVector = when (state.batteryLevel) {
                             in 0..5 -> Icons.Outlined.Battery0Bar
                             in 6..15 -> Icons.Outlined.Battery1Bar
                             in 15..30 -> Icons.Outlined.Battery2Bar
@@ -150,7 +145,7 @@ fun VacuumDeviceInfo(
                         }, contentDescription = null, modifier = Modifier.width(24.dp)
                     )
                     Text(
-                        text = "${batteryPercentage}%", style = TextStyle(fontSize = 16.sp)
+                        text = "${state.batteryLevel}%", style = TextStyle(fontSize = 16.sp)
                     )
                 }
             }
@@ -182,7 +177,7 @@ fun VacuumDeviceInfo(
                         shape = RoundedCornerShape(5.dp),
                         enabled = !disabled && !loading && localState != VacuumStateEnum.CLEANING
                     ) {
-                        if (batteryPercentage > 5) {
+                        if (state.batteryLevel > 5) {
                             Icon(
                                 imageVector = Icons.Outlined.BatteryAlert,
                                 contentDescription = null,

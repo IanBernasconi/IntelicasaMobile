@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.ACMode
+import com.example.intelicasamobile.model.ACState
 import com.example.intelicasamobile.ui.components.DropdownSelector
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
@@ -36,15 +37,10 @@ import kotlin.math.floor
 @Preview(showBackground = true)
 @Composable
 fun ACDeviceInfoPreview() {
+    val device = ACDevice()
     IntelicasaMobileTheme {
         ACDeviceInfo(
-            //device = ACDevice(),
-            temperature = ACDevice().state.temperature,
-            mode = ACDevice().state.mode,
-            fanSpeed = ACDevice().state.fanSpeed,
-            verticalSwing = ACDevice().state.verticalSwing,
-            horizontalSwing = ACDevice().state.horizontalSwing,
-            isOn = ACDevice().state.isOn,
+            state = device.state,
             setTemperature = {},
             setMode = {},
             setFanSpeed = {},
@@ -61,12 +57,7 @@ fun ACDeviceInfoPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ACDeviceInfo(
-    isOn: Boolean,
-    temperature: Float,
-    mode: ACMode,
-    fanSpeed: Int,
-    verticalSwing: Int,
-    horizontalSwing: Int,
+    state: ACState,
     setTemperature: (Float) -> Unit,
     setMode: (ACMode) -> Unit,
     setFanSpeed: (Int) -> Unit,
@@ -78,11 +69,11 @@ fun ACDeviceInfo(
     disabled: Boolean = false,
     loading: Boolean = false,
 ) {
-    var localTemperature by remember { mutableStateOf(temperature) }
-    var localMode by remember { mutableStateOf(mode) }
-    var localFanSpeed by remember { mutableStateOf(fanSpeed) }
-    var localVerticalSwing by remember { mutableStateOf(verticalSwing) }
-    var localHorizontalSwing by remember { mutableStateOf(horizontalSwing) }
+    var localTemperature by remember { mutableStateOf(state.temperature) }
+    var localMode by remember { mutableStateOf(state.mode) }
+    var localFanSpeed by remember { mutableStateOf(state.fanSpeed) }
+    var localVerticalSwing by remember { mutableStateOf(state.verticalSwing) }
+    var localHorizontalSwing by remember { mutableStateOf(state.horizontalSwing) }
 
     val dropdownModeStateHolder = rememberDropdownSelectorState(items = ACMode.values().map {
         DropdownSelectorItem(
@@ -105,7 +96,7 @@ fun ACDeviceInfo(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                StateInfo(isOn = isOn, setIsOn = setIsOn)
+                StateInfo(isOn = state.isOn, setIsOn = setIsOn)
             }
 
             Row(

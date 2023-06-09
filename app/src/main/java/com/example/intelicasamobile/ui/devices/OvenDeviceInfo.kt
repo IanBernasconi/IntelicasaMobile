@@ -29,6 +29,7 @@ import com.example.intelicasamobile.model.OvenConvectionMode
 import com.example.intelicasamobile.model.OvenDevice
 import com.example.intelicasamobile.model.OvenGrillMode
 import com.example.intelicasamobile.model.OvenHeatMode
+import com.example.intelicasamobile.model.OvenState
 import com.example.intelicasamobile.ui.components.DropdownSelector
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
@@ -40,11 +41,7 @@ fun OvenDeviceInfoPreview() {
     val device = OvenDevice()
     IntelicasaMobileTheme {
         OvenDeviceInfo(
-            isOn = device.state.isOn,
-            temperature = device.state.temperature,
-            convectionMode = device.state.convectionMode,
-            grillMode = device.state.grillMode,
-            heatMode = device.state.heatMode,
+            state = device.state,
             setIsOn = { },
             setTemperature = { },
             setConvectionMode = { },
@@ -54,19 +51,14 @@ fun OvenDeviceInfoPreview() {
             modifier = Modifier,
             disabled = false,
             loading = false,
-
-            )
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OvenDeviceInfo(
-    isOn: Boolean,
-    temperature: Int,
-    convectionMode: OvenConvectionMode,
-    grillMode: OvenGrillMode,
-    heatMode: OvenHeatMode,
+    state: OvenState,
     setIsOn: (Boolean) -> Unit,
     setTemperature: (Int) -> Unit,
     setConvectionMode: (OvenConvectionMode) -> Unit,
@@ -78,10 +70,10 @@ fun OvenDeviceInfo(
     disabled: Boolean = false,
     loading: Boolean = false,
 ) {
-    var localTemperature by remember { mutableStateOf(temperature) }
-    var localConvectionMode by remember { mutableStateOf(convectionMode) }
-    var localGrillMode by remember { mutableStateOf(grillMode) }
-    var localHeatMode by remember { mutableStateOf(heatMode) }
+    var localTemperature by remember { mutableStateOf(state.temperature) }
+    var localConvectionMode by remember { mutableStateOf(state.convectionMode) }
+    var localGrillMode by remember { mutableStateOf(state.grillMode) }
+    var localHeatMode by remember { mutableStateOf(state.heatMode) }
 
     val dropdownHeatModeStateHolder =
         rememberDropdownSelectorState(
@@ -148,7 +140,7 @@ fun OvenDeviceInfo(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                StateInfo(isOn = isOn, setIsOn = setIsOn, disabled = disabled, loading = loading)
+                StateInfo(isOn = state.isOn, setIsOn = setIsOn, disabled = disabled, loading = loading)
             }
 
 

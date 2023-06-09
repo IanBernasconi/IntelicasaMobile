@@ -103,8 +103,8 @@ data class VacuumDevice(val state: VacuumState = VacuumState()) : Device(
     name = R.string.vacuum_cleaner,
     meta = Meta(category = DeviceTypes.VACUUM_CLEANER)
 ) {
-    fun setBatteryPerc(batteryPerc: Int) {
-        state.batteryPerc = batteryPerc
+    fun setBatteryPerc(batteryLevel: Int) {
+        state.batteryLevel = batteryLevel
     }
 
     fun setState(newState: VacuumStateEnum) {

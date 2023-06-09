@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.LightDevice
+import com.example.intelicasamobile.model.LightState
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
@@ -37,9 +38,7 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 fun LightDeviceInfoPreview() {
     val device = LightDevice()
     LightDeviceInfo(
-        brightness = device.state.brightness,
-        color = device.state.color,
-        isOn = device.state.isOn,
+        state = device.state,
         setBrightness = { },
         setColor = { },
         setIsOn = { }
@@ -48,9 +47,7 @@ fun LightDeviceInfoPreview() {
 
 @Composable
 fun LightDeviceInfo(
-    brightness: Int,
-    color: Color,
-    isOn: Boolean,
+    state: LightState,
     setBrightness: (Int) -> Unit,
     setColor: (Color) -> Unit,
     setIsOn: (Boolean) -> Unit,
@@ -58,8 +55,8 @@ fun LightDeviceInfo(
     disabled: Boolean = false,
     loading: Boolean = false,
 ) {
-    var localIntensity by remember { mutableStateOf(brightness) }
-    var localColor by remember { mutableStateOf(color) }
+    var localIntensity by remember { mutableStateOf(state.brightness) }
+    var localColor by remember { mutableStateOf(state.color) }
     val colorController = rememberColorPickerController()
     IntelicasaMobileTheme() {
         Column(modifier = modifier) {
@@ -72,7 +69,7 @@ fun LightDeviceInfo(
                 horizontalArrangement = Arrangement.Center
             ) {
                 StateInfo(
-                    isOn = isOn,
+                    isOn = state.isOn,
                     setIsOn = setIsOn,
                     modifier = modifier,
                     disabled = disabled,

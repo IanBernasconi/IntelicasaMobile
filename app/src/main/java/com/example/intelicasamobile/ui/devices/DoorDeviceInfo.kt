@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.DoorDevice
+import com.example.intelicasamobile.model.DoorState
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Preview(showBackground = true)
@@ -36,24 +37,22 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 fun DoorDeviceInfoPreview() {
     val device = DoorDevice()
     DoorDeviceInfo(
-        isLocked = device.state.isLocked,
+        state = device.state,
         setIsLocked = { },
-        isOpen = device.state.isOpen,
         setIsOpen = { })
 }
 
 @Composable
 fun DoorDeviceInfo(
-    isLocked: Boolean,
+    state: DoorState,
     setIsLocked: (Boolean) -> Unit,
-    isOpen: Boolean,
     setIsOpen: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
 ) {
-    var localIsLocked by remember { mutableStateOf(isLocked) }
-    var localIsOpen by remember { mutableStateOf(isOpen) }
+    var localIsLocked by remember { mutableStateOf(state.isLocked) }
+    var localIsOpen by remember { mutableStateOf(state.isOpen) }
 
     IntelicasaMobileTheme() {
         Column(modifier = modifier) {

@@ -2,6 +2,7 @@ package com.example.intelicasamobile.ui.devices
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,16 +27,17 @@ fun DeviceCard(
     device: Device,
     modifier: Modifier = Modifier
 ) {
-    Card(modifier = modifier) {
+    Card(modifier = modifier.clickable { /*TODO show modal*/ } ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.primary)
         ) {
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
-                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    .padding(dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
             ) {
                 Image(
                     painter = painterResource(id = device.deviceType.imageResourceId),
@@ -46,11 +48,10 @@ fun DeviceCard(
                 Text(
                     text = stringResource(id = device.name),
                     color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.padding(
+                    modifier = modifier.fillMaxWidth().padding(
                         start = dimensionResource(
                             id = R.dimen.padding_small
                         )
-
                     )
                 )
             }
