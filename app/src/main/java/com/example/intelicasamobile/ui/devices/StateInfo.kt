@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -63,14 +64,15 @@ fun StateInfo(
                 Button(
                     onClick = { setIsOn(!isOn) },
                     enabled = !disabled && !loading,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-                ) {
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                    shape = CircleShape
+                    ) {
                     Image(
                         painterResource(id = if (isOn) R.drawable.poweron else R.drawable.poweroff),
                         contentDescription = if (isOn) stringResource(id = R.string.turn_off) else stringResource(
                             id = R.string.turn_on
                         ),
-                        modifier = Modifier.size(35.dp)
+                        modifier = modifier.size(35.dp)
                     )
                 }
             }

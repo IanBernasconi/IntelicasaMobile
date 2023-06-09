@@ -17,21 +17,17 @@ import androidx.compose.material.icons.outlined.Battery4Bar
 import androidx.compose.material.icons.outlined.Battery5Bar
 import androidx.compose.material.icons.outlined.Battery6Bar
 import androidx.compose.material.icons.outlined.BatteryAlert
+import androidx.compose.material.icons.outlined.BatteryChargingFull
 import androidx.compose.material.icons.outlined.BatteryFull
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -42,7 +38,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.VacuumCleanMode
 import com.example.intelicasamobile.model.VacuumDevice
-import com.example.intelicasamobile.model.VacuumState
 import com.example.intelicasamobile.model.VacuumStateEnum
 import com.example.intelicasamobile.ui.components.DropdownSelector
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
@@ -126,16 +121,21 @@ fun VacuumDeviceInfo(
 
                 Row(modifier = Modifier) {
                     Icon(
-                        imageVector = when (uiState.batteryLevel) {
-                            in 0..5 -> Icons.Outlined.Battery0Bar
-                            in 6..15 -> Icons.Outlined.Battery1Bar
-                            in 15..30 -> Icons.Outlined.Battery2Bar
-                            in 31..45 -> Icons.Outlined.Battery3Bar
-                            in 45..60 -> Icons.Outlined.Battery4Bar
-                            in 61..75 -> Icons.Outlined.Battery5Bar
-                            in 75..90 -> Icons.Outlined.Battery6Bar
-                            else -> Icons.Outlined.BatteryFull
-                        }, contentDescription = null, modifier = Modifier.width(24.dp)
+                        imageVector =
+                        if (uiState.state != VacuumStateEnum.CHARGING)
+                            when (uiState.batteryLevel) {
+                                in 0..5 -> Icons.Outlined.Battery0Bar
+                                in 6..15 -> Icons.Outlined.Battery1Bar
+                                in 15..30 -> Icons.Outlined.Battery2Bar
+                                in 31..45 -> Icons.Outlined.Battery3Bar
+                                in 45..60 -> Icons.Outlined.Battery4Bar
+                                in 61..75 -> Icons.Outlined.Battery5Bar
+                                in 75..90 -> Icons.Outlined.Battery6Bar
+                                else -> Icons.Outlined.BatteryFull
+                            }
+                        else Icons.Outlined.BatteryChargingFull,
+                        contentDescription = null,
+                        modifier = Modifier.width(24.dp)
                     )
                     Text(
                         text = "${uiState.batteryLevel}%", style = TextStyle(fontSize = 16.sp)
@@ -167,9 +167,9 @@ fun VacuumDeviceInfo(
                             20.dp, 10.dp, 10.dp, 10.dp, 0.dp
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        enabled = !disabled && !loading && uiState.state != VacuumStateEnum.CLEANING
+                        enabled = !disabled && !loading && uiState.state != VacuumStateEnum.CLEANING && uiState.batteryLevel > 5
                     ) {
-                        if (uiState.batteryLevel > 5) {
+                        if (uiState.batteryLevel < 5) {
                             Icon(
                                 imageVector = Icons.Outlined.BatteryAlert,
                                 contentDescription = null,

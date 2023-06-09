@@ -98,7 +98,7 @@ fun ACDeviceInfo(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Column(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth(0.5f)
                         .padding(start = dimensionResource(id = R.dimen.padding_large)),
                     horizontalAlignment = Alignment.Start
@@ -110,23 +110,23 @@ fun ACDeviceInfo(
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
+                    modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
                 ) {
                     Row(
-                        modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
+                        modifier = modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
                             text = "${floor(localTemperature.toDouble())}°C",
-                            modifier = Modifier.padding(end = 4.dp)
+                            modifier = modifier.padding(end = 4.dp)
                         )
                         Slider(value = localTemperature,
                             onValueChange = { localTemperature = it },
                             valueRange = 18f..38f,
-                            steps = 1,
+                            steps = 0,
                             enabled = !(disabled || loading),
-                            modifier = Modifier.width(125.dp),
+                            modifier = modifier.width(125.dp),
                             colors = SliderDefaults.colors(
                                 thumbColor = MaterialTheme.colorScheme.primary,
                                 activeTrackColor = MaterialTheme.colorScheme.primary,
@@ -154,7 +154,7 @@ fun ACDeviceInfo(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Column(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth(0.5f)
                         .padding(start = dimensionResource(id = R.dimen.padding_large)),
                     horizontalAlignment = Alignment.Start
@@ -166,24 +166,24 @@ fun ACDeviceInfo(
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
+                    modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
                 ) {
                     Row(
-                        modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
+                        modifier = modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
                             text = if (localVerticalSwing != 0) "${localVerticalSwing}°" else stringResource(
                                 id = R.string.auto_mode
-                            ), modifier = Modifier.padding(end = 4.dp)
+                            ), modifier = modifier.padding(end = 4.dp)
                         )
                         Slider(
                             value = localVerticalSwing.toFloat(),
                             onValueChange = { localVerticalSwing = floor(it).toInt() },
                             enabled = !disabled && !loading,
                             onValueChangeFinished = { state.setVerticalSwing(localVerticalSwing) },
-                            modifier = Modifier.width(125.dp),
+                            modifier = modifier.width(125.dp),
                             valueRange = 0f..90f,
                             steps = 3,
                             colors = SliderDefaults.colors(
@@ -204,7 +204,7 @@ fun ACDeviceInfo(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Column(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth(0.5f)
                         .padding(start = dimensionResource(id = R.dimen.padding_large)),
                     horizontalAlignment = Alignment.Start
@@ -216,7 +216,7 @@ fun ACDeviceInfo(
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
+                    modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
                 ) {
                     Row(
                         modifier = Modifier
@@ -228,16 +228,16 @@ fun ACDeviceInfo(
                         Text(
                             text = if (localHorizontalSwing != -135) "${localHorizontalSwing}°" else stringResource(
                                 id = R.string.auto_mode
-                            ), modifier = Modifier.padding(end = 4.dp)
+                            ), modifier = modifier.padding(end = 4.dp)
                         )
                         Slider(
                             value = localHorizontalSwing.toFloat(),
                             onValueChange = { localHorizontalSwing = floor(it).toInt() },
                             enabled = !disabled && !loading,
                             onValueChangeFinished = { state.setHorizontalSwing(localHorizontalSwing) },
-                            modifier = Modifier.width(125.dp),
-                            valueRange = 0f..90f,
-                            steps = 3,
+                            modifier = modifier.width(125.dp),
+                            valueRange = -135f..90f,
+                            steps = 4,
                             colors = SliderDefaults.colors(
                                 thumbColor = MaterialTheme.colorScheme.primary,
                                 activeTrackColor = MaterialTheme.colorScheme.primary,
@@ -276,16 +276,17 @@ fun ACDeviceInfo(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = "${localFanSpeed}°", modifier = Modifier.padding(end = 4.dp)
+                            text = if (localFanSpeed != 0) "${localFanSpeed}%" else stringResource(
+                                id = R.string.auto_mode), modifier = modifier.padding(end = 4.dp)
                         )
                         Slider(
                             value = localFanSpeed.toFloat(),
                             onValueChange = { localFanSpeed = floor(it).toInt() },
                             enabled = !disabled && !loading,
                             onValueChangeFinished = { state.setFanSpeed(localFanSpeed) },
-                            modifier = Modifier.width(125.dp),
-                            valueRange = 0f..5f,
-                            steps = 5,
+                            modifier = modifier.width(125.dp),
+                            valueRange = 0f..100f,
+                            steps = 3,
                             colors = SliderDefaults.colors(
                                 thumbColor = MaterialTheme.colorScheme.primary,
                                 activeTrackColor = MaterialTheme.colorScheme.primary,

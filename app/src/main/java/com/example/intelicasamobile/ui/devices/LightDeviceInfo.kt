@@ -32,6 +32,7 @@ import com.example.intelicasamobile.model.LightDevice
 import com.example.intelicasamobile.model.LightState
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
+import com.github.skydoves.colorpicker.compose.ColorPickerController
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
@@ -57,6 +58,7 @@ fun LightDeviceInfo(
     var localIntensity by remember { mutableStateOf(uiState.brightness) }
     var localColor by remember { mutableStateOf(uiState.color) }
     val colorController = rememberColorPickerController()
+
     IntelicasaMobileTheme() {
         Column(modifier = modifier) {
 
@@ -75,7 +77,6 @@ fun LightDeviceInfo(
                     loading = loading
                 )
             }
-
 
             Row(
                 modifier = modifier
@@ -108,6 +109,7 @@ fun LightDeviceInfo(
                             value = localIntensity.toFloat(),
                             onValueChange = { localIntensity = it.toInt() },
                             onValueChangeFinished = { state.setBrightness(localIntensity) },
+                            valueRange = 0f..100f,
                             steps = 0,
                             enabled = !(disabled || loading),
                             modifier = Modifier.width(150.dp),
