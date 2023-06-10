@@ -1,14 +1,16 @@
 <resources>
     <string name="app_name">Intelicasa</string>
     <string name="lamp">Lamp</string>
+
     <string name="routine1">Salir</string>
+
     <string name="air_conditioner">Air conditioner</string>
-    <string name="oven">Oven\n</string>
-    <string name="vacuum_cleaner">Vacuum cleaner\n</string>
+    <string name="oven">Oven</string>
+    <string name="vacuum_cleaner">Vacuum cleaner</string>
     <string name="door">Door</string>
     <string name="mode">Mode</string>
-    <string name="routines">Rutinas</string>
-    <string name="devices">Dispositivos</string>
+    <string name="routines">Routines</string>
+    <string name="devices">Devices</string>
     <string name="delete">Delete</string>
 
     <string name="auto_mode">Auto</string>

@@ -5,12 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -19,7 +17,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,7 +24,6 @@ import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.Datasource
 import com.example.intelicasamobile.model.Room
 import com.example.intelicasamobile.model.RoomScreenState
-import com.example.intelicasamobile.ui.components.TextFieldDropdownSelector
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
 import com.example.intelicasamobile.ui.components.ShapeDropdownSelector
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
@@ -70,7 +66,9 @@ fun RoomsScreen(
                 ) {
                     ShapeDropdownSelector(
                         stateHolder = dropdownRoomStateHolder,
-                        shape = RoundedCornerShape( bottomEnd = 20.dp))
+                        shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 0.dp),
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
 
                 LazyVerticalGrid(
@@ -81,7 +79,7 @@ fun RoomsScreen(
                     horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
                 ) {
                     items(Datasource.rooms) { room ->
-                        room.devices.forEach {device ->
+                        room.devices.forEach { device ->
                             DeviceCard(device = device)
                         }
                     }

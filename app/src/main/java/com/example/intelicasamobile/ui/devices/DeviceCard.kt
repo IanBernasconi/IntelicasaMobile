@@ -44,7 +44,7 @@ fun DeviceCard(
 
     Card(modifier = modifier.clickable { showDialog = true } ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.primary)
         ) {

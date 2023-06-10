@@ -70,7 +70,7 @@ fun HomeScreen() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 1000, heightDp = 600)
 @Composable
 fun TabletHomeScreen() {
     Surface(
