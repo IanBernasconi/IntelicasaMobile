@@ -29,8 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.ACMode
-import com.example.intelicasamobile.model.ACState
-import com.example.intelicasamobile.ui.components.DropdownSelector
+import com.example.intelicasamobile.ui.components.TextFieldDropdownSelector
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
@@ -144,7 +143,7 @@ fun ACDeviceInfo(
                     .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
                 horizontalArrangement = Arrangement.Center
             ) {
-                DropdownSelector(stateHolder = dropdownModeStateHolder)
+                TextFieldDropdownSelector(stateHolder = dropdownModeStateHolder)
             }
 
             Row(

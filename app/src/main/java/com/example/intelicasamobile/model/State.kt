@@ -47,3 +47,7 @@ enum class VacuumStateEnum(
 ) {
     CLEANING(R.string.VS_cleaning), CHARGING(R.string.VS_charging), PAUSED(R.string.VS_paused)
 }
+
+data class RoomsState(
+    val room: Room
+)

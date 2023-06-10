@@ -22,14 +22,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.intelicasamobile.model.AppNavigationType
 import com.example.intelicasamobile.model.Screen
-import com.example.intelicasamobile.ui.DevicesScreen
 import com.example.intelicasamobile.ui.HomeScreen
 import com.example.intelicasamobile.ui.MainViewModel
 import com.example.intelicasamobile.ui.MenuScreen
+import com.example.intelicasamobile.ui.RoomsScreen
 import com.example.intelicasamobile.ui.RoutinesScreen
-import com.example.intelicasamobile.ui.TabletDevicesScreen
 import com.example.intelicasamobile.ui.TabletHomeScreen
 import com.example.intelicasamobile.ui.TabletMenuScreen
+import com.example.intelicasamobile.ui.TabletRoomsScreen
 import com.example.intelicasamobile.ui.TabletRoutinesScreen
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
@@ -43,7 +43,7 @@ fun IntelicasaAppNavHost(
 ) {
     val screens = listOf(
         Screen("Home", "home", Icons.Filled.Home, tabletContent = { TabletHomeScreen() }, content =  { HomeScreen() }),
-        Screen("Devices", "devices", Icons.Filled.Bed, tabletContent = { TabletDevicesScreen() }, content =  { DevicesScreen() }),
+        Screen("Devices", "devices", Icons.Filled.Bed, tabletContent = { TabletRoomsScreen() }, content =  { RoomsScreen() }),
         Screen("Routines", "routines", Icons.Filled.PlayArrow, tabletContent = { TabletRoutinesScreen()}, content =  { RoutinesScreen() }),
         Screen("Menu", "menu", Icons.Filled.Menu, tabletContent = { TabletMenuScreen()}, content =  { MenuScreen() })
     )

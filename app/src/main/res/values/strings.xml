@@ -85,7 +85,13 @@
     <string name="VCA_clean">Clean</string>
     <string name="VCA_charge">Charge</string>
 
-
+    <!-- Rooms -->
+    <string name="livingroom">Living Room</string>
+    <string name="kitchen">Kitchen</string>
+    <string name="bedroom">Bedroom</string>
+    <string name="bathroom">Bathroom</string>
+    <string name="garden">Garden</string>
+    <string name="other">Other</string>
 
 
 

@@ -29,7 +29,6 @@ import com.example.intelicasamobile.ui.routines.RoutinesTopBar
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun RoutinesScreen() {
@@ -58,7 +57,6 @@ fun RoutinesScreen() {
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun TabletRoutinesScreen() {

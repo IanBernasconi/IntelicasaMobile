@@ -31,8 +31,7 @@ import com.example.intelicasamobile.model.OvenConvectionMode
 import com.example.intelicasamobile.model.OvenDevice
 import com.example.intelicasamobile.model.OvenGrillMode
 import com.example.intelicasamobile.model.OvenHeatMode
-import com.example.intelicasamobile.model.OvenState
-import com.example.intelicasamobile.ui.components.DropdownSelector
+import com.example.intelicasamobile.ui.components.TextFieldDropdownSelector
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
@@ -189,7 +188,7 @@ fun OvenDeviceInfo(
                     .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
                 horizontalArrangement = Arrangement.Center
             ) {
-                DropdownSelector(stateHolder = dropdownHeatModeStateHolder)
+                TextFieldDropdownSelector(stateHolder = dropdownHeatModeStateHolder)
             }
 
             Row(
@@ -198,7 +197,7 @@ fun OvenDeviceInfo(
                     .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
                 horizontalArrangement = Arrangement.Center
             ) {
-                DropdownSelector(stateHolder = dropdownConvectionModeStateHolder)
+                TextFieldDropdownSelector(stateHolder = dropdownConvectionModeStateHolder)
             }
 
             Row(
@@ -207,7 +206,7 @@ fun OvenDeviceInfo(
                     .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
                 horizontalArrangement = Arrangement.Center
             ) {
-                DropdownSelector(stateHolder = dropdownGrillModeStateHolder)
+                TextFieldDropdownSelector(stateHolder = dropdownGrillModeStateHolder)
             }
         }
     }

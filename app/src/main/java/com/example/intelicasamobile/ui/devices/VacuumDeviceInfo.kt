@@ -39,7 +39,7 @@ import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.VacuumCleanMode
 import com.example.intelicasamobile.model.VacuumDevice
 import com.example.intelicasamobile.model.VacuumStateEnum
-import com.example.intelicasamobile.ui.components.DropdownSelector
+import com.example.intelicasamobile.ui.components.TextFieldDropdownSelector
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
@@ -212,7 +212,7 @@ fun VacuumDeviceInfo(
                     .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
                 horizontalArrangement = Arrangement.Center
             ) {
-                DropdownSelector(stateHolder = dropdownModeStateHolder)
+                TextFieldDropdownSelector(stateHolder = dropdownModeStateHolder)
             }
 
             Row(
@@ -221,7 +221,7 @@ fun VacuumDeviceInfo(
                     .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
                 horizontalArrangement = Arrangement.Center
             ) {
-                DropdownSelector(stateHolder = dropdownLocationStateHolder)
+                TextFieldDropdownSelector(stateHolder = dropdownLocationStateHolder)
             }
         }
     }

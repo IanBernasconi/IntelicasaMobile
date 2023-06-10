@@ -13,7 +13,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.vector.ImageVector
 
 class DropdownSelectorItem(
-    val label: String,
+    val label: String = "",
     val value: Any,
     @DrawableRes val icon: Int? = null,
 )
@@ -54,7 +54,7 @@ class DropdownSelectorStateHolder(
 @Composable
 fun rememberDropdownSelectorState(
     items: List<DropdownSelectorItem>,
-    label: String,
+    label: String = "",
     initialItem: DropdownSelectorItem? = null,
     onItemSelected: (DropdownSelectorItem) -> Unit
 ) = remember {
