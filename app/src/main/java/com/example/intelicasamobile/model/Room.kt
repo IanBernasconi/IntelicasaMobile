@@ -2,6 +2,7 @@ package com.example.intelicasamobile.model
 
 import androidx.lifecycle.ViewModel
 import com.example.intelicasamobile.data.Datasource
+import com.example.intelicasamobile.ui.components.DropdownSelectorStateHolder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,3 +25,9 @@ data class RoomScreenState(
     }
 
 }
+
+class RoomsScreen(
+    val room: Room,
+    val dropdownRoomStateHolder: DropdownSelectorStateHolder,
+    val index: Int,
+)
