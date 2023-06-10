@@ -33,7 +33,7 @@ import com.example.intelicasamobile.model.DeviceTypes
 @Preview(showBackground = true)
 @Composable
 fun DeviceCardPreview() {
-    DeviceCard(device = Device(DeviceTypes.LAMP, R.string.lamp))
+    DeviceCard(device = Device(DeviceTypes.LAMP, R.string.lamp), modifier = Modifier.padding(16.dp))
 }
 @Composable
 fun DeviceCard(
@@ -44,7 +44,7 @@ fun DeviceCard(
 
     Card(modifier = modifier.clickable { showDialog = true } ) {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.primary)
         ) {

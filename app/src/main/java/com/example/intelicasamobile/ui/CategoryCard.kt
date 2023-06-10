@@ -26,7 +26,7 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 fun CategoryCard(title: Int) {
     Card(
         modifier = Modifier
-            .padding(dimensionResource(id = R.dimen.padding_medium))
+            .padding(dimensionResource(id = R.dimen.padding_small))
     ){
         Box(modifier = Modifier
             .fillMaxWidth()
