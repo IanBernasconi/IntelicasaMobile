@@ -1,6 +1,6 @@
 package com.example.intelicasamobile.ui.navigation
 
-import androidx.compose.foundation.layout.Column
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bed
@@ -14,6 +14,7 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -42,22 +43,48 @@ fun IntelicasaAppNavHost(
     windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
 ) {
     val screens = listOf(
-        Screen("Home", "home", Icons.Filled.Home, tabletContent = { TabletHomeScreen() }, content =  { HomeScreen() }),
-        Screen("Devices", "devices", Icons.Filled.Bed, tabletContent = { TabletRoomsScreen() }, content =  { RoomsScreen() }),
-        Screen("Routines", "routines", Icons.Filled.PlayArrow, tabletContent = { TabletRoutinesScreen()}, content =  { RoutinesScreen() }),
-        Screen("Menu", "menu", Icons.Filled.Menu, tabletContent = { TabletMenuScreen()}, content =  { MenuScreen() })
+        Screen(
+            "Home",
+            "home",
+            Icons.Filled.Home,
+            tabletContent = { TabletHomeScreen() },
+            content = { HomeScreen() }),
+        Screen(
+            "Devices",
+            "devices",
+            Icons.Filled.Bed,
+            tabletContent = { TabletRoomsScreen() },
+            content = { RoomsScreen() }),
+        Screen(
+            "Routines",
+            "routines",
+            Icons.Filled.PlayArrow,
+            tabletContent = { TabletRoutinesScreen() },
+            content = { RoutinesScreen() }),
+        Screen(
+            "Menu",
+            "menu",
+            Icons.Filled.Menu,
+            tabletContent = { TabletMenuScreen() },
+            content = { MenuScreen() })
     )
-
-
     val navigationType: AppNavigationType
     val backStackEntry by navController.currentBackStackEntryAsState()
+    val configuration = LocalConfiguration.current
+    val orientation = configuration.orientation
     when (windowSize) {
         WindowWidthSizeClass.Compact -> {
-            navigationType = AppNavigationType.BOTTOM_NAVIGATION
+            navigationType = if (orientation == Configuration.ORIENTATION_PORTRAIT)
+                AppNavigationType.BOTTOM_NAVIGATION
+            else
+                AppNavigationType.NAVIGATION_RAIL
         }
 
         WindowWidthSizeClass.Medium -> {
-            navigationType = AppNavigationType.BOTTOM_NAVIGATION
+            navigationType = if (orientation == Configuration.ORIENTATION_PORTRAIT)
+                AppNavigationType.BOTTOM_NAVIGATION
+            else
+                AppNavigationType.NAVIGATION_RAIL
         }
 
         WindowWidthSizeClass.Expanded -> {
@@ -79,6 +106,16 @@ fun IntelicasaAppNavHost(
                     )
                 }
 
+                AppNavigationType.NAVIGATION_RAIL -> {
+                    IntellicasaNavigationRail(
+                        navController = navController,
+                        screens = screens,
+                        backStackEntry = backStackEntry
+                    ) {
+                        AppNavHost(navController=navController, screens=screens, windowSize=windowSize)
+                    }
+                }
+
                 AppNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
 
                     PermanentNavigationDrawer(drawerContent = {
@@ -88,23 +125,33 @@ fun IntelicasaAppNavHost(
                             backStackEntry = backStackEntry
                         )
                     }
-                    ){
-                        AppNavHost(navController, screens,windowSize)
+                    ) {
+                        AppNavHost(navController=navController,  screens=screens, windowSize=windowSize)
                     }
                 }
+
+
             }
         }) { innerPadding ->
-            AppNavHost(navController, screens,windowSize, modifier = Modifier.padding(innerPadding))
+            AppNavHost(
+                navController=navController,
+                screens=screens,
+                windowSize=windowSize,
+                modifier = Modifier.padding(innerPadding)
+            )
         }
     }
 }
+
+
 
 @Composable
 private fun AppNavHost(
     navController: NavHostController,
     screens: List<Screen>,
-    windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact
+
 
 ) {
     NavHost(
