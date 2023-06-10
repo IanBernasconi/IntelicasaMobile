@@ -23,6 +23,7 @@ class DropdownSelectorStateHolder(
     val label: String,
     initialItem: DropdownSelectorItem? = null,
     val onItemSelected: (DropdownSelectorItem) -> Unit,
+    private val changeValueOnSelected: Boolean = true
 ) {
     var value by mutableStateOf(initialItem?.label ?: "")
     var expanded by mutableStateOf(false)
@@ -40,8 +41,10 @@ class DropdownSelectorStateHolder(
     }
 
     fun onSelected(newValue: DropdownSelectorItem) {
-        selectedItem = newValue
-        value = newValue.label
+        if (changeValueOnSelected) {
+            selectedItem = newValue
+            value = newValue.label
+        }
     }
 
     fun onSize(newValue: Size) {
@@ -56,7 +59,8 @@ fun rememberDropdownSelectorState(
     items: List<DropdownSelectorItem>,
     label: String = "",
     initialItem: DropdownSelectorItem? = null,
-    onItemSelected: (DropdownSelectorItem) -> Unit
+    onItemSelected: (DropdownSelectorItem) -> Unit,
+    changeValueOnSelected: Boolean = true
 ) = remember {
-    DropdownSelectorStateHolder(items, label, initialItem, onItemSelected)
+    DropdownSelectorStateHolder(items, label, initialItem, onItemSelected, changeValueOnSelected)
 }

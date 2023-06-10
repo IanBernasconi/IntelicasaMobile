@@ -187,7 +187,7 @@ fun InnerDropdownSelector(
             }, text = {
                 Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                     item.icon?.let {
-                        Icon(
+                        Image(
                             painter = painterResource(id = it),
                             contentDescription = null,
                             modifier = Modifier
