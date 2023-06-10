@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import com.example.intelicasamobile.ui.navigation.IntelicasaAppNavHost
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
-
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,11 +30,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-
-
-
-
-
-

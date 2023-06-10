@@ -60,7 +60,6 @@ fun HomeScreen() {
                 items(devices) { device ->
                     DeviceCard(
                         device = device,
-                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
                     )
                 }
             }
@@ -104,8 +103,7 @@ fun TabletHomeScreen() {
             ) {
                 items(devices) { device ->
                     DeviceCard(
-                        device = device,
-                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                        device = device
                     )
                 }
             }

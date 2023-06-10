@@ -33,8 +33,9 @@ import com.example.intelicasamobile.model.DeviceTypes
 @Preview(showBackground = true)
 @Composable
 fun DeviceCardPreview() {
-    DeviceCard(device = Device(DeviceTypes.LAMP, R.string.lamp), modifier = Modifier.padding(16.dp))
+    DeviceCard(device = Device(DeviceTypes.LAMP, R.string.lamp))
 }
+
 @Composable
 fun DeviceCard(
     device: Device,
