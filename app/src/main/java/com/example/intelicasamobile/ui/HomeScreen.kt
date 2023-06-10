@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -21,7 +20,6 @@ import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.Datasource.devices
 import com.example.intelicasamobile.data.Datasource.routines
 import com.example.intelicasamobile.ui.devices.DeviceCard
-import com.example.intelicasamobile.ui.routines.RoutineCard
 import com.example.intelicasamobile.ui.routines.RoutineHomeCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,7 +34,7 @@ fun HomeScreen() {
         Column {
             CategoryCard(title = R.string.routines)
             LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
+                columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_small)),
                 state = state1,
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
@@ -51,7 +49,7 @@ fun HomeScreen() {
             }
             CategoryCard(title = R.string.devices)
             LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
+                columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_small)),
                 state = state2,
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
@@ -80,7 +78,7 @@ fun TabletHomeScreen() {
         Column {
             CategoryCard(title = R.string.routines)
             LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
+                columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_large)),
                 state = state1,
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
@@ -95,7 +93,7 @@ fun TabletHomeScreen() {
             }
             CategoryCard(title = R.string.devices)
             LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
+                columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_large)),
                 state = state2,
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),

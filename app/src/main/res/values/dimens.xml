@@ -9,4 +9,7 @@
     <dimen name="font_small">12sp</dimen>
     <dimen name="font_medium">16sp</dimen>
     <dimen name="font_large">20sp</dimen>
+    <dimen name="card_small">150dp</dimen>
+    <dimen name="card_medium">200dp</dimen>
+    <dimen name="card_large">250dp</dimen>
 </resources>

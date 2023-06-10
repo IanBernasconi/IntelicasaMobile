@@ -21,7 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -51,8 +50,7 @@ import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.devices.DeviceCard
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
+@Preview(showBackground = true, device = "spec:parent=pixel_5,orientation=landscape")
 @Composable
 fun RoomsScreen(
     state: RoomScreenState = viewModel(),
@@ -154,7 +152,8 @@ fun DevicesList(
                 ShapeDropdownSelector(
                     stateHolder = roomsScreen.dropdownRoomStateHolder,
                     shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 0.dp),
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24
                 )
             }
 
@@ -165,7 +164,7 @@ fun DevicesList(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
+                    columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_small)),
                     state = stateGrid,
                     contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
                     verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
