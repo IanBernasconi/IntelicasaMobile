@@ -12,8 +12,6 @@ import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,20 +55,25 @@ fun IntelicasaAppNavHost(
             "Home",
             "home",
             Icons.Filled.Home,
-            tabletContent = { TabletHomeScreen(devicesModel=devicesModel, routinesModel=routinesModel) },
-            content = { HomeScreen(devicesModel=devicesModel, routinesModel=routinesModel) }),
+            tabletContent = {
+                TabletHomeScreen(
+                    devicesModel = devicesModel,
+                    routinesModel = routinesModel
+                )
+            },
+            content = { HomeScreen(devicesModel = devicesModel, routinesModel = routinesModel) }),
         Screen(
             "Devices",
             "devices",
             Icons.Filled.Bed,
-            tabletContent = { TabletRoomsScreen(devicesModel=devicesModel) },
-            content = { RoomsScreen(devicesModel=devicesModel, roomsModel = roomsModel) }),
+            tabletContent = { TabletRoomsScreen(devicesModel = devicesModel) },
+            content = { RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel) }),
         Screen(
             "Routines",
             "routines",
             Icons.Filled.PlayArrow,
-            tabletContent = { TabletRoutinesScreen(routinesModel=routinesModel) },
-            content = { RoutinesScreen(routinesModel=routinesModel) }),
+            tabletContent = { TabletRoutinesScreen(routinesModel = routinesModel, devicesModel = devicesModel) },
+            content = { RoutinesScreen(routinesModel = routinesModel, devicesModel = devicesModel) }),
         Screen(
             "Menu",
             "menu",
@@ -112,9 +115,7 @@ fun IntelicasaAppNavHost(
         }, bottomBar = {
             when (navigationType) {
                 AppNavigationType.BOTTOM_NAVIGATION -> {
-                    IntellicasaBottomAppBar(
-                        navController = navController, screens = screens
-                    )
+                    IntelicasaBottomAppBar(navController = navController, screens = screens)
                 }
 
                 AppNavigationType.NAVIGATION_RAIL -> {
@@ -123,7 +124,11 @@ fun IntelicasaAppNavHost(
                         screens = screens,
                         backStackEntry = backStackEntry
                     ) {
-                        AppNavHost(navController=navController, screens=screens, windowSize=windowSize)
+                        AppNavHost(
+                            navController = navController,
+                            screens = screens,
+                            windowSize = windowSize
+                        )
                     }
                 }
 
@@ -137,7 +142,11 @@ fun IntelicasaAppNavHost(
                         )
                     }
                     ) {
-                        AppNavHost(navController=navController,  screens=screens, windowSize=windowSize)
+                        AppNavHost(
+                            navController = navController,
+                            screens = screens,
+                            windowSize = windowSize
+                        )
                     }
                 }
 
@@ -145,15 +154,14 @@ fun IntelicasaAppNavHost(
             }
         }) { innerPadding ->
             AppNavHost(
-                navController=navController,
-                screens=screens,
-                windowSize=windowSize,
+                navController = navController,
+                screens = screens,
+                windowSize = windowSize,
                 modifier = Modifier.padding(innerPadding)
             )
         }
     }
 }
-
 
 
 @Composable

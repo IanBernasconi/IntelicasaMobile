@@ -24,6 +24,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,15 +36,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.model.Routine
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Composable
 fun RoutineCard(
     routine: Routine,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    devicesModel: DevicesViewModel = viewModel(),
 ) {
+
+    val devicesState by devicesModel.devicesUiState.collectAsState()
+
     Card(
         modifier = Modifier
             .size(300.dp, 120.dp)
@@ -52,16 +60,15 @@ fun RoutineCard(
 
         Surface(
             color = MaterialTheme.colorScheme.primary
-        ){
+        ) {
             Column() {
 
                 Row(
-                    modifier = modifier
-                        .fillMaxWidth(),
+                    modifier = modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
 
-                ){
+                ) {
                     Text(
                         text = routine.name,
                         fontSize = 24.sp,
@@ -80,17 +87,19 @@ fun RoutineCard(
                     }
                 }
                 Row(
-                    modifier = Modifier
-                        .fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(),
                 ) {
-                    routine.actions.forEach { action ->
-                        Image(
-                            painter = painterResource(id = R.drawable.lightbulb),//TODO change to action icon
-                            contentDescription = "Device Type",
-                            modifier = Modifier
-                                .padding(4.dp, bottom = 10.dp)
-                                .size(dimensionResource(R.dimen.image_size))
-                        )
+                    val devices = routine.actions.map { action -> devicesState.devices.find { it.id == action.deviceId } }.distinct()
+                    devices.forEach {
+                        if (it != null) {
+                            Image(
+                                painter = painterResource(id = it.deviceType.imageResourceId),
+                                contentDescription = "Device Type",
+                                modifier = Modifier
+                                    .padding(4.dp, bottom = 10.dp)
+                                    .size(dimensionResource(R.dimen.image_size))
+                            )
+                        }
                     }
                 }
             }
