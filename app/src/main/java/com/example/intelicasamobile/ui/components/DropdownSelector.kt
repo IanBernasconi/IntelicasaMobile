@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,18 +29,14 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.fontResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.data.Datasource
 import com.example.intelicasamobile.model.ACMode
 
 @Preview(showBackground = true)
@@ -95,22 +90,18 @@ fun TextFieldDropdownSelector(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ShapeDropDownSelectorPreview() {
-
-    val dropdownRoomStateHolder = rememberDropdownSelectorState(items = Datasource.rooms.map {
-        DropdownSelectorItem(
-            label = it.name, value = it, icon = it.roomType.imageResourceId
-        )
-    }, onItemSelected = {}, initialItem = DropdownSelectorItem(
-        label = Datasource.rooms[0].name,
-        value = Datasource.rooms[0],
-        icon = Datasource.rooms[0].roomType.imageResourceId
-    )
-    )
-    ShapeDropdownSelector(stateHolder = dropdownRoomStateHolder)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ShapeDropDownSelectorPreview() {
+//
+//    val dropdownRoomStateHolder = rememberDropdownSelectorState(items = Datasource.rooms.map {
+//        DropdownSelectorItem(
+//            label = it.name, value = it, icon = it.roomType.imageResourceId
+//        )
+//    }, onItemSelected = {}
+//    )
+//    ShapeDropdownSelector(stateHolder = dropdownRoomStateHolder)
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
