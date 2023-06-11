@@ -1,23 +1,11 @@
 package com.example.intelicasamobile.data
 
-import Api.Companion.get
-import DeviceApi.getAll
-import androidx.compose.ui.graphics.Color
+import com.example.intelicasamobile.data.network.data.DeviceApi.getAll
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.model.ACDevice
-import com.example.intelicasamobile.model.ACState
 import com.example.intelicasamobile.model.Device
-import com.example.intelicasamobile.model.DoorDevice
-import com.example.intelicasamobile.model.LightDevice
-import com.example.intelicasamobile.model.LightState
-import com.example.intelicasamobile.model.OvenDevice
 import com.example.intelicasamobile.model.Room
 import com.example.intelicasamobile.model.RoomType
 import com.example.intelicasamobile.model.Routine
-import com.example.intelicasamobile.model.VacuumDevice
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -45,15 +33,18 @@ object Datasource {
     suspend fun getDevices(refresh: Boolean = false): List<Device> {
         if (refresh || devices.isEmpty()) {
             devicesMutex.withLock {
-                val devices = getAll()
-                devices?.forEach { device ->
-                    val index = devices.indexOfFirst { it.id == device.id }
-                    if (index != -1) {
+                val newDevices = getAll()
+
+                devices.forEach { device ->
+                    val index = newDevices?.indexOfFirst { it.id == device.id }
+                    if (index != null && index != -1) {
                         devices.toMutableList().apply { set(index, device) }
                     } else {
                         devices.toMutableList().apply { add(device) }
                     }
                 }
+                println("Get devices: $devices")
+
             }
         }
         return devicesMutex.withLock { devices.toList() }

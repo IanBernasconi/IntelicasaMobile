@@ -9,7 +9,7 @@ import java.net.URL
 
 class Api {
     companion object {
-        const val BASE_URL = "http://localhost:8080/api"
+        const val BASE_URL = "http://10.0.2.2:8080/api"
         private var isConnected = false
 
         fun setConnected(value: Boolean) {
@@ -58,6 +58,7 @@ class Api {
                         null
                     }
                 } catch (e: Exception) {
+                    Log.e("Api", "Error: ${e.message}")
                     isConnected = false
                     null
                 }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 
 open class Device(
     val id: String = "",
-    val deviceType: DeviceTypes,
+    val deviceType: DeviceType,
     @StringRes val name: Int = -1,
     val sName: String = "",
     val meta: Meta = Meta(),
@@ -22,9 +22,9 @@ data class ACDevice(
     val initialState: ACState = ACState(),
 
     ) : Device(
-    deviceType = DeviceTypes.AIR_CONDITIONER,
+    deviceType = DeviceType.AIR_CONDITIONER,
     name = R.string.air_conditioner,
-    meta = Meta(category = DeviceTypes.AIR_CONDITIONER)
+    meta = Meta(category = DeviceType.AIR_CONDITIONER)
 ) {
 
     private val _state: MutableStateFlow<ACState> = MutableStateFlow(ACState())
@@ -60,9 +60,9 @@ data class LightDevice(
     val initialState: LightState = LightState(),
 
     ) : Device(
-    deviceType = DeviceTypes.LAMP,
+    deviceType = DeviceType.LAMP,
     name = R.string.lamp,
-    meta = Meta(category = DeviceTypes.LAMP)
+    meta = Meta(category = DeviceType.LAMP)
 ) {
 
     private val _state: MutableStateFlow<LightState> = MutableStateFlow(initialState)
@@ -86,9 +86,9 @@ data class OvenDevice(
     val initialState: OvenState = OvenState(),
 
     ) : Device(
-    deviceType = DeviceTypes.OVEN,
+    deviceType = DeviceType.OVEN,
     name = R.string.oven,
-    meta = Meta(category = DeviceTypes.OVEN)
+    meta = Meta(category = DeviceType.OVEN)
 ) {
 
     private val _state: MutableStateFlow<OvenState> = MutableStateFlow(initialState)
@@ -120,7 +120,7 @@ data class DoorDevice(
     val initialState: DoorState = DoorState(),
 
     ) : Device(
-    deviceType = DeviceTypes.DOOR, name = R.string.door, meta = Meta(category = DeviceTypes.DOOR)
+    deviceType = DeviceType.DOOR, name = R.string.door, meta = Meta(category = DeviceType.DOOR)
 ) {
 
     private val _state: MutableStateFlow<DoorState> = MutableStateFlow(initialState)
@@ -140,9 +140,9 @@ data class VacuumDevice(
     val initialState: VacuumState = VacuumState(),
 
     ) : Device(
-    deviceType = DeviceTypes.VACUUM_CLEANER,
+    deviceType = DeviceType.VACUUM_CLEANER,
     name = R.string.vacuum_cleaner,
-    meta = Meta(category = DeviceTypes.VACUUM_CLEANER)
+    meta = Meta(category = DeviceType.VACUUM_CLEANER)
 ) {
 
     private val _state: MutableStateFlow<VacuumState> = MutableStateFlow(initialState)

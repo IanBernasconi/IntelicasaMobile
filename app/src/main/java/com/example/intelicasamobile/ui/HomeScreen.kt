@@ -89,7 +89,7 @@ fun HomeScreenLandscape() {
 private fun DevicesHomeList(state2: LazyGridState, @DimenRes minWidth: Int) {
 
     LaunchedEffect(Unit) {
-      //  getDevices()
+        getDevices()
     }
 
     CategoryCard(

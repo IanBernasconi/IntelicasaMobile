@@ -1,6 +1,8 @@
-import com.example.intelicasamobile.model.Category
+package com.example.intelicasamobile.data.network.data
+import Api
 import com.example.intelicasamobile.model.Device
-import com.example.intelicasamobile.model.DeviceTypes
+import com.example.intelicasamobile.model.DeviceType
+import com.example.intelicasamobile.model.DeviceTypeApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -9,20 +11,21 @@ object DeviceApi {
     private const val devicesUrl = "${Api.BASE_URL}/devices"
     private const val deviceTypesUrl = "${Api.BASE_URL}/devicetypes"
 
-    var allCategories: List<Category> = emptyList()
+    var allCategories: List<DeviceTypeApi> = emptyList()
         private set
 
     fun getUrl(slug: String? = null): String {
         return "$devicesUrl${slug?.let { "/$it" } ?: ""}"
     }
 
-    suspend fun getCategories(): List<Category> {
+    suspend fun getCategories(): List<DeviceTypeApi> {
         return withContext(Dispatchers.IO) {
             allCategories = Api.get(deviceTypesUrl)?.let { response ->
                 response.getJSONArray("result").let { array ->
                     (0 until array.length()).map { index ->
                         val category = array.getJSONObject(index)
-                        Category(id = category.getString("id"), name = category.getString("name"))
+                        val deviceType =  DeviceType.values().find{ it.apiName == category.getString("name") }
+                        DeviceTypeApi(id = category.getString("id"), type = deviceType ?: DeviceType.LAMP)
                     }
                 }
             } ?: emptyList()
@@ -37,7 +40,7 @@ object DeviceApi {
         }
 
         val deviceType = allCategories.find { category ->
-            category.name == device.deviceType.id
+            category.type.apiName == device.deviceType.apiName
         }
 
         deviceType?.let { type ->
@@ -66,10 +69,12 @@ object DeviceApi {
         return devicesJson?.let { array ->
             (0 until array.length()).map { index ->
                 val device = array.getJSONObject(index)
+                println("Dev $device")
                 Device(
                     id = device.getString("id"),
                     sName = device.getString("name"),
-                    deviceType = DeviceTypes.valueOf(device.getJSONObject("type").getString("name"))
+               //     deviceType = DeviceType.valueOf(device.getJSONObject("type").getString("name"))
+                    deviceType = DeviceType.values().find { it.apiName == device.getJSONObject("type").getString("name") } ?: DeviceType.LAMP
                 )
             }
         }
@@ -90,7 +95,7 @@ object DeviceApi {
     }
 
     suspend fun triggerEvent(event: Event): JSONObject? {
-        return Api.put("${devicesUrl}/${event.device.id}/${event.actionName}", event.params)
+        return Api.put("$devicesUrl/${event.device.id}/${event.actionName}", event.params)
     }
 
     suspend fun toggleFavorite(device: Device): JSONObject? {
@@ -101,7 +106,7 @@ object DeviceApi {
             })
         }
 
-        return Api.put("${devicesUrl}/${device.id}", updatedDevice)
+        return Api.put("$devicesUrl/${device.id}", updatedDevice)
     }
 }
 
