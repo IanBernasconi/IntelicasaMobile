@@ -26,7 +26,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.data.Datasource.routines
 import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.ui.devices.DeviceCard

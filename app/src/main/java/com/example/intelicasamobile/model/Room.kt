@@ -1,7 +1,6 @@
 package com.example.intelicasamobile.model
 
 import androidx.lifecycle.ViewModel
-import com.example.intelicasamobile.data.Datasource
 import com.example.intelicasamobile.ui.components.DropdownSelectorStateHolder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +13,7 @@ data class Room (
 )
 
 data class RoomScreenState(
-    private val room: Room = Datasource.rooms[0],
+    private val room: Room
 ) : ViewModel()
  {
     private val _state: MutableStateFlow<Room> = MutableStateFlow(room)

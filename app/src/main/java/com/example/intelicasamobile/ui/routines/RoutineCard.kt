@@ -35,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.data.Datasource.routines
 import com.example.intelicasamobile.model.Routine
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
@@ -64,7 +63,7 @@ fun RoutineCard(
 
                 ){
                     Text(
-                        text = stringResource(id = routine.name),
+                        text = routine.name,
                         fontSize = 24.sp,
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.onPrimary,
@@ -84,9 +83,9 @@ fun RoutineCard(
                     modifier = Modifier
                         .fillMaxSize(),
                 ) {
-                    routine.devices.forEach { device ->
+                    routine.actions.forEach { action ->
                         Image(
-                            painter = painterResource(id = device.deviceType.imageResourceId),
+                            painter = painterResource(id = R.drawable.lightbulb),//TODO change to action icon
                             contentDescription = "Device Type",
                             modifier = Modifier
                                 .padding(4.dp, bottom = 10.dp)
@@ -100,23 +99,23 @@ fun RoutineCard(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun RoutineCardPreview() {
-    IntelicasaMobileTheme {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(1),
-        ) {
-            items(routines) { routine ->
-                RoutineCard(
-                    routine = routine,
-                    Modifier.padding(dimensionResource(id = R.dimen.padding_small))
-                )
-            }
-        }
-    }
-}
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Preview(showBackground = true)
+//@Composable
+//fun RoutineCardPreview() {
+//    IntelicasaMobileTheme {
+//        LazyVerticalGrid(
+//            columns = GridCells.Fixed(1),
+//        ) {
+//            items(routines) { routine ->
+//                RoutineCard(
+//                    routine = routine,
+//                    Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+//                )
+//            }
+//        }
+//    }
+//}
 
 
 

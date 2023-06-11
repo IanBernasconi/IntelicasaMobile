@@ -4,7 +4,6 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -34,14 +33,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.data.Datasource
 import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoomsViewModel
 import com.example.intelicasamobile.model.Room
@@ -69,7 +66,7 @@ fun RoomsScreen(
     var pixelWidth by remember { mutableStateOf(0) }
 
     val allRooms = remember { mutableStateListOf<RoomsScreen>() }
-    var currentIndex by remember { mutableStateOf(Datasource.rooms.indexOf(currentRoom)) }
+    var currentIndex by remember { mutableStateOf(roomsState.rooms.indexOf(currentRoom)) }
 
     LaunchedEffect(Unit) {
         roomsModel.getRooms()
@@ -81,11 +78,11 @@ fun RoomsScreen(
                 label = it.name, value = it, icon = it.roomType.imageResourceId
             )
         }, onItemSelected = {
-            state.setRoom(it.value as Room); currentIndex = Datasource.rooms.indexOf(it.value)
+            state.setRoom(it.value as Room); currentIndex = roomsState.rooms.indexOf(it.value)
         }, changeValueOnSelected = false, initialItem = DropdownSelectorItem(
-            label = Datasource.rooms[index].name,
-            value = Datasource.rooms[index],
-            icon = Datasource.rooms[index].roomType.imageResourceId
+            label = roomsState.rooms[index].name,
+            value = roomsState.rooms[index],
+            icon = roomsState.rooms[index].roomType.imageResourceId
         )
         ), index
         )
@@ -104,11 +101,11 @@ fun RoomsScreen(
                     onDragStopped = {
 //                        if (offsetX > pixelWidth / 3) {
 //                            currentIndex =
-//                                (currentIndex - 1 + Datasource.rooms.size) % Datasource.rooms.size
-//                            state.setRoom(Datasource.rooms[currentIndex])
+//                                (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
+//                            state.setRoom(roomsState.rooms[currentIndex])
 //                        } else if (offsetX < -pixelWidth / 3) {
-//                            currentIndex = (currentIndex + 1) % Datasource.rooms.size
-//                            state.setRoom(Datasource.rooms[currentIndex])
+//                            currentIndex = (currentIndex + 1) % roomsState.rooms.size
+//                            state.setRoom(roomsState.rooms[currentIndex])
 //                        }
 //                        offsetX = 0f
                     })

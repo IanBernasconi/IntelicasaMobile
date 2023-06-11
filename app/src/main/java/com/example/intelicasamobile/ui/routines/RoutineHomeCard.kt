@@ -52,7 +52,7 @@ fun RoutineHomeCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(id = routine.name),
+                        text = routine.name,
                         fontSize = 24.sp,
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.onSecondary,
