@@ -20,17 +20,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.data.Datasource.devices
+import com.example.intelicasamobile.data.Datasource.dataDevices
 import com.example.intelicasamobile.data.Datasource.getDevices
 import com.example.intelicasamobile.data.Datasource.routines
+import com.example.intelicasamobile.model.Device
 import com.example.intelicasamobile.ui.devices.DeviceCard
 import com.example.intelicasamobile.ui.routines.RoutineHomeCard
 
@@ -88,13 +86,21 @@ fun HomeScreenLandscape() {
 @Composable
 private fun DevicesHomeList(state2: LazyGridState, @DimenRes minWidth: Int) {
 
+    val state by MainViewModel().mainUiState.collectAsState()
+
     LaunchedEffect(Unit) {
         getDevices()
+        println("Devices: ${state.devices}")
     }
 
     CategoryCard(
         title = R.string.devices
     )
+    devList(state.devices, state2, minWidth)
+}
+
+@Composable
+fun devList(devices: List<Device>, state2: LazyGridState, @DimenRes minWidth: Int){
     LazyVerticalGrid(
         columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
         state = state2,
@@ -103,6 +109,9 @@ private fun DevicesHomeList(state2: LazyGridState, @DimenRes minWidth: Int) {
         contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium))
     ) {
         items(devices) { device ->
+            println(device)
+            println(device.sName)
+
             DeviceCard(
                 device = device
             )

@@ -10,4 +10,5 @@ class MainViewModel {
 
     private val _mainUiState = MutableStateFlow(MainUiState())
     val mainUiState: StateFlow<MainUiState> = _mainUiState.asStateFlow()
+
 }
