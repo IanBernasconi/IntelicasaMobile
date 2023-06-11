@@ -163,10 +163,8 @@ fun DevicesList(
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
             ) {
-                items(Datasource.rooms) { room ->
-                    room.devices.forEach { device ->
-                        DeviceCard(device = device)
-                    }
+                items(state.state.value.devices) { device ->
+                    DeviceCard(device = device)
                 }
             }
 
