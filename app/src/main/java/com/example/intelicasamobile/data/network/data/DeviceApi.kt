@@ -69,7 +69,6 @@ object DeviceApi {
         return devicesJson?.let { array ->
             (0 until array.length()).map { index ->
                 val device = array.getJSONObject(index)
-                println("Dev $device")
                 Device(
                     id = device.getString("id"),
                     sName = device.getString("name"),

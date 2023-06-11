@@ -89,12 +89,12 @@ fun RoutineListPreview() {
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
                 contentPadding = it
             ) {
-                items(MainUiState().routines) { routine ->
+            /*    items(MainUiState().routines) { routine ->
                     RoutineHomeCard(
                         routine = routine,
                         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
                     )
-                }
+                }*/
             }
         }
     }

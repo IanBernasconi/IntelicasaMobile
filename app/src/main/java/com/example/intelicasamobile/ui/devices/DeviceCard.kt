@@ -93,7 +93,7 @@ fun DeviceCard(
                 ) {
 
                     Text(
-                        text = stringResource(id = device.name),
+                        text = device.sName,
                         color = MaterialTheme.colorScheme.onPrimary,
                         style = TextStyle(fontSize = 20.sp),
                         textAlign = TextAlign.Center,

@@ -20,13 +20,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.Datasource.dataDevices
-import com.example.intelicasamobile.data.Datasource.getDevices
 import com.example.intelicasamobile.data.Datasource.routines
 import com.example.intelicasamobile.model.Device
 import com.example.intelicasamobile.ui.devices.DeviceCard
@@ -86,21 +88,19 @@ fun HomeScreenLandscape() {
 @Composable
 private fun DevicesHomeList(state2: LazyGridState, @DimenRes minWidth: Int) {
 
-    val state by MainViewModel().mainUiState.collectAsState()
+    val model by remember { mutableStateOf(MainViewModel()) }
+
+    val state by model.mainUiState.collectAsState()
+
 
     LaunchedEffect(Unit) {
-        getDevices()
+        model.getDevices()
         println("Devices: ${state.devices}")
     }
 
     CategoryCard(
         title = R.string.devices
     )
-    devList(state.devices, state2, minWidth)
-}
-
-@Composable
-fun devList(devices: List<Device>, state2: LazyGridState, @DimenRes minWidth: Int){
     LazyVerticalGrid(
         columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
         state = state2,
@@ -108,10 +108,7 @@ fun devList(devices: List<Device>, state2: LazyGridState, @DimenRes minWidth: In
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
         contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium))
     ) {
-        items(devices) { device ->
-            println(device)
-            println(device.sName)
-
+        items(state.devices) { device ->
             DeviceCard(
                 device = device
             )

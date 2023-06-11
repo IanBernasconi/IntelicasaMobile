@@ -28,25 +28,6 @@ object Datasource {
 
     val dataDevices = mutableListOf<Device>()
 
-    private val devicesMutex = Mutex()
-
-    suspend fun getDevices(refresh: Boolean = false): List<Device> {
-        if (refresh || dataDevices.isEmpty()) {
-            devicesMutex.withLock {
-                getAll()?.forEach { device ->
-                    val index = dataDevices.indexOfFirst { it.id == device.id }
-                    if (index != -1) {
-                        dataDevices[index] = device
-                    } else {
-                        dataDevices.add(device)
-                    }
-                }
-            }
-        }
-        return devicesMutex.withLock { dataDevices }
-    }
-
-
     val routines = listOf(
         Routine(R.string.routine1, emptyList()),
         Routine(R.string.routine1, emptyList()),
