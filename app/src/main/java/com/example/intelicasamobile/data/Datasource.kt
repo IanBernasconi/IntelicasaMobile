@@ -26,8 +26,6 @@ object Datasource {
 //        DoorDevice()
 //    )
 
-    val dataDevices = mutableListOf<Device>()
-
     val routines = listOf(
         Routine(R.string.routine1, emptyList()),
         Routine(R.string.routine1, emptyList()),

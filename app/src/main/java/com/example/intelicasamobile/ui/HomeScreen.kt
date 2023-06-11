@@ -27,8 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.data.Datasource.dataDevices
 import com.example.intelicasamobile.data.Datasource.routines
 import com.example.intelicasamobile.model.Device
 import com.example.intelicasamobile.ui.devices.DeviceCard
@@ -37,14 +37,16 @@ import com.example.intelicasamobile.ui.routines.RoutineHomeCard
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    devicesModel: MainViewModel = viewModel()
+) {
     Surface(
         color = MaterialTheme.colorScheme.background
     ) {
         val configuration = LocalConfiguration.current
         val orientation = configuration.orientation
         if(orientation == Configuration.ORIENTATION_PORTRAIT){
-            HomeScreenPortrait()
+            HomeScreenPortrait(devicesModel)
         }else{
             HomeScreenLandscape()
         }
@@ -53,12 +55,14 @@ fun HomeScreen() {
 }
 
 @Composable
-fun HomeScreenPortrait() {
+fun HomeScreenPortrait(
+    model: MainViewModel = viewModel()
+) {
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
     Column {
         RoutinesHomeList(state1 =state1)
-        DevicesHomeList(state2 = state2, R.dimen.card_small)
+        DevicesHomeList(state2 = state2, R.dimen.card_small, model)
 
     }
 }
@@ -86,12 +90,12 @@ fun HomeScreenLandscape() {
 }
 
 @Composable
-private fun DevicesHomeList(state2: LazyGridState, @DimenRes minWidth: Int) {
-
-    val model by remember { mutableStateOf(MainViewModel()) }
+private fun DevicesHomeList(
+    state2: LazyGridState,
+    @DimenRes minWidth: Int,
+    model: MainViewModel = viewModel()) {
 
     val state by model.mainUiState.collectAsState()
-
 
     LaunchedEffect(Unit) {
         model.getDevices()

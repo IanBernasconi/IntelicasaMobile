@@ -12,7 +12,10 @@ import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,13 +45,15 @@ fun IntelicasaAppNavHost(
     navController: NavHostController = rememberNavController(),
     windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
 ) {
+    val devicesModel by remember { mutableStateOf(MainViewModel()) }
+
     val screens = listOf(
         Screen(
             "Home",
             "home",
             Icons.Filled.Home,
             tabletContent = { TabletHomeScreen() },
-            content = { HomeScreen() }),
+            content = { HomeScreen(devicesModel) }),
         Screen(
             "Devices",
             "devices",
@@ -95,6 +100,7 @@ fun IntelicasaAppNavHost(
             navigationType = AppNavigationType.BOTTOM_NAVIGATION
         }
     }
+
     IntelicasaMobileTheme {
         Scaffold(topBar = {
             IntellicasaTopAppBar()
