@@ -29,19 +29,17 @@ fun RoutinesScreen() {
             color = MaterialTheme.colorScheme.background
         ) {
             val state = rememberLazyGridState()
-            Column {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_large)),
-                    state = state,
-                    contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
-                    verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
-                ) {
-                    items(Datasource.routines) { routine ->
-                        RoutineCard(
-                            routine = routine,
-                            Modifier.padding(dimensionResource(id = R.dimen.padding_small))
-                        )
-                    }
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_large)),
+                state = state,
+                contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+            ) {
+                items(Datasource.routines) { routine ->
+                    RoutineCard(
+                        routine = routine,
+                        Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                    )
                 }
             }
         }
