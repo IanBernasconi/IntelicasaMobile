@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -47,7 +48,8 @@ fun RoutineHomeCard(
             ) {
                 Row(
                     modifier = modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(dimensionResource(id = R.dimen.padding_small)),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -61,8 +63,8 @@ fun RoutineHomeCard(
                         onClick = { /*TODO*/ },
                     ) {
                         Icon(
-                            imageVector = Icons.Filled.PlayArrow,
-                            contentDescription = "Play",
+                            imageVector = Icons.Filled.PlayCircle,
+                            contentDescription = "Play Circle",
                             tint = MaterialTheme.colorScheme.onSecondary,
                             modifier = Modifier.size(100.dp)
                         )

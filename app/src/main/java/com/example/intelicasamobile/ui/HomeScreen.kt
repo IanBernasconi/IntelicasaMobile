@@ -87,13 +87,13 @@ private fun DevicesHomeList(state2: LazyGridState, @DimenRes minWidth: Int) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
             state = state2,
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-            contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+            contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium))
         ) {
             items(devices) { device ->
                 DeviceCard(
-                    device = device,
+                    device = device
                 )
             }
         }
@@ -143,7 +143,7 @@ fun TabletHomeScreen() {
                 items(routines) { routine ->
                     RoutineHomeCard(
                         routine = routine,
-                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                        modifier = Modifier
                     )
                 }
             }
@@ -151,8 +151,8 @@ fun TabletHomeScreen() {
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_large)),
                 state = state2,
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
                 contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
             ) {
                 items(devices) { device ->
