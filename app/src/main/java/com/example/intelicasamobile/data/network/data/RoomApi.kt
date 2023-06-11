@@ -17,7 +17,7 @@ object RoomApi {
 
     suspend fun getAll(): List<Room> {
         val roomsJson = Api.get(getUrl())?.getJSONArray("result")
-        return roomsJson?.let { array ->
+        val rooms = roomsJson?.let { array ->
             (0 until array.length()).map { index ->
                 val room = array.getJSONObject(index)
                 Room(
@@ -27,6 +27,7 @@ object RoomApi {
                 )
             }
         } ?: emptyList()
+        return rooms
     }
 
     private fun getUrl(slug: String? = null): String {

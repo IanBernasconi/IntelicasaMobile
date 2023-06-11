@@ -25,7 +25,7 @@ object DeviceApi {
                     id = device.getString("id"),
                     name = device.getString("name"),
                     deviceType = DeviceType.values().find { it.apiName == device.getJSONObject("type").getString("name") } ?: DeviceType.LAMP,
-                    roomId = device.getJSONObject("room").getString("id")
+                    roomId = device.optJSONObject("room")?.getString("id")
                 )
             }
         }

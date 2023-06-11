@@ -24,9 +24,9 @@ object RoutineApi {
                         (0 until actions.length()).map { actionIndex ->
                             val action = actions.getJSONObject(actionIndex)
                             Action(
-                                action = ActionTypes.values().find{ it.apiName == action.getString("action") } ?: ActionTypes.TURN_ON,
+                                action = ActionTypes.values().find{ it.apiName == action.optString("actionName") } ?: ActionTypes.TURN_ON,
                                 deviceId = action.getJSONObject("device").getString("id"),
-                                params = listOf(action.getString("value"))
+                                params = listOf(action.getJSONArray("params").opt(0)?.toString())
                             )
                         }
                     }

@@ -12,7 +12,7 @@ open class Device(
     val deviceType: DeviceType,
     val name: String = "",
     val meta: Meta = Meta(),
-    val roomId: String = ""
+    val roomId: String? = null,
 ) : ViewModel()
 
 data class ACDevice(

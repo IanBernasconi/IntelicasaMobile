@@ -50,7 +50,7 @@ fun DeviceInfoHeader(
             )
 
             Text(
-                text = stringResource(id = device.name), modifier = Modifier
+                text = device.name, modifier = Modifier
                     .padding(
                         start = dimensionResource(
                             id = R.dimen.padding_small
