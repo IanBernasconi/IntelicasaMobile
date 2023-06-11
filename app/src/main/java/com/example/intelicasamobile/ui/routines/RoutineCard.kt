@@ -48,7 +48,7 @@ fun RoutineCard(
         modifier = Modifier
             .size(300.dp, 120.dp)
             .padding(4.dp),
-        elevation = CardDefaults.cardElevation(30.dp, 10.dp, 10.dp, 50.dp, 0.dp)
+        elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation))
     ) {
 
         Surface(

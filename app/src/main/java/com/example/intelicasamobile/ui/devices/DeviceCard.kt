@@ -15,6 +15,8 @@ import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material.icons.filled.SettingsPower
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -52,7 +54,12 @@ fun DeviceCard(
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
-    Card(modifier = modifier.clickable { showDialog = true } ) {
+    Card(
+        elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
+        modifier = modifier
+            .clickable { showDialog = true }
+            .padding(dimensionResource(id = R.dimen.padding_small)),
+    ) {
         Box(
             modifier = modifier
                 .fillMaxWidth()
