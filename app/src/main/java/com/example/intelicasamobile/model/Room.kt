@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 data class Room (
+    val id: String,
     val roomType: RoomType,
     val name: String,
-    val devices: List<Device>
 )
 
 data class RoomScreenState(
-    private val room: Room = Datasource.rooms[0],
+    private val room: Room,
 ) : ViewModel()
  {
     private val _state: MutableStateFlow<Room> = MutableStateFlow(room)

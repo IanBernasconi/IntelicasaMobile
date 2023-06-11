@@ -26,32 +26,5 @@ object Datasource {
 //        DoorDevice()
 //    )
 
-    val routines = listOf(
-        Routine(R.string.routine1, emptyList()),
-        Routine(R.string.routine1, emptyList()),
-    )
 
-    val rooms = listOf(
-        Room(
-            roomType = RoomType.LIVINGROOM,
-            name = "Living Room",
-            devices = emptyList()
-        ),
-        Room(
-            roomType = RoomType.KITCHEN,
-            name = "Kitchen",
-            devices = emptyList()
-        ),
-        Room(
-            roomType = RoomType.BATHROOM,
-            name = "Bathroom",
-            devices = emptyList()
-        ),
-        Room(
-            roomType = RoomType.GARDEN,
-            name = "Garden",
-            devices = emptyList()
-        ),
-
-        )
 }

@@ -1,15 +1,13 @@
 package com.example.intelicasamobile.data.network.data
+
 import Api
 import com.example.intelicasamobile.model.Device
 import com.example.intelicasamobile.model.DeviceType
 import com.example.intelicasamobile.model.DeviceTypeApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 object DeviceApi {
     private const val devicesUrl = "${Api.BASE_URL}/devices"
-    private const val deviceTypesUrl = "${Api.BASE_URL}/devicetypes"
 
     var allCategories: List<DeviceTypeApi> = emptyList()
         private set
@@ -25,8 +23,9 @@ object DeviceApi {
                 val device = array.getJSONObject(index)
                 Device(
                     id = device.getString("id"),
-                    sName = device.getString("name"),
-                    deviceType = DeviceType.values().find { it.apiName == device.getJSONObject("type").getString("name") } ?: DeviceType.LAMP
+                    name = device.getString("name"),
+                    deviceType = DeviceType.values().find { it.apiName == device.getJSONObject("type").getString("name") } ?: DeviceType.LAMP,
+                    roomId = device.getJSONObject("room").getString("id")
                 )
             }
         }

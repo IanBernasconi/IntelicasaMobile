@@ -1,9 +1,7 @@
 package com.example.intelicasamobile.model
 
-import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import com.example.intelicasamobile.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,9 +10,9 @@ import kotlinx.coroutines.flow.update
 open class Device(
     val id: String = "",
     val deviceType: DeviceType,
-    @StringRes val name: Int = -1,
-    val sName: String = "",
+    val name: String = "",
     val meta: Meta = Meta(),
+    val roomId: String = ""
 ) : ViewModel()
 
 data class ACDevice(
@@ -23,7 +21,6 @@ data class ACDevice(
 
     ) : Device(
     deviceType = DeviceType.AIR_CONDITIONER,
-    name = R.string.air_conditioner,
     meta = Meta(category = DeviceType.AIR_CONDITIONER)
 ) {
 
@@ -61,7 +58,6 @@ data class LightDevice(
 
     ) : Device(
     deviceType = DeviceType.LAMP,
-    name = R.string.lamp,
     meta = Meta(category = DeviceType.LAMP)
 ) {
 
@@ -87,7 +83,6 @@ data class OvenDevice(
 
     ) : Device(
     deviceType = DeviceType.OVEN,
-    name = R.string.oven,
     meta = Meta(category = DeviceType.OVEN)
 ) {
 
@@ -120,7 +115,7 @@ data class DoorDevice(
     val initialState: DoorState = DoorState(),
 
     ) : Device(
-    deviceType = DeviceType.DOOR, name = R.string.door, meta = Meta(category = DeviceType.DOOR)
+    deviceType = DeviceType.DOOR, meta = Meta(category = DeviceType.DOOR)
 ) {
 
     private val _state: MutableStateFlow<DoorState> = MutableStateFlow(initialState)
@@ -141,7 +136,6 @@ data class VacuumDevice(
 
     ) : Device(
     deviceType = DeviceType.VACUUM_CLEANER,
-    name = R.string.vacuum_cleaner,
     meta = Meta(category = DeviceType.VACUUM_CLEANER)
 ) {
 
