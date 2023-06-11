@@ -1,18 +1,18 @@
 package com.example.intelicasamobile.model
 
-import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import com.example.intelicasamobile.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 open class Device(
-    val deviceType: DeviceTypes,
-    @StringRes val name: Int,
+    val id: String = "",
+    val deviceType: DeviceType,
+    val name: String = "",
     val meta: Meta = Meta(),
+    val roomId: String? = null,
 ) : ViewModel()
 
 data class ACDevice(
@@ -20,9 +20,8 @@ data class ACDevice(
     val initialState: ACState = ACState(),
 
     ) : Device(
-    DeviceTypes.AIR_CONDITIONER,
-    R.string.air_conditioner,
-    meta = Meta(category = DeviceTypes.AIR_CONDITIONER)
+    deviceType = DeviceType.AIR_CONDITIONER,
+    meta = Meta(category = DeviceType.AIR_CONDITIONER)
 ) {
 
     private val _state: MutableStateFlow<ACState> = MutableStateFlow(ACState())
@@ -58,9 +57,8 @@ data class LightDevice(
     val initialState: LightState = LightState(),
 
     ) : Device(
-    deviceType = DeviceTypes.LAMP,
-    name = R.string.lamp,
-    meta = Meta(category = DeviceTypes.LAMP)
+    deviceType = DeviceType.LAMP,
+    meta = Meta(category = DeviceType.LAMP)
 ) {
 
     private val _state: MutableStateFlow<LightState> = MutableStateFlow(initialState)
@@ -84,9 +82,8 @@ data class OvenDevice(
     val initialState: OvenState = OvenState(),
 
     ) : Device(
-    deviceType = DeviceTypes.OVEN,
-    name = R.string.oven,
-    meta = Meta(category = DeviceTypes.OVEN)
+    deviceType = DeviceType.OVEN,
+    meta = Meta(category = DeviceType.OVEN)
 ) {
 
     private val _state: MutableStateFlow<OvenState> = MutableStateFlow(initialState)
@@ -118,7 +115,7 @@ data class DoorDevice(
     val initialState: DoorState = DoorState(),
 
     ) : Device(
-    deviceType = DeviceTypes.DOOR, name = R.string.door, meta = Meta(category = DeviceTypes.DOOR)
+    deviceType = DeviceType.DOOR, meta = Meta(category = DeviceType.DOOR)
 ) {
 
     private val _state: MutableStateFlow<DoorState> = MutableStateFlow(initialState)
@@ -138,9 +135,8 @@ data class VacuumDevice(
     val initialState: VacuumState = VacuumState(),
 
     ) : Device(
-    deviceType = DeviceTypes.VACUUM_CLEANER,
-    name = R.string.vacuum_cleaner,
-    meta = Meta(category = DeviceTypes.VACUUM_CLEANER)
+    deviceType = DeviceType.VACUUM_CLEANER,
+    meta = Meta(category = DeviceType.VACUUM_CLEANER)
 ) {
 
     private val _state: MutableStateFlow<VacuumState> = MutableStateFlow(initialState)

@@ -24,8 +24,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,16 +37,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.data.Datasource
+import com.example.intelicasamobile.data.DevicesViewModel
+import com.example.intelicasamobile.data.RoomsViewModel
+import com.example.intelicasamobile.model.Device
 import com.example.intelicasamobile.model.Room
-import com.example.intelicasamobile.model.RoomScreenState
-import com.example.intelicasamobile.model.RoomsScreen
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
+import com.example.intelicasamobile.ui.components.DropdownSelectorStateHolder
 import com.example.intelicasamobile.ui.components.ShapeDropdownSelector
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.devices.DeviceCard
@@ -53,32 +57,20 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 @Preview(showBackground = true)
 @Composable
 fun RoomsScreen(
-    state: RoomScreenState = viewModel(),
+    devicesModel: DevicesViewModel = viewModel(),
+    roomsModel: RoomsViewModel = viewModel(),
 ) {
-    val currentRoom by state.state.collectAsState()
+    val roomsState by roomsModel.roomsUiState.collectAsState()
 
     var offsetX by remember { mutableStateOf(0f) }
     var pixelWidth by remember { mutableStateOf(0) }
 
-    val allRooms = remember { mutableStateListOf<RoomsScreen>() }
-    var currentIndex by remember { mutableStateOf(Datasource.rooms.indexOf(currentRoom)) }
+    var currentIndex by remember { mutableStateOf(roomsState.rooms.indexOf(roomsState.currentRoom)) }
 
-    Datasource.rooms.forEachIndexed { index, room ->
-        allRooms.add(RoomsScreen(room, rememberDropdownSelectorState(items = Datasource.rooms.map {
-            DropdownSelectorItem(
-                label = it.name, value = it, icon = it.roomType.imageResourceId
-            )
-        }, onItemSelected = {
-            state.setRoom(it.value as Room); currentIndex = Datasource.rooms.indexOf(it.value)
-        }, changeValueOnSelected = false, initialItem = DropdownSelectorItem(
-            label = Datasource.rooms[index].name,
-            value = Datasource.rooms[index],
-            icon = Datasource.rooms[index].roomType.imageResourceId
-        )
-        ), index
-        )
-        )
+    LaunchedEffect(Unit) {
+        roomsModel.getRooms()
     }
+
 
     IntelicasaMobileTheme() {
         Surface(color = MaterialTheme.colorScheme.background,
@@ -92,37 +84,53 @@ fun RoomsScreen(
                     onDragStopped = {
                         if (offsetX > pixelWidth / 3) {
                             currentIndex =
-                                (currentIndex - 1 + Datasource.rooms.size) % Datasource.rooms.size
-                            state.setRoom(Datasource.rooms[currentIndex])
+                                (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
+                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+
                         } else if (offsetX < -pixelWidth / 3) {
-                            currentIndex = (currentIndex + 1) % Datasource.rooms.size
-                            state.setRoom(Datasource.rooms[currentIndex])
+                            currentIndex = (currentIndex + 1) % roomsState.rooms.size
+                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+
                         }
                         offsetX = 0f
                     })
         ) {
             Box() {
-                DevicesList(
-                    allRooms[(currentIndex - 1 + Datasource.rooms.size) % Datasource.rooms.size],
-                    state,
-                    offset = DpOffset(
-                        with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() }, 0.dp
-                    ),
-                )
-                DevicesList(allRooms[currentIndex],
-                    state,
-                    offset = DpOffset(with(LocalDensity.current) { (offsetX * 1.5f).toDp() }, 0.dp),
-                    setIndex = { index ->
-                        currentIndex = index
-                        state.setRoom(Datasource.rooms[currentIndex])
-                    })
-                DevicesList(
-                    allRooms[(currentIndex + 1) % Datasource.rooms.size],
-                    state,
-                    offset = DpOffset(
-                        with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() }, 0.dp
-                    ),
-                )
+                if (roomsState.rooms.isNotEmpty()) {
+                    currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
+
+                    DevicesList(
+                        offset = DpOffset(
+                            with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() },
+                            0.dp
+                        ),
+                        roomsModel = roomsModel,
+                        devicesModel = devicesModel,
+                        index = (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
+                    )
+                    DevicesList(
+                        offset = DpOffset(
+                            with(LocalDensity.current) { (offsetX * 1.5f).toDp() },
+                            0.dp
+                        ),
+                        setIndex = { index ->
+                            currentIndex = index
+                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+                        },
+                        roomsModel = roomsModel,
+                        devicesModel = devicesModel,
+                        index = currentIndex
+                    )
+                    DevicesList(
+                        offset = DpOffset(
+                            with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() },
+                            0.dp
+                        ),
+                        roomsModel = roomsModel,
+                        devicesModel = devicesModel,
+                        index = (currentIndex + 1) % roomsState.rooms.size
+                    )
+                }
             }
         }
     }
@@ -130,20 +138,47 @@ fun RoomsScreen(
 
 @Composable
 fun DevicesList(
-    roomsScreen: RoomsScreen,
-    state: RoomScreenState,
+    devicesModel: DevicesViewModel = viewModel(),
+    roomsModel: RoomsViewModel = viewModel(),
     offset: DpOffset = DpOffset(0.dp, 0.dp),
-    setIndex: (Int) -> Unit = {}
+    index: Int,
+    setIndex: (Int) -> Unit = {},
 ) {
+    val roomsState by roomsModel.roomsUiState.collectAsState()
+    val devicesState by devicesModel.devicesUiState.collectAsState()
+
+    val dropdownRoomStateHolder = rememberDropdownSelectorState(items = roomsState.rooms.map {
+        DropdownSelectorItem(
+            label = if (it.nameId != null) stringResource(id = it.nameId) else it.name,
+            value = it,
+            icon = it.roomType.imageResourceId
+        )
+    }, onItemSelected = {
+        roomsModel.setCurrentRoom(it.value as Room)
+        setIndex(roomsState.rooms.indexOf(it.value))
+    })
+
+    dropdownRoomStateHolder.onSelected(
+        DropdownSelectorItem(
+            label = if (roomsState.rooms[index].nameId != null) stringResource(id = roomsState.rooms[index].nameId!!) else roomsState.rooms[index].name,
+            value = roomsState.rooms[index],
+            icon = roomsState.rooms[index].roomType.imageResourceId
+        )
+    )
+
     val stateGrid = rememberLazyGridState()
-    Column(modifier = Modifier.offset(x = offset.x, y = offset.y))
-    {
+
+    LaunchedEffect(Unit) {
+        roomsModel.getRooms()
+    }
+
+    Column(modifier = Modifier.offset(x = offset.x, y = offset.y)) {
 
         Row(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
         ) {
             ShapeDropdownSelector(
-                stateHolder = roomsScreen.dropdownRoomStateHolder,
+                stateHolder = dropdownRoomStateHolder,
                 shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 0.dp),
                 color = MaterialTheme.colorScheme.secondary,
                 fontSize = 24
@@ -163,32 +198,36 @@ fun DevicesList(
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
             ) {
-                items(state.state.value.devices) { device ->
-                    DeviceCard(device = device)
+                items(devicesState.devices) {
+                    if (roomsState.rooms[index].id == "all" || it.roomId == roomsState.rooms[index].id) {
+                        DeviceCard(device = it)
+
+                    }
                 }
             }
+        }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(dimensionResource(id = R.dimen.padding_medium)),
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                for (i in 0 until Datasource.rooms.size) {
-                    Button(
-                        onClick = {
-                            state.setRoom(Datasource.rooms[i])
-                            setIndex(i)
-                        },
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(35.dp)
-                            .padding(dimensionResource(id = R.dimen.padding_small)),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (i == roomsScreen.index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
-                        )
-                    ) {}
-                }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            List(roomsState.rooms.size) { i ->
+                println("Button $i")
+                Button(
+                    onClick = {
+                        roomsModel.setCurrentRoom(roomsState.rooms[i])
+                        setIndex(i)
+                    },
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(35.dp)
+                        .padding(dimensionResource(id = R.dimen.padding_small)),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (i == index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
+                    )
+                ) {}
             }
         }
     }
@@ -197,8 +236,11 @@ fun DevicesList(
 
 @Preview(showBackground = true)
 @Composable
-fun TabletRoomsScreen() {
+fun TabletRoomsScreen(
+    devicesModel: DevicesViewModel = viewModel(),
+    roomsModel: RoomsViewModel = viewModel(),
+) {
     IntelicasaMobileTheme() {
-        RoomsScreen()
+        RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel)
     }
 }

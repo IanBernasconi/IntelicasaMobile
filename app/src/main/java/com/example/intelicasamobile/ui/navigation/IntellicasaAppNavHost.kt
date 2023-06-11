@@ -13,6 +13,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,10 +23,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.intelicasamobile.data.DevicesViewModel
+import com.example.intelicasamobile.data.RoomsViewModel
+import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.model.AppNavigationType
 import com.example.intelicasamobile.model.Screen
 import com.example.intelicasamobile.ui.HomeScreen
-import com.example.intelicasamobile.ui.MainViewModel
 import com.example.intelicasamobile.ui.MenuScreen
 import com.example.intelicasamobile.ui.RoomsScreen
 import com.example.intelicasamobile.ui.RoutinesScreen
@@ -38,29 +42,38 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 @Preview(showBackground = true, name = "Intelicasa")
 @Composable
 fun IntelicasaAppNavHost(
-    viewModel: MainViewModel = MainViewModel(),
+    viewModel: DevicesViewModel = DevicesViewModel(),
     navController: NavHostController = rememberNavController(),
     windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
 ) {
+    val devicesModel by remember { mutableStateOf(DevicesViewModel()) }
+    val routinesModel by remember { mutableStateOf(RoutinesViewModel()) }
+    val roomsModel by remember { mutableStateOf(RoomsViewModel()) }
+
     val screens = listOf(
         Screen(
             "Home",
             "home",
             Icons.Filled.Home,
-            tabletContent = { TabletHomeScreen() },
-            content = { HomeScreen() }),
+            tabletContent = {
+                TabletHomeScreen(
+                    devicesModel = devicesModel,
+                    routinesModel = routinesModel
+                )
+            },
+            content = { HomeScreen(devicesModel = devicesModel, routinesModel = routinesModel) }),
         Screen(
             "Devices",
             "devices",
             Icons.Filled.Bed,
-            tabletContent = { TabletRoomsScreen() },
-            content = { RoomsScreen() }),
+            tabletContent = { TabletRoomsScreen(devicesModel = devicesModel) },
+            content = { RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel) }),
         Screen(
             "Routines",
             "routines",
             Icons.Filled.PlayArrow,
-            tabletContent = { TabletRoutinesScreen() },
-            content = { RoutinesScreen() }),
+            tabletContent = { TabletRoutinesScreen(routinesModel = routinesModel, devicesModel = devicesModel) },
+            content = { RoutinesScreen(routinesModel = routinesModel, devicesModel = devicesModel) }),
         Screen(
             "Menu",
             "menu",
@@ -95,15 +108,14 @@ fun IntelicasaAppNavHost(
             navigationType = AppNavigationType.BOTTOM_NAVIGATION
         }
     }
+
     IntelicasaMobileTheme {
         Scaffold(topBar = {
             IntellicasaTopAppBar()
         }, bottomBar = {
             when (navigationType) {
                 AppNavigationType.BOTTOM_NAVIGATION -> {
-                    IntellicasaBottomAppBar(
-                        navController = navController, screens = screens
-                    )
+                    IntelicasaBottomAppBar(navController = navController, screens = screens)
                 }
 
                 AppNavigationType.NAVIGATION_RAIL -> {
@@ -112,7 +124,11 @@ fun IntelicasaAppNavHost(
                         screens = screens,
                         backStackEntry = backStackEntry
                     ) {
-                        AppNavHost(navController=navController, screens=screens, windowSize=windowSize)
+                        AppNavHost(
+                            navController = navController,
+                            screens = screens,
+                            windowSize = windowSize
+                        )
                     }
                 }
 
@@ -126,7 +142,11 @@ fun IntelicasaAppNavHost(
                         )
                     }
                     ) {
-                        AppNavHost(navController=navController,  screens=screens, windowSize=windowSize)
+                        AppNavHost(
+                            navController = navController,
+                            screens = screens,
+                            windowSize = windowSize
+                        )
                     }
                 }
 
@@ -134,15 +154,14 @@ fun IntelicasaAppNavHost(
             }
         }) { innerPadding ->
             AppNavHost(
-                navController=navController,
-                screens=screens,
-                windowSize=windowSize,
+                navController = navController,
+                screens = screens,
+                windowSize = windowSize,
                 modifier = Modifier.padding(innerPadding)
             )
         }
     }
 }
-
 
 
 @Composable
