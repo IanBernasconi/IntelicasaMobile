@@ -50,7 +50,7 @@ import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.devices.DeviceCard
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
-@Preview(showBackground = true, device = "spec:parent=pixel_5,orientation=landscape")
+@Preview(showBackground = true)
 @Composable
 fun RoomsScreen(
     state: RoomScreenState = viewModel(),
@@ -64,22 +64,19 @@ fun RoomsScreen(
     var currentIndex by remember { mutableStateOf(Datasource.rooms.indexOf(currentRoom)) }
 
     Datasource.rooms.forEachIndexed { index, room ->
-        allRooms.add(
-            RoomsScreen(
-                room, rememberDropdownSelectorState(items = Datasource.rooms.map {
-                    DropdownSelectorItem(
-                        label = it.name, value = it, icon = it.roomType.imageResourceId
-                    )
-                },
-                    onItemSelected = { state.setRoom(it.value as Room); currentIndex = Datasource.rooms.indexOf(it.value) },
-                    changeValueOnSelected = false,
-                    initialItem = DropdownSelectorItem(
-                        label = Datasource.rooms[index].name,
-                        value = Datasource.rooms[index],
-                        icon = Datasource.rooms[index].roomType.imageResourceId
-                    )
-                ), index
+        allRooms.add(RoomsScreen(room, rememberDropdownSelectorState(items = Datasource.rooms.map {
+            DropdownSelectorItem(
+                label = it.name, value = it, icon = it.roomType.imageResourceId
             )
+        }, onItemSelected = {
+            state.setRoom(it.value as Room); currentIndex = Datasource.rooms.indexOf(it.value)
+        }, changeValueOnSelected = false, initialItem = DropdownSelectorItem(
+            label = Datasource.rooms[index].name,
+            value = Datasource.rooms[index],
+            icon = Datasource.rooms[index].roomType.imageResourceId
+        )
+        ), index
+        )
         )
     }
 
@@ -112,8 +109,7 @@ fun RoomsScreen(
                         with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() }, 0.dp
                     ),
                 )
-                DevicesList(
-                    allRooms[currentIndex],
+                DevicesList(allRooms[currentIndex],
                     state,
                     offset = DpOffset(with(LocalDensity.current) { (offsetX * 1.5f).toDp() }, 0.dp),
                     setIndex = { index ->
@@ -140,69 +136,66 @@ fun DevicesList(
     setIndex: (Int) -> Unit = {}
 ) {
     val stateGrid = rememberLazyGridState()
+    Column(modifier = Modifier.offset(x = offset.x, y = offset.y))
+    {
 
-    Surface(
-        modifier = Modifier.offset(x = offset.x, y = offset.y),
-    ) {
-        Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
+        ) {
+            ShapeDropdownSelector(
+                stateHolder = roomsScreen.dropdownRoomStateHolder,
+                shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 0.dp),
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 24
+            )
+        }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_small)),
+                state = stateGrid,
+                contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
             ) {
-                ShapeDropdownSelector(
-                    stateHolder = roomsScreen.dropdownRoomStateHolder,
-                    shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 0.dp),
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = 24
-                )
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_small)),
-                    state = stateGrid,
-                    contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
-                    verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
-                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
-                ) {
-                    items(Datasource.rooms) { room ->
-                        room.devices.forEach { device ->
-                            DeviceCard(device = device)
-                        }
+                items(Datasource.rooms) { room ->
+                    room.devices.forEach { device ->
+                        DeviceCard(device = device)
                     }
                 }
+            }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(dimensionResource(id = R.dimen.padding_medium)),
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    for (i in 0 until Datasource.rooms.size) {
-                        Button(
-                            onClick = {
-                                state.setRoom(Datasource.rooms[i])
-                                setIndex(i)
-                            },
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(35.dp)
-                                .padding(dimensionResource(id = R.dimen.padding_small)),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (i == roomsScreen.index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
-                            )
-                        ) {}
-                    }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(id = R.dimen.padding_medium)),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                for (i in 0 until Datasource.rooms.size) {
+                    Button(
+                        onClick = {
+                            state.setRoom(Datasource.rooms[i])
+                            setIndex(i)
+                        },
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(35.dp)
+                            .padding(dimensionResource(id = R.dimen.padding_small)),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (i == roomsScreen.index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
+                        )
+                    ) {}
                 }
             }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
