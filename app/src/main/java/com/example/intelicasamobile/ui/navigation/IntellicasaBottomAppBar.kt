@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.Bed
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -41,7 +42,7 @@ fun IntellicasaBottomAppBar(
     screens: List<Screen> = listOf(
         Screen("Home", "home", Icons.Filled.Home, tabletContent = { TabletHomeScreen() }, content =  { HomeScreen() }),
         Screen("Devices", "devices", Icons.Filled.Bed, tabletContent = { TabletRoomsScreen() }, content =  { RoomsScreen() }),
-        Screen("Routines", "routines", Icons.Filled.PlayArrow, tabletContent = { TabletRoutinesScreen() }, content =  { RoutinesScreen() }),
+        Screen("Routines", "routines", Icons.Filled.PlayCircle, tabletContent = { TabletRoutinesScreen() }, content =  { RoutinesScreen() }),
         Screen("Menu", "menu", Icons.Filled.Menu, tabletContent = { TabletMenuScreen() }, content =  { MenuScreen() })
     )
 ) {

@@ -45,7 +45,7 @@ fun RoutineHomeCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.secondary)
+                    .background(MaterialTheme.colorScheme.primary)
             ) {
                 Row(
                     modifier = modifier
@@ -58,7 +58,7 @@ fun RoutineHomeCard(
                         text = stringResource(id = routine.name),
                         fontSize = 24.sp,
                         textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onSecondary,
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
                     IconButton(
                         onClick = { /*TODO*/ },
@@ -66,7 +66,7 @@ fun RoutineHomeCard(
                         Icon(
                             imageVector = Icons.Filled.PlayCircle,
                             contentDescription = "Play Circle",
-                            tint = MaterialTheme.colorScheme.onSecondary,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(100.dp)
                         )
                     }

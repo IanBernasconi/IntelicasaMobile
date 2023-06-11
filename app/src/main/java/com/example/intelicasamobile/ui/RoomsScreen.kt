@@ -145,7 +145,7 @@ fun DevicesList(
             ShapeDropdownSelector(
                 stateHolder = roomsScreen.dropdownRoomStateHolder,
                 shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 0.dp),
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.secondary,
                 fontSize = 24
             )
         }
