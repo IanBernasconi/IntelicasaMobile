@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.data.MainUiState
 import com.example.intelicasamobile.model.Device
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 

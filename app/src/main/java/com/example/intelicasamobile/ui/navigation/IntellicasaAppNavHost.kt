@@ -12,6 +12,7 @@ import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,10 +25,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.intelicasamobile.data.DevicesViewModel
+import com.example.intelicasamobile.data.RoomsViewModel
+import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.model.AppNavigationType
 import com.example.intelicasamobile.model.Screen
 import com.example.intelicasamobile.ui.HomeScreen
-import com.example.intelicasamobile.ui.MainViewModel
 import com.example.intelicasamobile.ui.MenuScreen
 import com.example.intelicasamobile.ui.RoomsScreen
 import com.example.intelicasamobile.ui.RoutinesScreen
@@ -41,31 +44,33 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 @Preview(showBackground = true, name = "Intelicasa")
 @Composable
 fun IntelicasaAppNavHost(
-    viewModel: MainViewModel = MainViewModel(),
+    viewModel: DevicesViewModel = DevicesViewModel(),
     navController: NavHostController = rememberNavController(),
     windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
 ) {
-    val devicesModel by remember { mutableStateOf(MainViewModel()) }
+    val devicesModel by remember { mutableStateOf(DevicesViewModel()) }
+    val routinesModel by remember { mutableStateOf(RoutinesViewModel()) }
+    val roomsModel by remember { mutableStateOf(RoomsViewModel()) }
 
     val screens = listOf(
         Screen(
             "Home",
             "home",
             Icons.Filled.Home,
-            tabletContent = { TabletHomeScreen() },
-            content = { HomeScreen(devicesModel) }),
+            tabletContent = { TabletHomeScreen(devicesModel=devicesModel, routinesModel=routinesModel) },
+            content = { HomeScreen(devicesModel=devicesModel, routinesModel=routinesModel) }),
         Screen(
             "Devices",
             "devices",
             Icons.Filled.Bed,
-            tabletContent = { TabletRoomsScreen() },
-            content = { RoomsScreen() }),
+            tabletContent = { TabletRoomsScreen(devicesModel=devicesModel) },
+            content = { RoomsScreen(devicesModel=devicesModel, roomsModel = roomsModel) }),
         Screen(
             "Routines",
             "routines",
             Icons.Filled.PlayArrow,
-            tabletContent = { TabletRoutinesScreen() },
-            content = { RoutinesScreen() }),
+            tabletContent = { TabletRoutinesScreen(routinesModel=routinesModel) },
+            content = { RoutinesScreen(routinesModel=routinesModel) }),
         Screen(
             "Menu",
             "menu",
