@@ -45,7 +45,7 @@ import com.example.intelicasamobile.model.DeviceTypes
 @Preview(showBackground = true)
 @Composable
 fun DeviceCardPreview() {
-    DeviceCard(device = Device(DeviceTypes.OVEN, R.string.oven))
+    //DeviceCard(device = Device(DeviceTypes.OVEN, R.string.oven))
 }
 
 @Composable

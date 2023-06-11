@@ -29,13 +29,13 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 @Preview(name = "DeviceInfo")
 @Composable
 fun DeviceInfoPreview() {
-    DeviceInfo(device = MainUiState().devices[1])
+    //DeviceInfo(device = MainUiState().devices[1])
 }
 
 @Preview
 @Composable
 fun DeviceInfoModalPreview() {
-    DeviceInfoModal(device = MainUiState().devices[0], showDialog = true, onDismiss = {})
+  //  DeviceInfoModal(device = MainUiState().devices[0], showDialog = true, onDismiss = {})
 }
 
 @Composable

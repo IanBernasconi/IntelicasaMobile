@@ -1,6 +1,5 @@
 package com.example.intelicasamobile.ui
 
-
 import android.content.res.Configuration
 import androidx.annotation.DimenRes
 import androidx.compose.foundation.layout.Arrangement
@@ -18,12 +17,19 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.Datasource.devices
+import com.example.intelicasamobile.data.Datasource.getDevices
 import com.example.intelicasamobile.data.Datasource.routines
 import com.example.intelicasamobile.ui.devices.DeviceCard
 import com.example.intelicasamobile.ui.routines.RoutineHomeCard
@@ -81,23 +87,29 @@ fun HomeScreenLandscape() {
 
 @Composable
 private fun DevicesHomeList(state2: LazyGridState, @DimenRes minWidth: Int) {
-        CategoryCard(
-            title = R.string.devices
-        )
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
-            state = state2,
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
-            contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium))
-        ) {
-            items(devices) { device ->
-                DeviceCard(
-                    device = device
-                )
-            }
+
+    LaunchedEffect(Unit) {
+      //  getDevices()
+    }
+
+    CategoryCard(
+        title = R.string.devices
+    )
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
+        state = state2,
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+        contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium))
+    ) {
+        items(devices) { device ->
+            DeviceCard(
+                device = device
+            )
         }
+    }
 }
+
 
 @Composable
 private fun RoutinesHomeList(state1: LazyGridState) {
@@ -148,19 +160,19 @@ fun TabletHomeScreen() {
                 }
             }
             CategoryCard(title = R.string.devices)
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_large)),
-                state = state2,
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
-                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
-                contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
-            ) {
-                items(devices) { device ->
-                    DeviceCard(
-                        device = device
-                    )
-                }
-            }
+//            LazyVerticalGrid(
+//                columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_large)),
+//                state = state2,
+//                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+//                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+//                contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
+//            ) {
+//                items(devices) { device ->
+//                    DeviceCard(
+//                        device = device
+//                    )
+//                }
+//            }
 
         }
     }

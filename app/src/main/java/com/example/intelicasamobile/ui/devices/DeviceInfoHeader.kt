@@ -27,7 +27,7 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 @Preview(showBackground = true)
 @Composable
 fun DeviceInfoHeaderPreview() {
-    DeviceInfoHeader(device = MainUiState().devices[1], onDelete = {})
+   // DeviceInfoHeader(device = MainUiState().devices[1], onDelete = {})
 }
 
 @Composable

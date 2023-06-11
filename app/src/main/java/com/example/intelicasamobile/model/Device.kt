@@ -10,8 +10,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 open class Device(
+    val id: String = "",
     val deviceType: DeviceTypes,
-    @StringRes val name: Int,
+    @StringRes val name: Int = -1,
+    val sName: String = "",
     val meta: Meta = Meta(),
 ) : ViewModel()
 
@@ -20,8 +22,8 @@ data class ACDevice(
     val initialState: ACState = ACState(),
 
     ) : Device(
-    DeviceTypes.AIR_CONDITIONER,
-    R.string.air_conditioner,
+    deviceType = DeviceTypes.AIR_CONDITIONER,
+    name = R.string.air_conditioner,
     meta = Meta(category = DeviceTypes.AIR_CONDITIONER)
 ) {
 
