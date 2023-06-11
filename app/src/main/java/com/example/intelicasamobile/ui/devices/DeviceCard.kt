@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,7 +59,6 @@ fun DeviceCard(
         elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
         modifier = modifier
             .clickable { showDialog = true }
-            .padding(dimensionResource(id = R.dimen.padding_small)),
     ) {
         Box(
             modifier = modifier
@@ -66,7 +66,7 @@ fun DeviceCard(
                 .background(MaterialTheme.colorScheme.primary)
         ) {
             Column(
-                modifier = modifier.padding(start= dimensionResource(id = R.dimen.padding_medium)),
+                modifier = modifier.padding(horizontal=dimensionResource(id = R.dimen.padding_small)),
 
             ){
                 Row(
@@ -103,6 +103,7 @@ fun DeviceCard(
                         text = stringResource(id = device.name),
                         color = MaterialTheme.colorScheme.onPrimary,
                         style = TextStyle(fontSize = 20.sp),
+                        textAlign = TextAlign.Center,
                         modifier = modifier
                             .fillMaxWidth()
                             .padding(bottom = dimensionResource(id = R.dimen.padding_medium))
