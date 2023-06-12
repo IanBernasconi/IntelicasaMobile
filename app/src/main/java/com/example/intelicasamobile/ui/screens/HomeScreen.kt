@@ -31,6 +31,8 @@ import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.ui.CategoryCard
 import com.example.intelicasamobile.ui.devices.DeviceCard
 import com.example.intelicasamobile.ui.routines.RoutineHomeCard
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -39,17 +41,23 @@ fun HomeScreen(
     devicesModel: DevicesViewModel = viewModel(),
     routinesModel: RoutinesViewModel = viewModel()
 ) {
-    Surface(
-        color = MaterialTheme.colorScheme.background
-    ) {
-        val configuration = LocalConfiguration.current
-        val orientation = configuration.orientation
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            HomeScreenPortrait(devicesModel)
-        } else {
-            HomeScreenLandscape()
-        }
+    val devicesState by devicesModel.devicesUiState.collectAsState()
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(devicesState.isLoading),
+        onRefresh = { devicesModel.fetchDevices() },
+    ){
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
+            val configuration = LocalConfiguration.current
+            val orientation = configuration.orientation
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                HomeScreenPortrait(devicesModel)
+            } else {
+                HomeScreenLandscape()
+            }
 
+        }
     }
 }
 
@@ -102,7 +110,7 @@ private fun DevicesHomeList(
     val state by model.devicesUiState.collectAsState()
 
     LaunchedEffect(Unit) {
-        model.getDevices()
+        model.fetchDevices()
     }
 
     CategoryCard(
