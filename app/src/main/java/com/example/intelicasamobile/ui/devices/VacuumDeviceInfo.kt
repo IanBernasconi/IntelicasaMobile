@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.data.RoomsViewModel
+import com.example.intelicasamobile.model.Room
 import com.example.intelicasamobile.model.VacuumCleanMode
 import com.example.intelicasamobile.model.VacuumDevice
 import com.example.intelicasamobile.model.VacuumStateEnum
@@ -64,9 +66,11 @@ fun VacuumDeviceInfo(
     modifier: Modifier = Modifier,
     disabled: Boolean = false,
     loading: Boolean = false,
-    state: VacuumDevice = viewModel()
+    state: VacuumDevice = viewModel(),
+    roomsViewModel: RoomsViewModel = viewModel()
 ) {
     val uiState by state.state.collectAsState()
+    val roomsState by roomsViewModel.roomsUiState.collectAsState()
 
     val dropdownModeStateHolder = rememberDropdownSelectorState(
         items = VacuumCleanMode.values().map {
@@ -85,19 +89,21 @@ fun VacuumDeviceInfo(
     )
 
     val dropdownLocationStateHolder = rememberDropdownSelectorState(
-        items = VacuumCleanMode.values().map {
+        items = roomsState.rooms.filter { it.id != "all" }.map {
             DropdownSelectorItem(
-                label = stringResource(id = it.nameResId),
+                label = it.name,
                 value = it,
-                icon = it.imageResourceId
+                icon = it.roomType.imageResourceId
             )
         }, label = stringResource(id = R.string.room),
-        onItemSelected = { state.setLocation(it.value as String) },
-        initialItem = DropdownSelectorItem(
-            label = uiState.location,
-            value = uiState.location,
-            icon = null
-        )
+        onItemSelected = { state.setLocation((it.value as Room).id) },
+        initialItem = roomsViewModel.getRoomById(uiState.location)?.let {
+            DropdownSelectorItem(
+                label = it.name,
+                value = it,
+                icon = it.roomType.imageResourceId
+            )
+        }
     )
 
     IntelicasaMobileTheme {

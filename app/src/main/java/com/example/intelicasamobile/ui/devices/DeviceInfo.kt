@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.intelicasamobile.data.RoomsViewModel
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.Device
 import com.example.intelicasamobile.model.DoorDevice
@@ -36,7 +38,8 @@ fun DeviceInfoModal(
     device: Device,
     showDialog: Boolean,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    roomsViewModel: RoomsViewModel = viewModel()
 ) {
     if (showDialog) {
         Dialog(onDismissRequest = { onDismiss() }) {
@@ -44,7 +47,7 @@ fun DeviceInfoModal(
                 modifier = modifier.background(Color.Transparent),
                 verticalArrangement = Arrangement.Center,
             ) {
-                DeviceInfo(device = device, modifier = modifier)
+                DeviceInfo(device = device, modifier = modifier, roomsViewModel = roomsViewModel)
             }
         }
     }
@@ -53,7 +56,8 @@ fun DeviceInfoModal(
 @Composable
 fun DeviceInfo(
     device: Device,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    roomsViewModel: RoomsViewModel = viewModel()
 ) {
     IntelicasaMobileTheme() {
         Card(modifier = modifier) {
@@ -70,7 +74,8 @@ fun DeviceInfo(
                         )
 
                         is VacuumDevice -> VacuumDeviceInfo(
-                            state = device
+                            state = device,
+                            roomsViewModel = roomsViewModel
                         )
 
                         is OvenDevice -> OvenDeviceInfo(

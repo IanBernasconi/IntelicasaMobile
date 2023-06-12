@@ -213,7 +213,8 @@ data class VacuumDevice(
     val initialState: VacuumState = VacuumState(),
     val deviceId: String,
     val deviceName: String,
-    val deviceMeta: Meta = Meta()
+    val deviceMeta: Meta = Meta(),
+    val locationId: String? = null
 
 ) : Device(
     id = deviceId, name = deviceName, deviceType = DeviceType.VACUUM_CLEANER, meta = deviceMeta

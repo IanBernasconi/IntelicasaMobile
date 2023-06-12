@@ -58,22 +58,39 @@ fun IntelicasaAppNavHost(
             tabletContent = {
                 TabletHomeScreen(
                     devicesModel = devicesModel,
-                    routinesModel = routinesModel
+                    routinesModel = routinesModel,
+                    roomsModel = roomsModel
                 )
             },
-            content = { HomeScreen(devicesModel = devicesModel, routinesModel = routinesModel) }),
+            content = {
+                HomeScreen(
+                    devicesModel = devicesModel,
+                    routinesModel = routinesModel,
+                    roomsModel = roomsModel
+                )
+            }),
         Screen(
             "Devices",
             "devices",
             Icons.Filled.Bed,
-            tabletContent = { TabletRoomsScreen(devicesModel = devicesModel) },
+            tabletContent = { TabletRoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel) },
             content = { RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel) }),
         Screen(
             "Routines",
             "routines",
             Icons.Filled.PlayArrow,
-            tabletContent = { TabletRoutinesScreen(routinesModel = routinesModel, devicesModel = devicesModel) },
-            content = { RoutinesScreen(routinesModel = routinesModel, devicesModel = devicesModel) }),
+            tabletContent = {
+                TabletRoutinesScreen(
+                    routinesModel = routinesModel,
+                    devicesModel = devicesModel
+                )
+            },
+            content = {
+                RoutinesScreen(
+                    routinesModel = routinesModel,
+                    devicesModel = devicesModel
+                )
+            }),
         Screen(
             "Menu",
             "menu",
@@ -111,7 +128,7 @@ fun IntelicasaAppNavHost(
 
     IntelicasaMobileTheme {
         Scaffold(topBar = {
-            IntellicasaTopAppBar()
+            IntelicasaTopAppBar()
         }, bottomBar = {
             when (navigationType) {
                 AppNavigationType.BOTTOM_NAVIGATION -> {
@@ -119,7 +136,7 @@ fun IntelicasaAppNavHost(
                 }
 
                 AppNavigationType.NAVIGATION_RAIL -> {
-                    IntellicasaNavigationRail(
+                    IntelicasaNavigationRail(
                         navController = navController,
                         screens = screens,
                         backStackEntry = backStackEntry
@@ -135,7 +152,7 @@ fun IntelicasaAppNavHost(
                 AppNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
 
                     PermanentNavigationDrawer(drawerContent = {
-                        IntellicasaAppNavigationDrawer(
+                        IntelicasaAppNavigationDrawer(
                             screens = screens,
                             navController = navController,
                             backStackEntry = backStackEntry

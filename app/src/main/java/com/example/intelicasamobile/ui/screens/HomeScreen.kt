@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.DevicesViewModel
+import com.example.intelicasamobile.data.RoomsViewModel
 import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.ui.CategoryCard
 import com.example.intelicasamobile.ui.devices.DeviceCard
@@ -37,7 +38,8 @@ import com.example.intelicasamobile.ui.routines.RoutineHomeCard
 @Composable
 fun HomeScreen(
     devicesModel: DevicesViewModel = viewModel(),
-    routinesModel: RoutinesViewModel = viewModel()
+    routinesModel: RoutinesViewModel = viewModel(),
+    roomsModel: RoomsViewModel = viewModel()
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background
@@ -45,9 +47,9 @@ fun HomeScreen(
         val configuration = LocalConfiguration.current
         val orientation = configuration.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            HomeScreenPortrait(devicesModel)
+            HomeScreenPortrait(devicesModel, routinesModel, roomsModel)
         } else {
-            HomeScreenLandscape()
+            HomeScreenLandscape(devicesModel, routinesModel, roomsModel)
         }
 
     }
@@ -56,7 +58,8 @@ fun HomeScreen(
 @Composable
 fun HomeScreenPortrait(
     devicesModel: DevicesViewModel = viewModel(),
-    routinesModel: RoutinesViewModel = viewModel()
+    routinesModel: RoutinesViewModel = viewModel(),
+    roomsModel: RoomsViewModel = viewModel()
 ) {
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
@@ -72,7 +75,8 @@ fun HomeScreenPortrait(
 @Composable
 fun HomeScreenLandscape(
     devicesModel: DevicesViewModel = viewModel(),
-    routinesModel: RoutinesViewModel = viewModel()
+    routinesModel: RoutinesViewModel = viewModel(),
+    roomsModel: RoomsViewModel = viewModel()
 ) {
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
@@ -96,7 +100,8 @@ fun HomeScreenLandscape(
 private fun DevicesHomeList(
     state2: LazyGridState,
     @DimenRes minWidth: Int,
-    model: DevicesViewModel = viewModel()
+    model: DevicesViewModel = viewModel(),
+    roomsModel: RoomsViewModel = viewModel()
 ) {
 
     val state by model.devicesUiState.collectAsState()
@@ -117,7 +122,8 @@ private fun DevicesHomeList(
     ) {
         items(state.devices.filter { it.meta.favorite }) { device ->
             DeviceCard(
-                device = device
+                device = device,
+                roomsViewModel = roomsModel
             )
         }
     }
@@ -161,7 +167,8 @@ private fun RoutinesHomeList(
 @Composable
 fun TabletHomeScreen(
     devicesModel: DevicesViewModel = viewModel(),
-    routinesModel: RoutinesViewModel = viewModel()
+    routinesModel: RoutinesViewModel = viewModel(),
+    roomsModel: RoomsViewModel = viewModel()
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background
@@ -177,7 +184,7 @@ fun TabletHomeScreen(
             }
             Box(Modifier.weight(1f)) {
                 Column() {
-                    DevicesHomeList(state2, R.dimen.card_medium, devicesModel)
+                    DevicesHomeList(state2, R.dimen.card_medium, devicesModel, roomsModel)
                 }
             }
         }

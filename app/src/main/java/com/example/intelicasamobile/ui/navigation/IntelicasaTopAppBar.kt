@@ -20,7 +20,7 @@ import com.example.intelicasamobile.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun IntellicasaTopAppBar() {
+fun IntelicasaTopAppBar() {
     CenterAlignedTopAppBar(
         title = {
             Row(

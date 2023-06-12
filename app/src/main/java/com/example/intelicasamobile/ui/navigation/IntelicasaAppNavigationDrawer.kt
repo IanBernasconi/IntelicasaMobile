@@ -28,7 +28,7 @@ import com.example.intelicasamobile.model.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IntellicasaAppNavigationDrawer(
+fun IntelicasaAppNavigationDrawer(
     screens: List<Screen>,
     navController: NavHostController,
     backStackEntry: NavBackStackEntry? = null,

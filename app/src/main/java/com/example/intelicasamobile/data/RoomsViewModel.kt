@@ -45,6 +45,10 @@ class RoomsViewModel : ViewModel() {
         return roomsMutex.withLock { roomsUiState.value.rooms }
     }
 
+    fun getRoomById(roomId: String): Room? {
+        return roomsUiState.value.rooms.find { it.id == roomId }
+    }
+
     fun setCurrentRoom(room: Room) {
         _roomsUiState.update { it.copy(currentRoom = room) }
     }

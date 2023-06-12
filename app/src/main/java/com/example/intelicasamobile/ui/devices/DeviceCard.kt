@@ -31,7 +31,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.data.RoomsViewModel
 import com.example.intelicasamobile.model.Device
 
 @Preview(showBackground = true)
@@ -43,7 +45,8 @@ fun DeviceCardPreview() {
 @Composable
 fun DeviceCard(
     device: Device,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    roomsViewModel: RoomsViewModel = viewModel(),
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -103,6 +106,6 @@ fun DeviceCard(
                 }
             }
         }
-        DeviceInfoModal(device = device, showDialog = showDialog, onDismiss = { showDialog = false })
+        DeviceInfoModal(device = device, showDialog = showDialog, onDismiss = { showDialog = false }, roomsViewModel = roomsViewModel)
     }
 }

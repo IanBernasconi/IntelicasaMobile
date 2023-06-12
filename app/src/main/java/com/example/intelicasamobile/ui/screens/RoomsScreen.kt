@@ -199,7 +199,7 @@ fun DevicesList(
                         it.id
                     )
                 }) {
-                    DeviceCard(device = it)
+                    DeviceCard(device = it, roomsViewModel = roomsModel)
                 }
             }
         }

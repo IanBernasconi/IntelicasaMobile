@@ -21,7 +21,7 @@ import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.Screen
 
 @Composable
-fun IntellicasaNavigationRail(
+fun IntelicasaNavigationRail(
     navController: NavHostController,
     screens: List<Screen>,
     backStackEntry: NavBackStackEntry? = null,
