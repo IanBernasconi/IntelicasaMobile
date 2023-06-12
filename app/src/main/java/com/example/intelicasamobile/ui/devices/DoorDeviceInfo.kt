@@ -19,9 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -30,15 +27,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.DoorDevice
-import com.example.intelicasamobile.model.DoorState
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Preview(showBackground = true)
 @Composable
 fun DoorDeviceInfoPreview() {
-    val device = DoorDevice()
+    val device = DoorDevice(deviceId = "1", deviceName = "Door")
     DoorDeviceInfo(
         state = device
     )
@@ -77,15 +72,15 @@ fun DoorDeviceInfo(
                         ) {
                             Icon(
                                 imageVector = if (uiState.isOpen) Icons.Outlined.DoorFront else Icons.Outlined.DoorFront, //TODO DoorOpen
-                                contentDescription = if (uiState.isOpen) stringResource(id = R.string.DS_open) else stringResource(
-                                    id = R.string.DS_closed
+                                contentDescription = if (uiState.isOpen) stringResource(id = R.string.DS_closed) else stringResource(
+                                    id = R.string.DS_open
                                 ),
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(35.dp)
                             )
                             Text(
-                                text = if (uiState.isOpen) stringResource(id = R.string.DA_open) else stringResource(
-                                    id = R.string.DA_close
+                                text = if (uiState.isOpen) stringResource(id = R.string.DA_close) else stringResource(
+                                    id = R.string.DA_open
                                 )
                             )
                         }

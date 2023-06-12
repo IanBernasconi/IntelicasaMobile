@@ -18,13 +18,14 @@ class RoomsViewModel : ViewModel() {
 
     private val roomsMutex = Mutex()
 
-    suspend fun getRooms(refresh: Boolean = false): List<Room> {
+    suspend fun getRooms(refresh: Boolean = true): List<Room> {
         if (refresh || roomsUiState.value.rooms.isEmpty()) {
             roomsMutex.withLock {
                 val updatedRooms = mutableListOf<Room>()
+                updatedRooms.addAll(roomsUiState.value.rooms)
 
                 RoomApi.getAll().forEach { room ->
-                    val index = roomsUiState.value.rooms.indexOfFirst { true } // TODO comparison
+                    val index = updatedRooms.indexOfFirst { it.id == room.id }
                     if (index != -1) {
                         updatedRooms[index] = room
                     } else {
@@ -32,7 +33,9 @@ class RoomsViewModel : ViewModel() {
                     }
                 }
 
-                updatedRooms.add(Room("all", RoomType.OTHER, name = "", nameId = R.string.all_devices_room))
+                if (updatedRooms.indexOfFirst { it.id == "all" } == -1) {
+                    updatedRooms.add(Room("all", RoomType.OTHER, name = "", nameId = R.string.all_devices_room))
+                }
 
                 _roomsUiState.update { it.copy(rooms = updatedRooms) }
                 _roomsUiState.update { it.copy(currentRoom = updatedRooms[updatedRooms.size - 1]) }

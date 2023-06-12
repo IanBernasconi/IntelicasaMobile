@@ -47,7 +47,7 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 @Preview(showBackground = true)
 @Composable
 fun VacummDeviceInfoPreview() {
-    val device = VacuumDevice()
+    val device = VacuumDevice(deviceId = "1", deviceName = "Vacuum")
     IntelicasaMobileTheme {
         VacuumDeviceInfo(
             state = device,

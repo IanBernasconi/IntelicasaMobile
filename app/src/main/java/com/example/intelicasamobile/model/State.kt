@@ -43,11 +43,22 @@ data class VacuumState(
 ) : State()
 
 enum class VacuumStateEnum(
-    @StringRes val nameResId: Int
+    @StringRes val nameResId: Int,
+    val value:String
 ) {
-    CLEANING(R.string.VS_cleaning), CHARGING(R.string.VS_charging), PAUSED(R.string.VS_paused)
-}
+    //Todo check
+    CLEANING(R.string.VS_cleaning, "cleaning"),
+    CHARGING(R.string.VS_charging, "charging"),
+    PAUSED(R.string.VS_paused,"inactive");
 
-data class RoomsState(
-    val room: Room
-)
+    companion object {
+        fun getMode(value: String): VacuumStateEnum {
+            return when (value) {
+                "cleaning" -> CLEANING
+                "charging" -> CHARGING
+                "paused" -> PAUSED
+                else -> CLEANING
+            }
+        }
+    }
+}

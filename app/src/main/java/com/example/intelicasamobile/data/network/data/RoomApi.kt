@@ -1,8 +1,6 @@
 package com.example.intelicasamobile.data.network.data
 
 import Api
-import com.example.intelicasamobile.model.Device
-import com.example.intelicasamobile.model.DeviceType
 import com.example.intelicasamobile.model.Room
 import com.example.intelicasamobile.model.RoomType
 import org.json.JSONObject
@@ -23,7 +21,7 @@ object RoomApi {
                 Room(
                     id = room.getString("id"),
                     name = room.getString("name"),
-                    roomType = RoomType.values().find { it.apiName == room.getJSONObject("meta").getString("type") } ?: RoomType.OTHER
+                    roomType = RoomType.getRoomType(  room.getJSONObject("meta").getString("type"))
                 )
             }
         } ?: emptyList()

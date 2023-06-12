@@ -39,7 +39,7 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 @Preview(showBackground = true)
 @Composable
 fun OvenDeviceInfoPreview() {
-    val device = OvenDevice()
+    val device = OvenDevice(deviceId = "1", deviceName = "Horno")
     IntelicasaMobileTheme {
         OvenDeviceInfo(
             state = device,

@@ -38,7 +38,7 @@ import kotlin.math.floor
 @Preview(showBackground = true)
 @Composable
 fun ACDeviceInfoPreview() {
-    val device = ACDevice()
+    val device = ACDevice(deviceId = "1", deviceName = "AC Device")
     IntelicasaMobileTheme {
         ACDeviceInfo(
             state = device,

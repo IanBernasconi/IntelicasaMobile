@@ -13,7 +13,13 @@ enum class DeviceType(
     AIR_CONDITIONER(R.drawable.airconditioner, R.string.air_conditioner, "ac"),
     OVEN(R.drawable.oven, R.string.oven, "oven"),
     VACUUM_CLEANER(R.drawable.vacuumcleaner, R.string.vacuum_cleaner, "vacuum"),
-    DOOR(R.drawable.door, R.string.door, "door"),
+    DOOR(R.drawable.door, R.string.door, "door");
+
+    companion object {
+        fun getDeviceType(apiName: String): DeviceType {
+            return values().find { it.apiName == apiName } ?: LAMP
+        }
+    }
 }
 
 class DeviceTypeApi(

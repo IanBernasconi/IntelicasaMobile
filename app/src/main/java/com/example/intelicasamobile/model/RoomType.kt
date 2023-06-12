@@ -14,5 +14,11 @@ enum class RoomType(
     BATHROOM(R.drawable.bathroom, R.string.bathroom),
     GARDEN(R.drawable.garden, R.string.garden, "Patio"),
     BEDROOM(R.drawable.bedroom, R.string.bedroom),
-    OTHER(R.drawable.other, R.string.other)
+    OTHER(R.drawable.other, R.string.other);
+
+    companion object {
+        fun getRoomType(apiName: String): RoomType {
+            return values().find { it.apiName == apiName } ?: OTHER
+        }
+    }
 }

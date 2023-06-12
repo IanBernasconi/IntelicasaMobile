@@ -1,4 +1,4 @@
-package com.example.intelicasamobile.ui
+package com.example.intelicasamobile.ui.screens
 
 import android.content.res.Configuration
 import androidx.annotation.DimenRes
@@ -28,6 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoutinesViewModel
+import com.example.intelicasamobile.ui.CategoryCard
 import com.example.intelicasamobile.ui.devices.DeviceCard
 import com.example.intelicasamobile.ui.routines.RoutineHomeCard
 

@@ -1,4 +1,4 @@
-package com.example.intelicasamobile.ui
+package com.example.intelicasamobile.ui.screens
 
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -27,8 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -45,10 +43,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoomsViewModel
-import com.example.intelicasamobile.model.Device
 import com.example.intelicasamobile.model.Room
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
-import com.example.intelicasamobile.ui.components.DropdownSelectorStateHolder
 import com.example.intelicasamobile.ui.components.ShapeDropdownSelector
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.devices.DeviceCard
@@ -214,7 +210,6 @@ fun DevicesList(
             horizontalArrangement = Arrangement.Center,
         ) {
             List(roomsState.rooms.size) { i ->
-                println("Button $i")
                 Button(
                     onClick = {
                         roomsModel.setCurrentRoom(roomsState.rooms[i])

@@ -28,14 +28,14 @@ import com.example.intelicasamobile.data.RoomsViewModel
 import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.model.AppNavigationType
 import com.example.intelicasamobile.model.Screen
-import com.example.intelicasamobile.ui.HomeScreen
-import com.example.intelicasamobile.ui.MenuScreen
-import com.example.intelicasamobile.ui.RoomsScreen
-import com.example.intelicasamobile.ui.RoutinesScreen
-import com.example.intelicasamobile.ui.TabletHomeScreen
-import com.example.intelicasamobile.ui.TabletMenuScreen
-import com.example.intelicasamobile.ui.TabletRoomsScreen
-import com.example.intelicasamobile.ui.TabletRoutinesScreen
+import com.example.intelicasamobile.ui.screens.HomeScreen
+import com.example.intelicasamobile.ui.screens.MenuScreen
+import com.example.intelicasamobile.ui.screens.RoomsScreen
+import com.example.intelicasamobile.ui.screens.RoutinesScreen
+import com.example.intelicasamobile.ui.screens.TabletHomeScreen
+import com.example.intelicasamobile.ui.screens.TabletMenuScreen
+import com.example.intelicasamobile.ui.screens.TabletRoomsScreen
+import com.example.intelicasamobile.ui.screens.TabletRoutinesScreen
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -73,7 +73,7 @@ class Api {
             return fetchApi(url, mapOf("Content-Type" to "application/json; charset=utf-8"), "POST", data.toString())
         }
 
-        suspend fun put(url: String, data: JSONObject): JSONObject? {
+        suspend fun put(url: String, data: String): JSONObject? {
             return fetchApi(url, mapOf("Content-Type" to "application/json; charset=utf-8"), "PUT", data.toString())
         }
 

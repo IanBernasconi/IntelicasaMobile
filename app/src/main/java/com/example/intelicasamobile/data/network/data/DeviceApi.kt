@@ -1,9 +1,29 @@
 package com.example.intelicasamobile.data.network.data
 
+import com.example.intelicasamobile.model.Action
 import Api
+import android.graphics.Color.parseColor
+import androidx.compose.ui.graphics.Color
+import com.example.intelicasamobile.model.ACDevice
+import com.example.intelicasamobile.model.ACMode
+import com.example.intelicasamobile.model.ACState
 import com.example.intelicasamobile.model.Device
 import com.example.intelicasamobile.model.DeviceType
 import com.example.intelicasamobile.model.DeviceTypeApi
+import com.example.intelicasamobile.model.DoorDevice
+import com.example.intelicasamobile.model.DoorState
+import com.example.intelicasamobile.model.LightDevice
+import com.example.intelicasamobile.model.LightState
+import com.example.intelicasamobile.model.OvenConvectionMode
+import com.example.intelicasamobile.model.OvenDevice
+import com.example.intelicasamobile.model.OvenGrillMode
+import com.example.intelicasamobile.model.OvenHeatMode
+import com.example.intelicasamobile.model.OvenState
+import com.example.intelicasamobile.model.VacuumCleanMode
+import com.example.intelicasamobile.model.VacuumDevice
+import com.example.intelicasamobile.model.VacuumState
+import com.example.intelicasamobile.model.VacuumStateEnum
+import org.json.JSONArray
 import org.json.JSONObject
 
 object DeviceApi {
@@ -21,12 +41,59 @@ object DeviceApi {
         return devicesJson?.let { array ->
             (0 until array.length()).map { index ->
                 val device = array.getJSONObject(index)
-                Device(
-                    id = device.getString("id"),
-                    name = device.getString("name"),
-                    deviceType = DeviceType.values().find { it.apiName == device.getJSONObject("type").getString("name") } ?: DeviceType.LAMP,
-                    roomId = device.optJSONObject("room")?.getString("id")
-                )
+                val state = device.getJSONObject("state")
+                when (DeviceType.getDeviceType(device.getJSONObject("type").getString("name"))) {
+                    DeviceType.LAMP -> LightDevice(
+                        initialState = LightState(
+                            isOn = state.getString("status") == "on",
+                            brightness = state.getInt("brightness"),
+                            color = Color(parseColor("#" + state.getString("color")))
+                        ), deviceId = device.getString("id"), deviceName = device.getString("name")
+                    )
+
+                    DeviceType.AIR_CONDITIONER -> ACDevice(
+                        initialState = ACState(
+                            isOn = state.getString("status") == "on",
+                            temperature = state.getInt("temperature").toFloat(),
+                            mode = ACMode.getMode(state.getString("mode")),
+                            fanSpeed = if (state.getString("fanSpeed") == "auto") 0 else state.getInt(
+                                "fanSpeed"
+                            ),
+                            verticalSwing = if (state.getString("verticalSwing") == "auto") 0 else state.getInt(
+                                "verticalSwing"
+                            ),
+                            horizontalSwing = if (state.getString("horizontalSwing") == "auto") -135 else state.getInt(
+                                "horizontalSwing"
+                            )
+                        ), deviceId = device.getString("id"), deviceName = device.getString("name")
+                    )
+
+                    DeviceType.OVEN -> OvenDevice(
+                        initialState = OvenState(
+                            isOn = state.getString("status") == "on",
+                            temperature = state.getInt("temperature"),
+                            heatMode = OvenHeatMode.getMode(state.getString("heat")),
+                            grillMode = OvenGrillMode.getMode(state.getString("grill")),
+                            convectionMode = OvenConvectionMode.getMode(state.getString("convection"))
+                        ), deviceId = device.getString("id"), deviceName = device.getString("name")
+                    )
+
+                    DeviceType.DOOR -> DoorDevice(
+                        initialState = DoorState(
+                            isLocked = state.getString("status") == "locked",
+                            isOpen = state.getString("status") == "opened"
+                        ), deviceId = device.getString("id"), deviceName = device.getString("name")
+                    )
+
+                    DeviceType.VACUUM_CLEANER -> VacuumDevice(
+                        initialState = VacuumState(
+                            batteryLevel = state.getInt("batteryLevel"),
+                            state = VacuumStateEnum.getMode(state.getString("status")),
+                            mode = VacuumCleanMode.getMode(state.getString("mode"))
+                            //TODO location
+                        ), deviceId = device.getString("id"), deviceName = device.getString("name")
+                    )
+                }
             }
         }
     }
@@ -41,11 +108,12 @@ object DeviceApi {
             put("meta", device.meta)
         }
 
-        return Api.put(getUrl(device.id), updatedDevice)
+        return Api.put(getUrl(device.id), updatedDevice.toString())
     }
 
-   // suspend fun triggerEvent(event: Event): JSONObject? {
-   //     return Api.put("$devicesUrl/${event.device.id}/${event.actionName}", event.params)
-   // }
+     suspend fun triggerEvent(event: Action): JSONObject? {
+         println(JSONArray(event.params.toString()))
+         return Api.put("$devicesUrl/${event.deviceId}/${event.action.apiName}", JSONArray(event.params.toString()).toString())
+     }
 
 }
