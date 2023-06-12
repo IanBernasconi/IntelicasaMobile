@@ -44,9 +44,9 @@ fun HomeScreen(
     ) {
         val configuration = LocalConfiguration.current
         val orientation = configuration.orientation
-        if(orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             HomeScreenPortrait(devicesModel)
-        }else{
+        } else {
             HomeScreenLandscape()
         }
 
@@ -61,7 +61,7 @@ fun HomeScreenPortrait(
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
     Column {
-        RoutinesHomeList(state1 =state1, routinesModel)
+        RoutinesHomeList(state1 = state1, routinesModel)
         DevicesHomeList(state2 = state2, R.dimen.card_small, devicesModel)
 
     }
@@ -96,7 +96,8 @@ fun HomeScreenLandscape(
 private fun DevicesHomeList(
     state2: LazyGridState,
     @DimenRes minWidth: Int,
-    model: DevicesViewModel = viewModel()) {
+    model: DevicesViewModel = viewModel()
+) {
 
     val state by model.devicesUiState.collectAsState()
 
@@ -114,7 +115,7 @@ private fun DevicesHomeList(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
         contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium))
     ) {
-        items(state.devices) { device ->
+        items(state.devices.filter { it.meta.favorite }) { device ->
             DeviceCard(
                 device = device
             )
@@ -145,7 +146,7 @@ private fun RoutinesHomeList(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
         contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
     ) {
-        items(state.routines) { routine ->
+        items(state.routines.filter { it.meta.favorite }) { routine ->
             RoutineHomeCard(
                 routine = routine,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
@@ -153,7 +154,6 @@ private fun RoutinesHomeList(
         }
     }
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)

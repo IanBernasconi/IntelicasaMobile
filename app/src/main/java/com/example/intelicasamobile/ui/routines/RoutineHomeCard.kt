@@ -29,8 +29,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.data.network.data.RoutineApi
 import com.example.intelicasamobile.model.Routine
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun RoutineHomeCard(
@@ -38,7 +42,10 @@ fun RoutineHomeCard(
     modifier: Modifier = Modifier
 ) {
     IntelicasaMobileTheme() {
-        Card(elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),modifier = modifier) {
+        Card(
+            elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
+            modifier = modifier
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -58,7 +65,11 @@ fun RoutineHomeCard(
                         color = MaterialTheme.colorScheme.onPrimary,
                     )
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                RoutineApi.execute(routine)
+                            }
+                        },
                     ) {
                         Icon(
                             imageVector = Icons.Filled.PlayCircle,
@@ -86,12 +97,12 @@ fun RoutineListPreview() {
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
                 contentPadding = it
             ) {
-            /*    items(MainUiState().routines) { routine ->
-                    RoutineHomeCard(
-                        routine = routine,
-                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
-                    )
-                }*/
+                /*    items(MainUiState().routines) { routine ->
+                        RoutineHomeCard(
+                            routine = routine,
+                            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                        )
+                    }*/
             }
         }
     }

@@ -3,6 +3,7 @@ package com.example.intelicasamobile.data.network.data
 import Api
 import com.example.intelicasamobile.model.Action
 import com.example.intelicasamobile.model.ActionTypes
+import com.example.intelicasamobile.model.Meta
 import com.example.intelicasamobile.model.Routine
 import org.json.JSONObject
 
@@ -24,19 +25,23 @@ object RoutineApi {
                         (0 until actions.length()).map { actionIndex ->
                             val action = actions.getJSONObject(actionIndex)
                             Action(
-                                action = ActionTypes.getActionType(action.optString("actionName") ) ?: ActionTypes.TURN_ON,
+                                action = ActionTypes.getActionType(action.optString("actionName"))
+                                    ?: ActionTypes.TURN_ON,
                                 deviceId = action.getJSONObject("device").getString("id"),
-                                params = listOf(action.getJSONArray("params").opt(0)?.toString()?:"")
+                                params = listOf(
+                                    action.getJSONArray("params").opt(0)?.toString() ?: ""
+                                )
                             )
                         }
-                    }
+                    },
+                    meta = Meta(routine.getJSONObject("meta").optBoolean("favorite"))
                 )
             }
         } ?: emptyList()
     }
 
     suspend fun execute(routine: Routine): JSONObject? {
-        return Api.put("${getUrl(routine.id)}/execute", JSONObject(routine.id).toString())
+        return Api.put("${getUrl(routine.id)}/execute", JSONObject().toString())
     }
 
     suspend fun get(id: String): JSONObject? {

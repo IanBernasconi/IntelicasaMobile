@@ -34,11 +34,11 @@ class RoomsViewModel : ViewModel() {
                 }
 
                 if (updatedRooms.indexOfFirst { it.id == "all" } == -1) {
-                    updatedRooms.add(Room("all", RoomType.OTHER, name = "", nameId = R.string.all_devices_room))
+                    updatedRooms.add(0, Room("all", RoomType.OTHER, name = "", nameId = R.string.all_devices_room))
                 }
 
                 _roomsUiState.update { it.copy(rooms = updatedRooms) }
-                _roomsUiState.update { it.copy(currentRoom = updatedRooms[updatedRooms.size - 1]) }
+                _roomsUiState.update { it.copy(currentRoom = updatedRooms[0]) }
             }
         }
 

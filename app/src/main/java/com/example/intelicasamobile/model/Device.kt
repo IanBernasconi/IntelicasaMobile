@@ -28,13 +28,13 @@ open class Device(
 
 data class ACDevice(
 
-    val initialState: ACState = ACState(), val deviceId: String, val deviceName: String
+    val initialState: ACState = ACState(),
+    val deviceId: String,
+    val deviceName: String,
+    val deviceMeta: Meta = Meta(),
 
 ) : Device(
-    id = deviceId,
-    name = deviceName,
-    deviceType = DeviceType.AIR_CONDITIONER,
-    meta = Meta(category = DeviceType.AIR_CONDITIONER)
+    id = deviceId, name = deviceName, deviceType = DeviceType.AIR_CONDITIONER, meta = deviceMeta
 ) {
 
     private val _state: MutableStateFlow<ACState> = MutableStateFlow(ACState())
@@ -51,16 +51,14 @@ data class ACDevice(
     fun setTemperature(temperature: Float) {
         _state.update { it.copy(temperature = temperature) }
         triggerNewAction(
-            actionType = ActionTypes.SET_TEMPERATURE,
-            params = listOf(temperature.toString())
+            actionType = ActionTypes.SET_TEMPERATURE, params = listOf(temperature.toString())
         )
     }
 
     fun setMode(mode: ACMode) {
         _state.update { it.copy(mode = mode) }
         triggerNewAction(
-            actionType = ActionTypes.SET_MODE,
-            params = listOf(mode.value)
+            actionType = ActionTypes.SET_MODE, params = listOf(mode.value)
         )
     }
 
@@ -91,13 +89,13 @@ data class ACDevice(
 
 data class LightDevice(
 
-    val initialState: LightState = LightState(), val deviceId: String, val deviceName: String
+    val initialState: LightState = LightState(),
+    val deviceId: String,
+    val deviceName: String,
+    val deviceMeta: Meta = Meta()
 
 ) : Device(
-    id = deviceId,
-    name = deviceName,
-    deviceType = DeviceType.LAMP,
-    meta = Meta(category = DeviceType.LAMP)
+    id = deviceId, name = deviceName, deviceType = DeviceType.LAMP, meta = deviceMeta
 ) {
 
     private val _state: MutableStateFlow<LightState> = MutableStateFlow(initialState)
@@ -113,8 +111,7 @@ data class LightDevice(
     fun setBrightness(brightness: Int) {
         _state.update { it.copy(brightness = brightness) }
         triggerNewAction(
-            actionType = ActionTypes.SET_BRIGHTNESS,
-            params = listOf(brightness.toString())
+            actionType = ActionTypes.SET_BRIGHTNESS, params = listOf(brightness.toString())
         )
     }
 
@@ -125,21 +122,21 @@ data class LightDevice(
     fun setColor(color: Color) {
         _state.update { it.copy(color = color) }
         triggerNewAction(
-            actionType = ActionTypes.SET_COLOR,
-            params = listOf(convertToHexColor(color))
+            actionType = ActionTypes.SET_COLOR, params = listOf(convertToHexColor(color))
         )
     }
 }
 
 data class OvenDevice(
 
-    val initialState: OvenState = OvenState(), val deviceId: String, val deviceName: String
+    val initialState: OvenState = OvenState(),
+    val deviceId: String,
+    val deviceName: String,
+    val deviceMeta: Meta = Meta()
+
 
 ) : Device(
-    id = deviceId,
-    name = deviceName,
-    deviceType = DeviceType.OVEN,
-    meta = Meta(category = DeviceType.OVEN)
+    id = deviceId, name = deviceName, deviceType = DeviceType.OVEN, meta = deviceMeta
 ) {
 
     private val _state: MutableStateFlow<OvenState> = MutableStateFlow(initialState)
@@ -155,45 +152,42 @@ data class OvenDevice(
     fun setTemperature(temperature: Int) {
         _state.update { it.copy(temperature = temperature) }
         triggerNewAction(
-            actionType = ActionTypes.SET_TEMPERATURE,
-            params = listOf(temperature.toString())
+            actionType = ActionTypes.SET_TEMPERATURE, params = listOf(temperature.toString())
         )
     }
 
     fun setHeatMode(heatMode: OvenHeatMode) {
         _state.update { it.copy(heatMode = heatMode) }
         triggerNewAction(
-            actionType = ActionTypes.SET_HEAT_MODE,
-            params = listOf(heatMode.value)
+            actionType = ActionTypes.SET_HEAT_MODE, params = listOf(heatMode.value)
         )
     }
 
     fun setGrillMode(grillMode: OvenGrillMode) {
         _state.update { it.copy(grillMode = grillMode) }
         triggerNewAction(
-            actionType = ActionTypes.SET_GRILL_MODE,
-            params = listOf(grillMode.value)
+            actionType = ActionTypes.SET_GRILL_MODE, params = listOf(grillMode.value)
         )
     }
 
     fun setConvectionMode(convectionMode: OvenConvectionMode) {
         _state.update { it.copy(convectionMode = convectionMode) }
         triggerNewAction(
-            actionType = ActionTypes.SET_CONVECTION_MODE,
-            params = listOf(convectionMode.value)
+            actionType = ActionTypes.SET_CONVECTION_MODE, params = listOf(convectionMode.value)
         )
     }
 }
 
 data class DoorDevice(
 
-    val initialState: DoorState = DoorState(), val deviceId: String, val deviceName: String
+    val initialState: DoorState = DoorState(),
+    val deviceId: String,
+    val deviceName: String,
+    val deviceMeta: Meta = Meta()
+
 
 ) : Device(
-    id = deviceId,
-    name = deviceName,
-    deviceType = DeviceType.DOOR,
-    meta = Meta(category = DeviceType.DOOR)
+    id = deviceId, name = deviceName, deviceType = DeviceType.DOOR, meta = deviceMeta
 ) {
 
     private val _state: MutableStateFlow<DoorState> = MutableStateFlow(initialState)
@@ -216,13 +210,13 @@ data class DoorDevice(
 
 data class VacuumDevice(
 
-    val initialState: VacuumState = VacuumState(), val deviceId: String, val deviceName: String
+    val initialState: VacuumState = VacuumState(),
+    val deviceId: String,
+    val deviceName: String,
+    val deviceMeta: Meta = Meta()
 
 ) : Device(
-    id = deviceId,
-    name = deviceName,
-    deviceType = DeviceType.VACUUM_CLEANER,
-    meta = Meta(category = DeviceType.VACUUM_CLEANER)
+    id = deviceId, name = deviceName, deviceType = DeviceType.VACUUM_CLEANER, meta = deviceMeta
 ) {
 
     private val _state: MutableStateFlow<VacuumState> = MutableStateFlow(initialState)
@@ -243,8 +237,7 @@ data class VacuumDevice(
     fun setMode(mode: VacuumCleanMode) {
         _state.update { it.copy(mode = mode) }
         triggerNewAction(
-            actionType = ActionTypes.SET_MODE,
-            params = listOf(mode.value)
+            actionType = ActionTypes.SET_MODE, params = listOf(mode.value)
         )
     }
 

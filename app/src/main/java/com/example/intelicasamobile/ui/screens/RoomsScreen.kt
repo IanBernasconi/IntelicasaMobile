@@ -168,25 +168,25 @@ fun DevicesList(
         roomsModel.getRooms()
     }
 
-    Column(modifier = Modifier.offset(x = offset.x, y = offset.y)) {
+    Column(
+        modifier = Modifier.offset(x = offset.x, y = offset.y).fillMaxHeight(),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
 
-        Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
-        ) {
-            ShapeDropdownSelector(
-                stateHolder = dropdownRoomStateHolder,
-                shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 0.dp),
-                color = MaterialTheme.colorScheme.secondary,
-                fontSize = 24
-            )
-        }
+        Column() {
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
+
+            Row(
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
+            ) {
+                ShapeDropdownSelector(
+                    stateHolder = dropdownRoomStateHolder,
+                    shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 0.dp),
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 24
+                )
+            }
+
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_small)),
                 state = stateGrid,
@@ -194,14 +194,16 @@ fun DevicesList(
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
             ) {
-                items(devicesState.devices) {
-                    if (roomsState.rooms[index].id == "all" || it.roomId == roomsState.rooms[index].id) {
-                        DeviceCard(device = it)
-
-                    }
+                items(devicesState.devices.filter {
+                    roomsState.rooms[index].id == "all" || roomsState.rooms[index].containsDevice(
+                        it.id
+                    )
+                }) {
+                    DeviceCard(device = it)
                 }
             }
         }
+
 
         Row(
             modifier = Modifier
@@ -220,7 +222,7 @@ fun DevicesList(
                         .size(35.dp)
                         .padding(dimensionResource(id = R.dimen.padding_small)),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (i == index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
+                        containerColor = if (i == index) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary
                     )
                 ) {}
             }

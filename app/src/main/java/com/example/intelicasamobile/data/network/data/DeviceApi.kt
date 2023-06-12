@@ -14,6 +14,7 @@ import com.example.intelicasamobile.model.DoorDevice
 import com.example.intelicasamobile.model.DoorState
 import com.example.intelicasamobile.model.LightDevice
 import com.example.intelicasamobile.model.LightState
+import com.example.intelicasamobile.model.Meta
 import com.example.intelicasamobile.model.OvenConvectionMode
 import com.example.intelicasamobile.model.OvenDevice
 import com.example.intelicasamobile.model.OvenGrillMode
@@ -48,7 +49,10 @@ object DeviceApi {
                             isOn = state.getString("status") == "on",
                             brightness = state.getInt("brightness"),
                             color = Color(parseColor("#" + state.getString("color")))
-                        ), deviceId = device.getString("id"), deviceName = device.getString("name")
+                        ),
+                        deviceId = device.getString("id"),
+                        deviceName = device.getString("name"),
+                        deviceMeta = Meta(device.getJSONObject("meta").optBoolean("favorite"))
                     )
 
                     DeviceType.AIR_CONDITIONER -> ACDevice(
@@ -65,7 +69,10 @@ object DeviceApi {
                             horizontalSwing = if (state.getString("horizontalSwing") == "auto") -135 else state.getInt(
                                 "horizontalSwing"
                             )
-                        ), deviceId = device.getString("id"), deviceName = device.getString("name")
+                        ),
+                        deviceId = device.getString("id"),
+                        deviceName = device.getString("name"),
+                        deviceMeta = Meta(device.getJSONObject("meta").optBoolean("favorite"))
                     )
 
                     DeviceType.OVEN -> OvenDevice(
@@ -75,14 +82,21 @@ object DeviceApi {
                             heatMode = OvenHeatMode.getMode(state.getString("heat")),
                             grillMode = OvenGrillMode.getMode(state.getString("grill")),
                             convectionMode = OvenConvectionMode.getMode(state.getString("convection"))
-                        ), deviceId = device.getString("id"), deviceName = device.getString("name")
+                        ),
+                        deviceId = device.getString("id"),
+                        deviceName = device.getString("name"),
+                        deviceMeta = Meta(device.getJSONObject("meta").optBoolean("favorite"))
                     )
 
                     DeviceType.DOOR -> DoorDevice(
                         initialState = DoorState(
                             isLocked = state.getString("status") == "locked",
                             isOpen = state.getString("status") == "opened"
-                        ), deviceId = device.getString("id"), deviceName = device.getString("name")
+                        ),
+                        deviceId = device.getString("id"),
+                        deviceName = device.getString("name"),
+                        deviceMeta = Meta(device.getJSONObject("meta").optBoolean("favorite"))
+
                     )
 
                     DeviceType.VACUUM_CLEANER -> VacuumDevice(
@@ -91,7 +105,11 @@ object DeviceApi {
                             state = VacuumStateEnum.getMode(state.getString("status")),
                             mode = VacuumCleanMode.getMode(state.getString("mode"))
                             //TODO location
-                        ), deviceId = device.getString("id"), deviceName = device.getString("name")
+                        ),
+                        deviceId = device.getString("id"),
+                        deviceName = device.getString("name"),
+                        deviceMeta = Meta(device.getJSONObject("meta").optBoolean("favorite"))
+
                     )
                 }
             }
@@ -111,9 +129,12 @@ object DeviceApi {
         return Api.put(getUrl(device.id), updatedDevice.toString())
     }
 
-     suspend fun triggerEvent(event: Action): JSONObject? {
-         println(JSONArray(event.params.toString()))
-         return Api.put("$devicesUrl/${event.deviceId}/${event.action.apiName}", JSONArray(event.params.toString()).toString())
-     }
+    suspend fun triggerEvent(event: Action): JSONObject? {
+        println(JSONArray(event.params.toString()))
+        return Api.put(
+            "$devicesUrl/${event.deviceId}/${event.action.apiName}",
+            JSONArray(event.params.toString()).toString()
+        )
+    }
 
 }

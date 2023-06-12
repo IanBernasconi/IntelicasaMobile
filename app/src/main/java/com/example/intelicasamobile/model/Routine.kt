@@ -4,4 +4,5 @@ data class Routine(
     val id: String,
     val name: String,
     val actions: List<Action>,
+    val meta: Meta = Meta()
 )

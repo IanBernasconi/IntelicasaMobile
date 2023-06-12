@@ -40,8 +40,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.DevicesViewModel
+import com.example.intelicasamobile.data.network.data.DeviceApi
+import com.example.intelicasamobile.data.network.data.RoutineApi
+import com.example.intelicasamobile.model.Action
 import com.example.intelicasamobile.model.Routine
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun RoutineCard(
@@ -77,7 +83,11 @@ fun RoutineCard(
                         color = MaterialTheme.colorScheme.onPrimary,
                     )
                     IconButton(
-                        onClick = {/* TODO */ },
+                        onClick = {
+                            CoroutineScope(Dispatchers.Main).launch {
+                               RoutineApi.execute(routine)
+                            }
+                        },
                     ) {
                         Icon(
                             imageVector = Icons.Default.PlayCircle,
@@ -90,7 +100,9 @@ fun RoutineCard(
                 Row(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    val devices = routine.actions.map { action -> devicesState.devices.find { it.id == action.deviceId } }.distinct()
+                    val devices =
+                        routine.actions.map { action -> devicesState.devices.find { it.id == action.deviceId } }
+                            .distinct()
                     devices.forEach {
                         if (it != null) {
                             Image(
