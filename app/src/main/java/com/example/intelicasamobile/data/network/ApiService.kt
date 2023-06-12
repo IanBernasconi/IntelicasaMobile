@@ -15,4 +15,7 @@ interface ApiService {
     @PUT("/api/devices/{id}/{actionName}")
     suspend fun triggerEvent(@Path("id") id: String, @Path("actionName") actionName: String, @Body params: List<String>)
 
+    @PUT("/api/routines/{id}/execute")
+    suspend fun executeRoutine(@Path("id") id: String): Response<Unit>
+
 }
