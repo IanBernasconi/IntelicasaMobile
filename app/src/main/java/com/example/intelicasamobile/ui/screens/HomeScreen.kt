@@ -42,9 +42,13 @@ fun HomeScreen(
     routinesModel: RoutinesViewModel = viewModel()
 ) {
     val devicesState by devicesModel.devicesUiState.collectAsState()
+    val routinesState by routinesModel.routinesUiState.collectAsState()
     SwipeRefresh(
-        state = rememberSwipeRefreshState(devicesState.isLoading),
-        onRefresh = { devicesModel.fetchDevices() },
+        state = rememberSwipeRefreshState(devicesState.isLoading || routinesState.isLoading),
+        onRefresh = {
+            devicesModel.fetchDevices()
+            routinesModel.fetchRoutines()
+        },
     ){
         Surface(
             color = MaterialTheme.colorScheme.background
@@ -52,9 +56,9 @@ fun HomeScreen(
             val configuration = LocalConfiguration.current
             val orientation = configuration.orientation
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                HomeScreenPortrait(devicesModel)
+                HomeScreenPortrait(devicesModel=devicesModel, routinesModel=routinesModel)
             } else {
-                HomeScreenLandscape()
+                HomeScreenLandscape(devicesModel=devicesModel, routinesModel=routinesModel)
             }
 
         }
@@ -139,7 +143,7 @@ private fun RoutinesHomeList(
 ) {
 
     LaunchedEffect(Unit) {
-        model.getRoutines()
+        model.fetchRoutines()
     }
 
     val state by model.routinesUiState.collectAsState()

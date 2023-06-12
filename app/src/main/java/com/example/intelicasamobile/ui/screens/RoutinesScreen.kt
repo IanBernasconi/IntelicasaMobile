@@ -24,6 +24,8 @@ import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.ui.routines.RoutineCard
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview(showBackground = true)
@@ -34,11 +36,12 @@ fun RoutinesScreen(
 ) {
     val routinesState by routinesModel.routinesUiState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        routinesModel.getRoutines()
-    }
-
-    IntelicasaMobileTheme() {
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(routinesState.isLoading),
+        onRefresh = {
+            routinesModel.fetchRoutines()
+        },
+    ){
         Surface(
             color = MaterialTheme.colorScheme.background
         ) {
@@ -59,6 +62,7 @@ fun RoutinesScreen(
             }
         }
     }
+
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
