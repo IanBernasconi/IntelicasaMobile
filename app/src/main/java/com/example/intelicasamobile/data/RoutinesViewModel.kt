@@ -1,9 +1,7 @@
 package com.example.intelicasamobile.data
 
 import androidx.lifecycle.ViewModel
-import com.example.intelicasamobile.data.network.data.DeviceApi
 import com.example.intelicasamobile.data.network.data.RoutineApi
-import com.example.intelicasamobile.model.Device
 import com.example.intelicasamobile.model.Routine
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
