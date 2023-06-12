@@ -8,7 +8,6 @@ data class NetworkDeviceList (
 
 )
 
-
 data class NetworkType (
 
     @SerializedName("id"         ) var id         : String? = null,
@@ -34,7 +33,6 @@ data class NetworkState (
     @SerializedName("opened"         ) var opened          : String? = null,
     @SerializedName("batteryLevel") var batteryLevel : Int? = null,
 )
-
 
 data class NetworkCategory (
 

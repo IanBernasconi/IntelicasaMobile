@@ -3,9 +3,8 @@ package com.example.intelicasamobile.model
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
-import com.example.intelicasamobile.data.network.data.DeviceApi.triggerEvent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.viewModelScope
+import com.example.intelicasamobile.data.network.RetrofitClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,9 +18,11 @@ open class Device(
     val meta: Meta = Meta(),
     val roomId: String? = null,
 ) : ViewModel() {
+
     protected fun triggerNewAction(actionType: ActionTypes, params: List<String> = emptyList()) {
-        CoroutineScope(Dispatchers.Main).launch {
-            triggerEvent(Action(actionType, id, params))
+        viewModelScope.launch {
+            val apiService = RetrofitClient.getApiService()
+            apiService.triggerEvent(id = id, actionName = actionType.apiName, params = params)
         }
     }
 }
