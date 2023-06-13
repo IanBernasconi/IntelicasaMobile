@@ -109,7 +109,7 @@ object DeviceApi {
                         deviceId = device.getString("id"),
                         deviceName = device.getString("name"),
                         deviceMeta = Meta(device.getJSONObject("meta").optBoolean("favorite")),
-                        locationId = state.getJSONObject("location").optString("id")
+                        locationId = state.optJSONObject("location")?.optString("id")
                     )
                 }
             }
