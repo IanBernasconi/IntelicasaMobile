@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -42,13 +43,12 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 @Preview(showBackground = true, name = "Intelicasa")
 @Composable
 fun IntelicasaAppNavHost(
-    viewModel: DevicesViewModel = DevicesViewModel(),
+    devicesModel: DevicesViewModel = viewModel(),
+    routinesModel: RoutinesViewModel = viewModel(),
+    roomsModel: RoomsViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
     windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
 ) {
-    val devicesModel by remember { mutableStateOf(DevicesViewModel()) }
-    val routinesModel by remember { mutableStateOf(RoutinesViewModel()) }
-    val roomsModel by remember { mutableStateOf(RoomsViewModel()) }
 
     val screens = listOf(
         Screen(

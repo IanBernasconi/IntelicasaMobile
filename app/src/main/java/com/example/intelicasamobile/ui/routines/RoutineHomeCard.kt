@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.data.network.RetrofitClient
 import com.example.intelicasamobile.data.network.data.RoutineApi
 import com.example.intelicasamobile.model.Routine
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
@@ -66,8 +67,10 @@ fun RoutineHomeCard(
                     )
                     IconButton(
                         onClick = {
+                            // TODO ask about scope
                             CoroutineScope(Dispatchers.Main).launch {
-                                RoutineApi.execute(routine)
+                                val apiService = RetrofitClient.getApiService()
+                                apiService.executeRoutine(id = routine.id)
                             }
                         },
                     ) {

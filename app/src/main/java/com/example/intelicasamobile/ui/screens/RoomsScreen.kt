@@ -49,6 +49,8 @@ import com.example.intelicasamobile.ui.components.ShapeDropdownSelector
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.devices.DeviceCard
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Preview(showBackground = true)
 @Composable
@@ -57,78 +59,85 @@ fun RoomsScreen(
     roomsModel: RoomsViewModel = viewModel(),
 ) {
     val roomsState by roomsModel.roomsUiState.collectAsState()
-
+    var currentIndex by remember { mutableStateOf(roomsState.rooms.indexOf(roomsState.currentRoom)) }
     var offsetX by remember { mutableStateOf(0f) }
     var pixelWidth by remember { mutableStateOf(0) }
 
-    var currentIndex by remember { mutableStateOf(roomsState.rooms.indexOf(roomsState.currentRoom)) }
 
     LaunchedEffect(Unit) {
-        roomsModel.getRooms()
+        roomsModel.fetchRooms()
     }
 
-
-    IntelicasaMobileTheme() {
-        Surface(color = MaterialTheme.colorScheme.background,
-            modifier = Modifier
-                .onGloballyPositioned { pixelWidth = it.size.width }
-                .fillMaxHeight()
-                .draggable(orientation = Orientation.Horizontal,
-                    state = rememberDraggableState { delta ->
-                        offsetX += delta
-                    },
-                    onDragStopped = {
-                        if (offsetX > pixelWidth / 3) {
-                            currentIndex =
-                                (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
-                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
-
-                        } else if (offsetX < -pixelWidth / 3) {
-                            currentIndex = (currentIndex + 1) % roomsState.rooms.size
-                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
-
-                        }
-                        offsetX = 0f
-                    })
-        ) {
-            Box() {
-                if (roomsState.rooms.isNotEmpty()) {
-                    currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
-
-                    DevicesList(
-                        offset = DpOffset(
-                            with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() },
-                            0.dp
-                        ),
-                        roomsModel = roomsModel,
-                        devicesModel = devicesModel,
-                        index = (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
-                    )
-                    DevicesList(
-                        offset = DpOffset(
-                            with(LocalDensity.current) { (offsetX * 1.5f).toDp() },
-                            0.dp
-                        ),
-                        setIndex = { index ->
-                            currentIndex = index
-                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing = roomsState.isLoading),
+        onRefresh = {
+            roomsModel.fetchRooms()
+            devicesModel.fetchDevices()
+        })
+    {
+        IntelicasaMobileTheme() {
+            Surface(color = MaterialTheme.colorScheme.background,
+                modifier = Modifier
+                    .onGloballyPositioned { pixelWidth = it.size.width }
+                    .fillMaxHeight()
+                    .draggable(orientation = Orientation.Horizontal,
+                        state = rememberDraggableState { delta ->
+                            offsetX += delta
                         },
-                        roomsModel = roomsModel,
-                        devicesModel = devicesModel,
-                        index = currentIndex
-                    )
-                    DevicesList(
-                        offset = DpOffset(
-                            with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() },
-                            0.dp
-                        ),
-                        roomsModel = roomsModel,
-                        devicesModel = devicesModel,
-                        index = (currentIndex + 1) % roomsState.rooms.size
-                    )
+                        onDragStopped = {
+                            if (offsetX > pixelWidth / 3) {
+                                currentIndex =
+                                    (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
+                                roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+
+                            } else if (offsetX < -pixelWidth / 3) {
+                                currentIndex = (currentIndex + 1) % roomsState.rooms.size
+                                roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+
+                            }
+                            offsetX = 0f
+                        })
+            ) {
+                Box() {
+                    if (roomsState.rooms.isNotEmpty()) {
+                        currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
+                        //TODO aca se rompe
+
+                        DevicesList(
+                            offset = DpOffset(
+                                with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() },
+                                0.dp
+                            ),
+                            roomsModel = roomsModel,
+                            devicesModel = devicesModel,
+                            index = (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
+                        )
+                        DevicesList(
+                            offset = DpOffset(
+                                with(LocalDensity.current) { (offsetX * 1.5f).toDp() },
+                                0.dp
+                            ),
+                            setIndex = { index ->
+                                currentIndex = index
+                                roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+                            },
+                            roomsModel = roomsModel,
+                            devicesModel = devicesModel,
+                            index = currentIndex
+                        )
+                        DevicesList(
+                            offset = DpOffset(
+                                with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() },
+                                0.dp
+                            ),
+                            roomsModel = roomsModel,
+                            devicesModel = devicesModel,
+                            index = (currentIndex + 1) % roomsState.rooms.size
+                        )
+                    }
                 }
             }
-        }
+    }
     }
 }
 
@@ -164,12 +173,10 @@ fun DevicesList(
 
     val stateGrid = rememberLazyGridState()
 
-    LaunchedEffect(Unit) {
-        roomsModel.getRooms()
-    }
-
     Column(
-        modifier = Modifier.offset(x = offset.x, y = offset.y).fillMaxHeight(),
+        modifier = Modifier
+            .offset(x = offset.x, y = offset.y)
+            .fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 

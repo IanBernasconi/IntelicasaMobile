@@ -32,6 +32,8 @@ import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.ui.CategoryCard
 import com.example.intelicasamobile.ui.devices.DeviceCard
 import com.example.intelicasamobile.ui.routines.RoutineHomeCard
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -41,25 +43,34 @@ fun HomeScreen(
     routinesModel: RoutinesViewModel = viewModel(),
     roomsModel: RoomsViewModel = viewModel()
 ) {
-    Surface(
-        color = MaterialTheme.colorScheme.background
-    ) {
-        val configuration = LocalConfiguration.current
-        val orientation = configuration.orientation
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            HomeScreenPortrait(devicesModel, routinesModel, roomsModel)
-        } else {
-            HomeScreenLandscape(devicesModel, routinesModel, roomsModel)
-        }
+    val devicesState by devicesModel.devicesUiState.collectAsState()
+    val routinesState by routinesModel.routinesUiState.collectAsState()
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(devicesState.isLoading || routinesState.isLoading),
+        onRefresh = {
+            devicesModel.fetchDevices()
+            routinesModel.fetchRoutines()
+        },
+    ){
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
+            val configuration = LocalConfiguration.current
+            val orientation = configuration.orientation
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                HomeScreenPortrait(devicesModel=devicesModel, routinesModel=routinesModel)
+            } else {
+                HomeScreenLandscape(devicesModel=devicesModel, routinesModel=routinesModel)
+            }
 
+        }
     }
 }
 
 @Composable
 fun HomeScreenPortrait(
     devicesModel: DevicesViewModel = viewModel(),
-    routinesModel: RoutinesViewModel = viewModel(),
-    roomsModel: RoomsViewModel = viewModel()
+    routinesModel: RoutinesViewModel = viewModel()
 ) {
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
@@ -107,7 +118,7 @@ private fun DevicesHomeList(
     val state by model.devicesUiState.collectAsState()
 
     LaunchedEffect(Unit) {
-        model.getDevices()
+        model.fetchDevices()
     }
 
     CategoryCard(
@@ -137,7 +148,7 @@ private fun RoutinesHomeList(
 ) {
 
     LaunchedEffect(Unit) {
-        model.getRoutines()
+        model.fetchRoutines()
     }
 
     val state by model.routinesUiState.collectAsState()
