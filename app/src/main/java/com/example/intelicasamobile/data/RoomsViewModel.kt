@@ -2,6 +2,7 @@ package com.example.intelicasamobile.data
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.network.RetrofitClient
 import com.example.intelicasamobile.data.network.model.NetworkRoomsList
 import com.example.intelicasamobile.model.Room
@@ -34,12 +35,21 @@ class RoomsViewModel : ViewModel() {
                 apiService.getRooms()
             }.onSuccess { response ->
                 println("Response: $response")
-                val rooms = getRoomsFromNetwork(response.body())
+                var rooms = getRoomsFromNetwork(response.body())?.toMutableList()
                 println("Rooms: $rooms")
+                if (rooms == null){
+                    rooms = mutableListOf( Room("all", RoomType.OTHER, name = "", nameId = R.string.all_devices_room))
+                }else{
+                    if (rooms.indexOfFirst { it.id == "all" } == -1) {
+                        rooms.add(0, Room("all", RoomType.OTHER, name = "", nameId = R.string.all_devices_room))
+                    }
+                }
                 _roomsUiState.update { it.copy(
-                    rooms = rooms?: emptyList(),
-                    isLoading = false
+                    rooms = rooms,
+                    isLoading = false,
+                    currentRoom = rooms?.firstOrNull()
                 ) }
+
             }.onFailure { e ->
                 _roomsUiState.update { it.copy(
                     isLoading = false,

@@ -64,6 +64,10 @@ fun RoomsScreen(
     var pixelWidth by remember { mutableStateOf(0) }
 
 
+    LaunchedEffect(Unit) {
+        roomsModel.fetchRooms()
+    }
+
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing = roomsState.isLoading),
         onRefresh = {
@@ -97,6 +101,7 @@ fun RoomsScreen(
                 Box() {
                     if (roomsState.rooms.isNotEmpty()) {
                         currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
+                        //TODO aca se rompe
 
                         DevicesList(
                             offset = DpOffset(
@@ -149,7 +154,7 @@ fun DevicesList(
 
     val dropdownRoomStateHolder = rememberDropdownSelectorState(items = roomsState.rooms.map {
         DropdownSelectorItem(
-            label = it.name,
+            label = if (it.nameId != null) stringResource(id = it.nameId) else it.name,
             value = it,
             icon = it.roomType.imageResourceId
         )
@@ -160,17 +165,13 @@ fun DevicesList(
 
     dropdownRoomStateHolder.onSelected(
         DropdownSelectorItem(
-            label = roomsState.rooms[index].name,
+            label = if (roomsState.rooms[index].nameId != null) stringResource(id = roomsState.rooms[index].nameId!!) else roomsState.rooms[index].name,
             value = roomsState.rooms[index],
             icon = roomsState.rooms[index].roomType.imageResourceId
         )
     )
 
     val stateGrid = rememberLazyGridState()
-
-    LaunchedEffect(Unit) {
-        roomsModel.fetchRooms()
-    }
 
     Column(
         modifier = Modifier

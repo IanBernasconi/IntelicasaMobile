@@ -5,7 +5,7 @@ data class Room (
     val roomType: RoomType,
     val name: String = "",
     val meta: RoomMeta = RoomMeta(),
-//    val nameId: Int? = null
+    val nameId: Int? = null
 ){
     private val devicesId: MutableList<String> = mutableListOf()
 
