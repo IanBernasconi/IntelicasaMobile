@@ -3,7 +3,6 @@ package com.example.intelicasamobile.data
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.intelicasamobile.data.network.RetrofitClient
-import com.example.intelicasamobile.data.network.data.DeviceApi
 import com.example.intelicasamobile.data.network.data.RoutineApi
 import com.example.intelicasamobile.data.network.model.NetworkRoutineList
 import com.example.intelicasamobile.model.Action

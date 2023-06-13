@@ -1,6 +1,7 @@
 package com.example.intelicasamobile.data.network
 
 import com.example.intelicasamobile.data.network.model.NetworkDeviceList
+import com.example.intelicasamobile.data.network.model.NetworkRoomsList
 import com.example.intelicasamobile.data.network.model.NetworkRoutineList
 import retrofit2.Response
 import retrofit2.http.Body
@@ -21,5 +22,8 @@ interface ApiService {
 
     @PUT("/api/routines/{id}/execute")
     suspend fun executeRoutine(@Path("id") id: String): Response<Unit>
+
+    @GET("/api/rooms")
+    suspend fun getRooms(): Response<NetworkRoomsList>
 
 }

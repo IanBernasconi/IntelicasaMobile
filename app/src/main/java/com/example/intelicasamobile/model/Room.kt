@@ -1,10 +1,11 @@
 package com.example.intelicasamobile.model
 
 data class Room (
-    val id: String,
+    val id: String = "",
     val roomType: RoomType,
-    val name: String,
-    val nameId: Int? = null
+    val name: String = "",
+    val meta: RoomMeta = RoomMeta(),
+//    val nameId: Int? = null
 ){
     private val devicesId: MutableList<String> = mutableListOf()
 
