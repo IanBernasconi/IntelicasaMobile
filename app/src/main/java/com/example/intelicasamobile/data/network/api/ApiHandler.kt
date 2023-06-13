@@ -9,7 +9,7 @@ import java.net.URL
 
 class Api {
     companion object {
-        const val BASE_URL = "http://10.0.2.2:8080/api"
+        const val BASE_URL = "http://192.168.1.4:8080/api"
         private var isConnected = false
 
         fun setConnected(value: Boolean) {
