@@ -1,5 +1,7 @@
 package com.example.intelicasamobile.ui.devices
 
+import android.content.res.Configuration
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,12 +27,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.LightDevice
@@ -41,7 +45,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, device = "spec:parent=pixel_5,orientation=landscape")
 @Composable
 fun LightDeviceInfoPreview() {
     val device = LightDevice(deviceId = "1", deviceName = "Luz")
@@ -65,6 +69,10 @@ fun LightDeviceInfo(
     var updateTimeout by remember { mutableStateOf<Job?>(null) }
     val scope = rememberCoroutineScope()
 
+    var showColorPicker by remember { mutableStateOf(false) }
+
+    var isFirstColorSet = true
+
     LaunchedEffect(device) {
         colorController.setEnabled(!device.isLoading())
     }
@@ -74,7 +82,10 @@ fun LightDeviceInfo(
         updateTimeout = null
         updateTimeout = scope.launch {
             delay(250) // wait for 250ms before sending the request
-            device.setColor(color)
+            if (!isFirstColorSet || color != Color.White) {
+                device.setColor(color)
+            }
+            isFirstColorSet = false
         }
     }
 
@@ -174,19 +185,14 @@ fun LightDeviceInfo(
                         modifier = Modifier
                             .width(50.dp)
                             .height(50.dp)
-                            .padding(5.dp),
+                            .padding(5.dp)
+                            .clickable { showColorPicker = true },
                     )
                 }
             }
         }
-
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
+        if (showColorPicker) {
+            Dialog(onDismissRequest = { showColorPicker = false }) {
                 HsvColorPicker(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -199,5 +205,6 @@ fun LightDeviceInfo(
                     }
                 )
             }
+        }
     }
 }

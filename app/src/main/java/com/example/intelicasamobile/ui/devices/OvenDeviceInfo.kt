@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -52,7 +54,7 @@ fun OvenDeviceInfo(
     modifier: Modifier = Modifier,
     device: OvenDevice = viewModel(),
 ) {
-
+    val scrollState = rememberScrollState()
     val uiState by device.state.collectAsState()
 
     var localTemperature by remember { mutableStateOf(uiState.temperature) }
@@ -115,7 +117,11 @@ fun OvenDeviceInfo(
 
 
     IntelicasaMobileTheme {
-        Column(modifier = modifier) {
+        Column(
+            modifier = modifier.verticalScroll(
+                state = scrollState
+            )
+        ) {
             Row(
                 modifier = modifier
                     .fillMaxWidth()

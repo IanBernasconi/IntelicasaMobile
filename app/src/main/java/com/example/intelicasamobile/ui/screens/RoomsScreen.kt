@@ -1,5 +1,6 @@
 package com.example.intelicasamobile.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -30,8 +31,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
@@ -65,13 +68,11 @@ fun RoomsScreen(
     var pixelWidth by remember { mutableStateOf(0) }
 
     // TODO this refresh doesn't work without some previous rooms
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(roomsState.isLoading || devicesState.isLoading),
+    SwipeRefresh(state = rememberSwipeRefreshState(roomsState.isLoading || devicesState.isLoading),
         onRefresh = {
             roomsModel.fetchRooms()
             devicesModel.fetchDevices()
-        }
-    ) {
+        }) {
         Surface(color = MaterialTheme.colorScheme.background,
             modifier = Modifier
                 .fillMaxSize()
@@ -93,10 +94,10 @@ fun RoomsScreen(
                         }
                         offsetX = 0f
                     })
-                ) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        if (roomsState.rooms.isNotEmpty()) {
-                            currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (roomsState.rooms.isNotEmpty()) {
+                    currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
 
                     DevicesList(
                         offset = DpOffset(
@@ -176,20 +177,16 @@ fun DevicesList(
             .fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+        ShapeDropdownSelector(
+            stateHolder = dropdownRoomStateHolder,
+            shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 0.dp),
+            color = MaterialTheme.colorScheme.secondary,
+            fontSize = 24
+        )
 
-        Column {
-            Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
-            ) {
-                ShapeDropdownSelector(
-                    stateHolder = dropdownRoomStateHolder,
-                    shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 0.dp),
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontSize = 24
-                )
-            }
-
+        Box(modifier = Modifier.weight(1f)) {
             LazyVerticalGrid(
+                modifier = Modifier.fillMaxSize(),
                 columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
                 state = stateGrid,
                 contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
@@ -205,12 +202,10 @@ fun DevicesList(
                 }
             }
         }
-
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.padding_medium)),
+                .padding(dimensionResource(id = R.dimen.padding_small)),
             horizontalArrangement = Arrangement.Center,
         ) {
             List(roomsState.rooms.size) { i ->
@@ -224,7 +219,7 @@ fun DevicesList(
                         .size(35.dp)
                         .padding(dimensionResource(id = R.dimen.padding_small)),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (i == index) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary
+                        containerColor = if (i == index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
                     )
                 ) {}
             }

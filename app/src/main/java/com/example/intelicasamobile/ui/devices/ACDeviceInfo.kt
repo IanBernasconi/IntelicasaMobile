@@ -1,11 +1,16 @@
 package com.example.intelicasamobile.ui.devices
 
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -52,6 +57,7 @@ fun ACDeviceInfo(
     modifier: Modifier = Modifier,
     device: ACDevice = viewModel(),
 ) {
+    val scrollState = rememberScrollState()
 
     val uiState by device.state.collectAsState()
 
@@ -74,230 +80,231 @@ fun ACDeviceInfo(
         ),
         onItemSelected = { device.setMode(it.value as ACMode) })
 
-    IntelicasaMobileTheme {
-        Column(modifier = modifier) {
-            Row(
+    Column(
+        modifier = modifier.verticalScroll(
+            state = scrollState
+        )
+    ) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            StateInfo(
+                isOn = uiState.isOn,
+                setIsOn = { device.setIsOn(it) },
+                modifier = modifier,
+                loading = device.isLoading()
+            )
+        }
+
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
                 modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                    .fillMaxWidth(0.5f)
+                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                horizontalAlignment = Alignment.Start
             ) {
-                StateInfo(
-                    isOn = uiState.isOn,
-                    setIsOn = { device.setIsOn(it) },
-                    modifier = modifier,
-                    loading = device.isLoading()
+                Text(
+                    text = stringResource(id = R.string.AC_temperature),
+                    style = TextStyle(fontSize = 16.sp)
                 )
             }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+            Column(
+                modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
             ) {
-                Column(
-                    modifier = modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                    horizontalAlignment = Alignment.Start
+                Row(
+                    modifier = modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
                 ) {
                     Text(
-                        text = stringResource(id = R.string.AC_temperature),
-                        style = TextStyle(fontSize = 16.sp)
+                        text = "${localTemperature}°C", modifier = modifier.padding(end = 4.dp)
                     )
-                }
-
-                Column(
-                    modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
-                ) {
-                    Row(
-                        modifier = modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Text(
-                            text = "${localTemperature}°C", modifier = modifier.padding(end = 4.dp)
-                        )
-                        Slider(value = localTemperature.toFloat(),
-                            onValueChange = { localTemperature = it.roundToInt() },
-                            valueRange = 18f..38f,
-                            steps = 0,
-                            enabled = !device.isLoading(),
-                            modifier = modifier.width(125.dp),
-                            colors = SliderDefaults.colors(
-                                thumbColor = MaterialTheme.colorScheme.primary,
-                                activeTrackColor = MaterialTheme.colorScheme.primary,
-                                inactiveTrackColor = MaterialTheme.colorScheme.secondary
-                            ),
-                            onValueChangeFinished = { device.setTemperature(localTemperature) })
-                    }
+                    Slider(value = localTemperature.toFloat(),
+                        onValueChange = { localTemperature = it.roundToInt() },
+                        valueRange = 18f..38f,
+                        steps = 0,
+                        enabled = !device.isLoading(),
+                        modifier = modifier.width(125.dp),
+                        colors = SliderDefaults.colors(
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary,
+                            inactiveTrackColor = MaterialTheme.colorScheme.secondary
+                        ),
+                        onValueChangeFinished = { device.setTemperature(localTemperature) })
                 }
             }
+        }
 
-            Row(
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TextFieldDropdownSelector(stateHolder = dropdownModeStateHolder)
+        }
+
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
                 modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                horizontalArrangement = Arrangement.Center
+                    .fillMaxWidth(0.5f)
+                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                horizontalAlignment = Alignment.Start
             ) {
-                TextFieldDropdownSelector(stateHolder = dropdownModeStateHolder)
+                Text(
+                    text = stringResource(id = R.string.AC_vertical_swing),
+                    style = TextStyle(fontSize = 16.sp)
+                )
             }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+            Column(
+                modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
             ) {
-                Column(
-                    modifier = modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                    horizontalAlignment = Alignment.Start
+                Row(
+                    modifier = modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
                 ) {
                     Text(
-                        text = stringResource(id = R.string.AC_vertical_swing),
-                        style = TextStyle(fontSize = 16.sp)
+                        text = if (localVerticalSwing != 0) "${localVerticalSwing}°" else stringResource(
+                            id = R.string.auto_mode
+                        ), modifier = modifier.padding(end = 4.dp)
+                    )
+                    Slider(
+                        value = localVerticalSwing.toFloat(),
+                        onValueChange = { localVerticalSwing = floor(it).toInt() },
+                        enabled = !device.isLoading(),
+                        onValueChangeFinished = { device.setVerticalSwing(localVerticalSwing) },
+                        modifier = modifier.width(125.dp),
+                        valueRange = 0f..90f,
+                        steps = 3,
+                        colors = SliderDefaults.colors(
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary,
+                            inactiveTrackColor = MaterialTheme.colorScheme.secondary
+                        ),
                     )
                 }
+            }
+        }
 
-                Column(
-                    modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
-                ) {
-                    Row(
-                        modifier = modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Text(
-                            text = if (localVerticalSwing != 0) "${localVerticalSwing}°" else stringResource(
-                                id = R.string.auto_mode
-                            ), modifier = modifier.padding(end = 4.dp)
-                        )
-                        Slider(
-                            value = localVerticalSwing.toFloat(),
-                            onValueChange = { localVerticalSwing = floor(it).toInt() },
-                            enabled = !device.isLoading(),
-                            onValueChangeFinished = { device.setVerticalSwing(localVerticalSwing) },
-                            modifier = modifier.width(125.dp),
-                            valueRange = 0f..90f,
-                            steps = 3,
-                            colors = SliderDefaults.colors(
-                                thumbColor = MaterialTheme.colorScheme.primary,
-                                activeTrackColor = MaterialTheme.colorScheme.primary,
-                                inactiveTrackColor = MaterialTheme.colorScheme.secondary
-                            ),
-                        )
-                    }
-                }
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
+                modifier = modifier
+                    .fillMaxWidth(0.5f)
+                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = stringResource(id = R.string.AC_horizontal_swing),
+                    style = TextStyle(fontSize = 16.sp)
+                )
             }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+            Column(
+                modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
             ) {
-                Column(
-                    modifier = modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.AC_horizontal_swing),
-                        style = TextStyle(fontSize = 16.sp)
-                    )
-                }
-
-                Column(
-                    modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = dimensionResource(id = R.dimen.padding_medium)),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Text(
-                            text = if (localHorizontalSwing != -135) "${localHorizontalSwing}°" else stringResource(
-                                id = R.string.auto_mode
-                            ), modifier = modifier.padding(end = 4.dp)
-                        )
-                        Slider(
-                            value = localHorizontalSwing.toFloat(),
-                            onValueChange = { localHorizontalSwing = floor(it).toInt() },
-                            enabled = !device.isLoading(),
-                            onValueChangeFinished = { device.setHorizontalSwing(localHorizontalSwing) },
-                            modifier = modifier.width(125.dp),
-                            valueRange = -135f..90f,
-                            steps = 4,
-                            colors = SliderDefaults.colors(
-                                thumbColor = MaterialTheme.colorScheme.primary,
-                                activeTrackColor = MaterialTheme.colorScheme.primary,
-                                inactiveTrackColor = MaterialTheme.colorScheme.secondary
-                            )
-                        )
-                    }
-                }
-            }
-
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Column(
+                Row(
                     modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                    horizontalAlignment = Alignment.Start
+                        .fillMaxWidth()
+                        .padding(end = dimensionResource(id = R.dimen.padding_medium)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
                 ) {
                     Text(
-                        text = stringResource(id = R.string.AC_fan_speed),
-                        style = TextStyle(fontSize = 16.sp)
+                        text = if (localHorizontalSwing != -135) "${localHorizontalSwing}°" else stringResource(
+                            id = R.string.auto_mode
+                        ), modifier = modifier.padding(end = 4.dp)
+                    )
+                    Slider(
+                        value = localHorizontalSwing.toFloat(),
+                        onValueChange = { localHorizontalSwing = floor(it).toInt() },
+                        enabled = !device.isLoading(),
+                        onValueChangeFinished = { device.setHorizontalSwing(localHorizontalSwing) },
+                        modifier = modifier.width(125.dp),
+                        valueRange = -135f..90f,
+                        steps = 4,
+                        colors = SliderDefaults.colors(
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary,
+                            inactiveTrackColor = MaterialTheme.colorScheme.secondary
+                        )
                     )
                 }
+            }
+        }
 
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = dimensionResource(id = R.dimen.padding_medium)),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Text(
-                            text = if (localFanSpeed != 0) "${localFanSpeed}%" else stringResource(
-                                id = R.string.auto_mode
-                            ), modifier = modifier.padding(end = 4.dp)
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = stringResource(id = R.string.AC_fan_speed),
+                    style = TextStyle(fontSize = 16.sp)
+                )
+            }
+
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = dimensionResource(id = R.dimen.padding_medium)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Text(
+                        text = if (localFanSpeed != 0) "${localFanSpeed}%" else stringResource(
+                            id = R.string.auto_mode
+                        ), modifier = modifier.padding(end = 4.dp)
+                    )
+                    Slider(
+                        value = localFanSpeed.toFloat(),
+                        onValueChange = { localFanSpeed = floor(it).toInt() },
+                        enabled = !device.isLoading(),
+                        onValueChangeFinished = { device.setFanSpeed(localFanSpeed) },
+                        modifier = modifier.width(125.dp),
+                        valueRange = 0f..100f,
+                        steps = 3,
+                        colors = SliderDefaults.colors(
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary,
+                            inactiveTrackColor = MaterialTheme.colorScheme.secondary
                         )
-                        Slider(
-                            value = localFanSpeed.toFloat(),
-                            onValueChange = { localFanSpeed = floor(it).toInt() },
-                            enabled = !device.isLoading(),
-                            onValueChangeFinished = { device.setFanSpeed(localFanSpeed) },
-                            modifier = modifier.width(125.dp),
-                            valueRange = 0f..100f,
-                            steps = 3,
-                            colors = SliderDefaults.colors(
-                                thumbColor = MaterialTheme.colorScheme.primary,
-                                activeTrackColor = MaterialTheme.colorScheme.primary,
-                                inactiveTrackColor = MaterialTheme.colorScheme.secondary
-                            )
-                        )
-                    }
+                    )
                 }
             }
         }
     }
-
 }
