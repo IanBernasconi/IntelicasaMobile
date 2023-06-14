@@ -3,6 +3,7 @@ package com.example.intelicasamobile.ui.devices
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,19 +21,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.Device
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Preview(showBackground = true)
 @Composable
 fun DeviceInfoHeaderPreview() {
-   // DeviceInfoHeader(device = MainUiState().devices[1], onDelete = {})
+    DeviceInfoHeader(device = ACDevice(deviceId = "1", deviceName = "Aire" ))
 }
 
 @Composable
 fun DeviceInfoHeader(
     device: Device,
-    onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     IntelicasaMobileTheme() {
@@ -59,12 +60,13 @@ fun DeviceInfoHeader(
                     .align(Alignment.CenterVertically)
             )
 
-            IconButton(onClick = { onDelete() }) {
-                Icon(
-                    imageVector = Icons.Filled.Delete,
-                    contentDescription = stringResource(id = R.string.delete),
-                    modifier = Modifier.size(25.dp)
-                )
+
+            IconButton(onClick = {}, enabled = false) {
+//                Icon(
+//                    imageVector = Icons.Filled.Delete,
+//                    contentDescription = stringResource(id = R.string.delete),
+//                    modifier = Modifier.size(25.dp)
+//                )
             }
         }
     }

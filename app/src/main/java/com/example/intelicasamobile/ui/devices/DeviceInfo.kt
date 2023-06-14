@@ -63,7 +63,7 @@ fun DeviceInfo(
         Card(modifier = modifier) {
             Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
                 Column {
-                    DeviceInfoHeader(device = device, onDelete = {})
+                    DeviceInfoHeader(device = device)
                     when (device) {
                         is LightDevice -> LightDeviceInfo(
                             state = device
