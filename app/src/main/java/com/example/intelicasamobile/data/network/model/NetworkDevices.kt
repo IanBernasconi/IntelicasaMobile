@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class NetworkDeviceList (
 
-    @SerializedName("result" ) var result : ArrayList<NetworkDevicesResult> = arrayListOf()
+    @SerializedName("result" ) var result : List<NetworkDevicesResult> = listOf()
 
 )
 

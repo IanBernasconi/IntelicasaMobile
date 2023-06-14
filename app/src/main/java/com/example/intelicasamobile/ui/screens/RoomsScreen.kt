@@ -174,8 +174,6 @@ fun DevicesList(
     ) {
 
         Column() {
-
-
             Row(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
             ) {

@@ -26,4 +26,7 @@ interface ApiService {
     @GET("/api/rooms")
     suspend fun getRooms(): Response<NetworkRoomsList>
 
+    @GET("/api/rooms/{id}/devices")
+    suspend fun getDevicesByRoom(@Path("id") id: String): Response<NetworkDeviceList>
+
 }

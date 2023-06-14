@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.network.RetrofitClient
+import com.example.intelicasamobile.data.network.model.NetworkDeviceList
 import com.example.intelicasamobile.data.network.model.NetworkRoomsList
 import com.example.intelicasamobile.model.Room
 import com.example.intelicasamobile.model.RoomMeta
@@ -36,35 +37,86 @@ class RoomsViewModel : ViewModel() {
             }.onSuccess { response ->
                 var rooms = getRoomsFromNetwork(response.body())?.toMutableList()
                 println("Rooms: $rooms")
-                if (rooms == null){
-                    rooms = mutableListOf( Room("all", RoomType.OTHER, name = "", nameId = R.string.all_devices_room))
-                }else{
+                if (rooms == null) {
+                    rooms = mutableListOf(
+                        Room(
+                            "all", RoomType.OTHER, name = "", nameId = R.string.all_devices_room
+                        )
+                    )
+                } else {
                     if (rooms.indexOfFirst { it.id == "all" } == -1) {
-                        rooms.add(0, Room("all", RoomType.OTHER, name = "", nameId = R.string.all_devices_room))
+                        rooms.add(
+                            0, Room(
+                                "all", RoomType.OTHER, name = "", nameId = R.string.all_devices_room
+                            )
+                        )
                     }
                 }
-                _roomsUiState.update { it.copy(
-                    rooms = rooms,
-                    isLoading = false,
-                    currentRoom = rooms.firstOrNull()
-                ) }
+
+                _roomsUiState.update {
+                    it.copy(
+                        rooms = rooms, currentRoom = rooms.firstOrNull()
+                    )
+                }
+                roomsUiState.value.rooms.filter { it.id != "all" }.forEach {
+                    fetchRoomDevices(it)
+                    println("Room Fetch: $it")
+                }
+                _roomsUiState.update { it.copy(isLoading = false) }
 
             }.onFailure { e ->
-                _roomsUiState.update { it.copy(
-                    isLoading = false,
-                    message = e.message
-                ) }
+                _roomsUiState.update {
+                    it.copy(
+                        isLoading = false, message = e.message
+                    )
+                }
             }
         }
     }
 
+    private fun fetchRoomDevices(room: Room) {
+        viewModelScope.launch {
+            _roomsUiState.update { it.copy(isLoading = true) }
+            runCatching {
+                val apiService = RetrofitClient.getApiService()
+                apiService.getDevicesByRoom(room.id)
+            }.onSuccess { response ->
+                val devicesIds = getRoomDevicesFromNetwork(response.body())
+                room.setDevices(devicesIds)
+                _roomsUiState.update {
+                    it.copy(
+                        isLoading = false
+                    )
+                }
+            }.onFailure { e ->
+                _roomsUiState.update {
+                    it.copy(
+                        isLoading = false, message = e.message
+                    )
+                }
+            }
+        }
+
+    }
+
+    private fun getRoomDevicesFromNetwork(networkDeviceList: NetworkDeviceList?): List<String> {
+        val devicesIds = mutableListOf<String>()
+        networkDeviceList?.result?.let { array ->
+            array.map { devResult ->
+                devicesIds.add(devResult.id)
+            }
+        }
+        println("Devices Ids: $devicesIds")
+        return devicesIds
+    }
+
+
     private fun getRoomsFromNetwork(networkRoomsList: NetworkRoomsList?): List<Room>? {
         return networkRoomsList?.result?.let { array ->
-            (0 until array.size).map{ index ->
-                val networkRoom = array[index]
+            array.map { networkRoom ->
                 Room(
-                    id = networkRoom.id?:"",
-                    name = networkRoom.name?:"",
+                    id = networkRoom.id ?: "",
+                    name = networkRoom.name ?: "",
                     roomType = RoomType.getRoomType(networkRoom.meta?.type ?: RoomType.OTHER.name),
                     meta = RoomMeta((networkRoom.meta?.type ?: RoomType.OTHER.name))
                 )
