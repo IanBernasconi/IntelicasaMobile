@@ -10,7 +10,7 @@
     <string name="routines">Routines</string>
     <string name="devices">Devices</string>
     <string name="delete">Delete</string>
-
+    <string name="save">Save</string>
     <string name="auto_mode">Auto</string>
 
     <string name="device_state">State</string>

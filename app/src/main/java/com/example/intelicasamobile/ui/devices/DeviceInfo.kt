@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -19,6 +21,7 @@ import com.example.intelicasamobile.model.DoorDevice
 import com.example.intelicasamobile.model.LightDevice
 import com.example.intelicasamobile.model.OvenDevice
 import com.example.intelicasamobile.model.VacuumDevice
+import com.example.intelicasamobile.ui.components.SaveButton
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Preview(name = "DeviceInfo")
@@ -51,6 +54,7 @@ fun DeviceInfoModal(
                     device = device,
                     modifier = modifier,
                     roomsViewModel = roomsViewModel,
+                    onDismiss = onDismiss
                 )
             }
         }
@@ -62,6 +66,7 @@ fun DeviceInfo(
     device: Device,
     modifier: Modifier = Modifier,
     roomsViewModel: RoomsViewModel = viewModel(),
+    onDismiss: () -> Unit,
 ) {
     IntelicasaMobileTheme {
         Card(modifier = modifier) {
@@ -91,6 +96,13 @@ fun DeviceInfo(
                         is DoorDevice -> DoorDeviceInfo(
                             device = device,
                         )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+
+                    ) {
+                        SaveButton(onDismiss = onDismiss)
                     }
                 }
             }
