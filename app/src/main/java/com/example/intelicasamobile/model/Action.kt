@@ -9,7 +9,6 @@ data class Action(
 enum class ActionTypes(
     val apiName: String,
 ) {
-    /* TODO check */
     TURN_ON("turnOn"),
     TURN_OFF("turnOff"),
     SET_TEMPERATURE("setTemperature"),

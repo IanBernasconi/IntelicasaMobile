@@ -27,12 +27,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.network.RetrofitClient
-import com.example.intelicasamobile.data.network.data.RoutineApi
 import com.example.intelicasamobile.model.Routine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

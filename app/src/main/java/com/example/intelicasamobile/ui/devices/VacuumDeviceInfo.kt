@@ -149,11 +149,14 @@ fun VacuumDeviceInfo(
                 }
             }
 
-            if (uiState.location != "") {
+            if (state.dockLocationId == null) {
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                        .padding(
+                            dimensionResource(id = R.dimen.padding_medium),
+                            dimensionResource(id = R.dimen.padding_small)
+                        ),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     Text(text = stringResource(id = R.string.VCI_no_room_message))

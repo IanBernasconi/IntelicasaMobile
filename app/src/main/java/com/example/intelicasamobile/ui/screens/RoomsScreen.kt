@@ -101,7 +101,6 @@ fun RoomsScreen(
                 Box() {
                     if (roomsState.rooms.isNotEmpty()) {
                         currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
-                        //TODO aca se rompe
 
                         DevicesList(
                             offset = DpOffset(

@@ -124,13 +124,14 @@ class DevicesViewModel: ViewModel() {
                     DeviceType.VACUUM_CLEANER -> VacuumDevice(
                         initialState = VacuumState(
                             batteryLevel = networkDevice.networkState?.batteryLevel ?: 0,
-                            state = VacuumStateEnum.getMode(networkDevice.networkState?.status ?: "idle"),
-                            mode = VacuumCleanMode.getMode(networkDevice.networkState?.mode ?: "quiet"),
-                            //TODO location
+                            state = VacuumStateEnum.getMode(networkDevice.networkState?.status ?: ""),
+                            mode = VacuumCleanMode.getMode(networkDevice.networkState?.mode ?: ""),
+                            location = networkDevice.networkState?.location?.id ?: "",
                         ),
                         deviceId = networkDevice.id,
                         deviceName = networkDevice.name,
-                        deviceMeta = Meta(networkDevice.meta?.favorite ?: false)
+                        deviceMeta = Meta(networkDevice.meta?.favorite ?: false),
+                        dockLocationId = networkDevice.room?.id
                     )
 
                     else -> {

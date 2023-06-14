@@ -76,7 +76,7 @@
     <string name="VS_paused">Paused</string>
 
     <!-- Vacuum Cleaner Info -->
-    <string name="VCI_no_room_message">The device must be linked to a room</string>
+    <string name="VCI_no_room_message">The device must be linked to a room. Please assign one in the website</string>
 
     <!-- Vacuum Cleaner Modes -->
     <string name="VCM_mop">Mop</string>

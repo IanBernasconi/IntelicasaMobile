@@ -39,25 +39,24 @@ data class VacuumState(
     val batteryLevel: Int = 0,
     val state: VacuumStateEnum = VacuumStateEnum.CHARGING,
     val mode: VacuumCleanMode = VacuumCleanMode.VACUUM,
-    val location: String = "" //TODO update with location
+    val location: String = ""
 ) : State()
 
 enum class VacuumStateEnum(
     @StringRes val nameResId: Int,
     val value:String
 ) {
-    //Todo check
-    CLEANING(R.string.VS_cleaning, "cleaning"),
-    CHARGING(R.string.VS_charging, "charging"),
+    CLEANING(R.string.VS_cleaning, "active"),
+    CHARGING(R.string.VS_charging, "docked"),
     PAUSED(R.string.VS_paused,"inactive");
 
     companion object {
         fun getMode(value: String): VacuumStateEnum {
             return when (value) {
-                "cleaning" -> CLEANING
-                "charging" -> CHARGING
-                "paused" -> PAUSED
-                else -> CLEANING
+                "active" -> CLEANING
+                "docked" -> CHARGING
+                "inactive" -> PAUSED
+                else -> PAUSED
             }
         }
     }

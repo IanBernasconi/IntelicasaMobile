@@ -42,8 +42,6 @@ enum class OvenGrillMode(
     val value : String,
     @StringRes val nameResId: Int
 ) {
-    //TODO CHANGE VALUES
-
     OFF(R.drawable.grillmodeoff, "off", nameResId = R.string.OGM_off),
     ECO(R.drawable.ecomode, "eco", nameResId = R.string.OGM_eco),
     CONVENTIONAL(R.drawable.grillmodeconventional, "large", nameResId = R.string.OGM_full);
@@ -60,7 +58,6 @@ enum class OvenConvectionMode(
     val value : String,
     @StringRes val nameResId: Int
 ) {
-    //TODO CHANGE VALUES
     OFF(R.drawable.convectionmodeoff, "off", nameResId = R.string.OCM_off),
     ECO(R.drawable.ecomode, "eco", nameResId = R.string.OCM_eco),
     CONVENTIONAL(R.drawable.convectionmodenormal, "normal", nameResId = R.string.OCM_full);
@@ -77,7 +74,6 @@ enum class VacuumCleanMode(
     val value : String,
     @StringRes val nameResId: Int
 ) {
-    //TODO CHANGE VALUES
     MOP(R.drawable.mopmode, "mop", nameResId = R.string.VCM_mop),
     VACUUM(R.drawable.vacuummode, "vacuum", nameResId = R.string.VCM_vacuum);
 

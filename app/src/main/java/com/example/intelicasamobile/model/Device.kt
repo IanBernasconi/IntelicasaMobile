@@ -213,7 +213,7 @@ data class VacuumDevice(
     val deviceId: String,
     val deviceName: String,
     val deviceMeta: Meta = Meta(),
-    val locationId: String? = null
+    val dockLocationId: String? = null
 
 ) : Device(
     id = deviceId, name = deviceName, deviceType = DeviceType.VACUUM_CLEANER, meta = deviceMeta
@@ -224,7 +224,6 @@ data class VacuumDevice(
 
     fun setState(newState: VacuumStateEnum) {
         _state.update { it.copy(state = newState) }
-        // TODO Check this not working
         triggerNewAction(
             actionType = when (newState) {
                 VacuumStateEnum.CLEANING -> ActionTypes.START_CLEANING
@@ -243,5 +242,8 @@ data class VacuumDevice(
 
     fun setLocation(location: String) {
         _state.update { it.copy(location = location) }
+        triggerNewAction(
+            actionType = ActionTypes.SET_LOCATION, params = listOf(location)
+        )
     }
 }

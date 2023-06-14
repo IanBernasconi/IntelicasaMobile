@@ -30,9 +30,10 @@ data class NetworkState (
     @SerializedName("verticalSwing") var verticalSwing : String? = null,
     @SerializedName("horizontalSwing") var horizontalSwing : String? = null,
     @SerializedName("lock"         ) var locked          : String? = null,
-    @SerializedName("batteryLevel") var batteryLevel : Int? = null,
-)
+    @SerializedName("batteryLevel" ) var batteryLevel : Int? = null,
+    @SerializedName("location"     ) var location: NetworkRoom? = null
 
+)
 data class NetworkCategory (
 
     @SerializedName("id"    ) var id    : String? = null,
@@ -48,7 +49,8 @@ data class NetworkDevicesResult (
     @SerializedName("name"  ) var name  : String,
     @SerializedName("type"  ) var networkType  : NetworkType?   = NetworkType(),
     @SerializedName("state" ) var networkState : NetworkState?  = NetworkState(),
-    @SerializedName("meta"  ) var meta  : NetworkMeta?   = NetworkMeta()
+    @SerializedName("meta"  ) var meta  : NetworkMeta?   = NetworkMeta(),
+    @SerializedName("room"  ) var room  : NetworkRoom?   = NetworkRoom()
 
 )
 
