@@ -25,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -55,39 +57,52 @@ fun RoutineCard(
         Surface(
             color = MaterialTheme.colorScheme.primary
         ) {
-            Column {
+            Column() {
 
                 Row(
-                    modifier = modifier.fillMaxWidth(),
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .weight(3f),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
 
                 ) {
-                    Text(
-                        text = routine.name,
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                    )
-                    IconButton(
-                        onClick = {
-                            //TODO ask about scope
-                            CoroutineScope(Dispatchers.Main).launch {
-                                val apiService = RetrofitClient.getApiService()
-                                apiService.executeRoutine(id = routine.id)
-                            }
-                        },
+                    Column(
+                        modifier = modifier.weight(2f)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.PlayCircle,
-                            contentDescription = "Play",
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.size(50.dp),
+                        Text(
+                            text = routine.name,
+                            fontSize = 24.sp,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
                         )
+                    }
+                    Column(
+                        modifier = modifier.weight(1f),
+                        horizontalAlignment = Alignment.End
+                    ){
+                        IconButton(
+                            onClick = {
+                                //TODO ask about scope
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    val apiService = RetrofitClient.getApiService()
+                                    apiService.executeRoutine(id = routine.id)
+                                }
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.PlayCircle,
+                                contentDescription = "Play",
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier.size(50.dp),
+                            )
+                        }
                     }
                 }
                 Row(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth().weight(2f),
                 ) {
                     val devices =
                         routine.actions.map { action -> devicesState.devices.find { it.id == action.deviceId } }
@@ -110,23 +125,16 @@ fun RoutineCard(
     }
 }
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Preview(showBackground = true)
-//@Composable
-//fun RoutineCardPreview() {
-//    IntelicasaMobileTheme {
-//        LazyVerticalGrid(
-//            columns = GridCells.Fixed(1),
-//        ) {
-//            items(routines) { routine ->
-//                RoutineCard(
-//                    routine = routine,
-//                    Modifier.padding(dimensionResource(id = R.dimen.padding_small))
-//                )
-//            }
-//        }
-//    }
-//}
-
+@Preview(showBackground = true)
+@Composable
+fun RoutineCardPreview() {
+    RoutineCard(
+        routine = Routine(
+            id = "1",
+            name = "Test Routine aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            actions = listOf(),
+        )
+    )
+}
 
 
