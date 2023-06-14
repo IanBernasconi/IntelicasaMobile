@@ -97,7 +97,6 @@ fun DialogButton(@StringRes title: Int, @StringRes text: Int, modifier: Modifier
             Column(
                 modifier = modifier
                     .background(Color.Transparent)
-                    .fillMaxSize()
 //                    .padding(start = drawerWidth)
                 ,
                 verticalArrangement = Arrangement.Center,
