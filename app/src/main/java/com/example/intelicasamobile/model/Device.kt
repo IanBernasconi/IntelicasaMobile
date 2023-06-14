@@ -16,7 +16,6 @@ open class Device(
     val deviceType: DeviceType,
     val name: String = "",
     val meta: Meta = Meta(),
-    val roomId: String? = null,
 ) : ViewModel() {
 
     protected fun triggerNewAction(actionType: ActionTypes, params: List<String> = emptyList()) {
@@ -38,7 +37,7 @@ data class ACDevice(
     id = deviceId, name = deviceName, deviceType = DeviceType.AIR_CONDITIONER, meta = deviceMeta
 ) {
 
-    private val _state: MutableStateFlow<ACState> = MutableStateFlow(ACState())
+    private val _state: MutableStateFlow<ACState> = MutableStateFlow(initialState)
     val state: StateFlow<ACState> = _state.asStateFlow()
 
     fun setIsOn(isOn: Boolean) {
@@ -49,7 +48,7 @@ data class ACDevice(
 
     }
 
-    fun setTemperature(temperature: Float) {
+    fun setTemperature(temperature: Int) {
         _state.update { it.copy(temperature = temperature) }
         triggerNewAction(
             actionType = ActionTypes.SET_TEMPERATURE, params = listOf(temperature.toString())
@@ -185,7 +184,6 @@ data class DoorDevice(
     val deviceId: String,
     val deviceName: String,
     val deviceMeta: Meta = Meta()
-
 
 ) : Device(
     id = deviceId, name = deviceName, deviceType = DeviceType.DOOR, meta = deviceMeta

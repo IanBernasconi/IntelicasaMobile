@@ -1,6 +1,5 @@
 package com.example.intelicasamobile.ui.devices
 
-import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,11 +29,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.ACMode
-import com.example.intelicasamobile.ui.components.TextFieldDropdownSelector
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
+import com.example.intelicasamobile.ui.components.TextFieldDropdownSelector
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 import kotlin.math.floor
+import kotlin.math.roundToInt
 
 @Preview(showBackground = true)
 @Composable
@@ -76,7 +77,7 @@ fun ACDeviceInfo(
             label = stringResource(id = uiState.mode.nameResId),
             value = uiState.mode,
             icon = uiState.mode.imageResourceId
-    ), onItemSelected = { state.setMode(it.value as ACMode) })
+        ), onItemSelected = { state.setMode(it.value as ACMode) })
 
     IntelicasaMobileTheme {
         Column(modifier = modifier) {
@@ -87,7 +88,13 @@ fun ACDeviceInfo(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                StateInfo(isOn = uiState.isOn, setIsOn = { state.setIsOn(it) })
+                StateInfo(
+                    isOn = uiState.isOn,
+                    setIsOn = { state.setIsOn(it) },
+                    modifier = modifier,
+                    disabled = disabled,
+                    loading = loading
+                )
             }
 
             Row(
@@ -118,11 +125,11 @@ fun ACDeviceInfo(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = "${floor(localTemperature.toDouble())}°C",
+                            text = "${localTemperature}°C",
                             modifier = modifier.padding(end = 4.dp)
                         )
-                        Slider(value = localTemperature,
-                            onValueChange = { localTemperature = it },
+                        Slider(value = localTemperature.toFloat(),
+                            onValueChange = { localTemperature = it.roundToInt() },
                             valueRange = 18f..38f,
                             steps = 0,
                             enabled = !(disabled || loading),
@@ -277,7 +284,8 @@ fun ACDeviceInfo(
                     ) {
                         Text(
                             text = if (localFanSpeed != 0) "${localFanSpeed}%" else stringResource(
-                                id = R.string.auto_mode), modifier = modifier.padding(end = 4.dp)
+                                id = R.string.auto_mode
+                            ), modifier = modifier.padding(end = 4.dp)
                         )
                         Slider(
                             value = localFanSpeed.toFloat(),

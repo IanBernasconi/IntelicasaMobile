@@ -69,9 +69,11 @@ fun DeviceInfo(
                             state = device
                         )
 
-                        is ACDevice -> ACDeviceInfo(
-                            state = device
-                        )
+                        is ACDevice -> {
+                            ACDeviceInfo(
+                                state = device
+                            )
+                        }
 
                         is VacuumDevice -> VacuumDeviceInfo(
                             state = device,

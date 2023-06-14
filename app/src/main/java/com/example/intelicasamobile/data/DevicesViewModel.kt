@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 class DevicesViewModel: ViewModel() {
     private val _devicesUiState = MutableStateFlow(DevicesUiState(emptyList()))
@@ -50,7 +51,6 @@ class DevicesViewModel: ViewModel() {
                 val apiService = RetrofitClient.getApiService()
                 apiService.getDevices()
             }.onSuccess { response ->
-                println("Response: $response")
                 val devices = getDevicesFromNetwork(response.body())
                 println("Devices: $devices")
                 _devicesUiState.update { it.copy(
@@ -65,13 +65,13 @@ class DevicesViewModel: ViewModel() {
                 ) }
             }
         }
-        _devicesUiState.value.devices.map { println(it.name) }
     }
 
     private fun getDevicesFromNetwork(networkDeviceList: NetworkDeviceList?): List<Device>? {
         return networkDeviceList?.result?.let{array ->
             (0 until array.size).map{ index ->
-                val networkDevice = array.get(index)
+                val networkDevice = array[index]
+                println(networkDevice)
                 when (networkDevice.networkType?.name?.let { DeviceType.getDeviceType(it) }) {
                     DeviceType.LAMP -> LightDevice(
                         initialState = LightState(
@@ -87,7 +87,7 @@ class DevicesViewModel: ViewModel() {
                     DeviceType.AIR_CONDITIONER -> ACDevice(
                         initialState = ACState(
                             isOn = networkDevice.networkState?.status == "on",
-                            temperature = networkDevice.networkState?.temperature ?: 0f,
+                            temperature = networkDevice.networkState?.temperature?.roundToInt() ?: 0,
                             mode = ACMode.getMode(networkDevice.networkState?.mode ?: "fan"),
                             fanSpeed = if (networkDevice.networkState?.fanSpeed == "auto") 0 else networkDevice.networkState?.fanSpeed?.toInt() ?: 0,
                             verticalSwing = if (networkDevice.networkState?.verticalSwing == "auto") 0 else networkDevice.networkState?.verticalSwing?.toInt() ?: 0,
@@ -114,12 +114,11 @@ class DevicesViewModel: ViewModel() {
                     DeviceType.DOOR -> DoorDevice(
                         initialState = DoorState(
                             isLocked = networkDevice.networkState?.locked == "locked",
-                            isOpen = networkDevice.networkState?.opened == "opened"
+                            isOpen = networkDevice.networkState?.status == "opened"
                         ),
                         deviceId = networkDevice.id,
                         deviceName = networkDevice.name,
                         deviceMeta = Meta(networkDevice.meta?.favorite ?: false)
-
                     )
 
                     DeviceType.VACUUM_CLEANER -> VacuumDevice(

@@ -161,8 +161,6 @@ fun InnerDropdownSelector(
             .height(with(LocalDensity.current) { stateHolder.size.height.toDp() })
     ) {}
 
-
-
     DropdownMenu(
         expanded = stateHolder.expanded,
         onDismissRequest = { stateHolder.onExpanded(false) },
@@ -176,7 +174,7 @@ fun InnerDropdownSelector(
                 stateHolder.onItemSelected(item)
                 stateHolder.onExpanded(false)
             }, text = {
-                Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     item.icon?.let {
                         Image(
                             painter = painterResource(id = it),

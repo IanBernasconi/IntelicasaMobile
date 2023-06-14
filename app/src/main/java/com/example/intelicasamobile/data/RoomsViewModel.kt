@@ -34,7 +34,6 @@ class RoomsViewModel : ViewModel() {
                 val apiService = RetrofitClient.getApiService()
                 apiService.getRooms()
             }.onSuccess { response ->
-                println("Response: $response")
                 var rooms = getRoomsFromNetwork(response.body())?.toMutableList()
                 println("Rooms: $rooms")
                 if (rooms == null){
@@ -47,7 +46,7 @@ class RoomsViewModel : ViewModel() {
                 _roomsUiState.update { it.copy(
                     rooms = rooms,
                     isLoading = false,
-                    currentRoom = rooms?.firstOrNull()
+                    currentRoom = rooms.firstOrNull()
                 ) }
 
             }.onFailure { e ->

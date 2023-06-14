@@ -29,8 +29,7 @@ data class NetworkState (
     @SerializedName("fanSpeed"     ) var fanSpeed      : String? = null,
     @SerializedName("verticalSwing") var verticalSwing : String? = null,
     @SerializedName("horizontalSwing") var horizontalSwing : String? = null,
-    @SerializedName("locked"         ) var locked          : String? = null,
-    @SerializedName("opened"         ) var opened          : String? = null,
+    @SerializedName("lock"         ) var locked          : String? = null,
     @SerializedName("batteryLevel") var batteryLevel : Int? = null,
 )
 

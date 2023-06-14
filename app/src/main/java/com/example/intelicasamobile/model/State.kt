@@ -15,7 +15,7 @@ data class LightState(
 
 data class ACState(
     val isOn: Boolean = false,
-    val temperature: Float = 0f,
+    val temperature: Int = 0,
     val mode: ACMode = ACMode.FAN,
     val fanSpeed: Int = 0,
     val verticalSwing: Int = 0,

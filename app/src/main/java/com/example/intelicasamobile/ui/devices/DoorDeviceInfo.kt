@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DoorFront
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.LockOpen
 import androidx.compose.material3.Button
@@ -22,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -71,10 +71,8 @@ fun DoorDeviceInfo(
                             modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Icon(
-                                imageVector = if (uiState.isOpen) Icons.Outlined.DoorFront else Icons.Outlined.DoorFront, //TODO DoorOpen
-                                contentDescription = if (uiState.isOpen) stringResource(id = R.string.DS_closed) else stringResource(
-                                    id = R.string.DS_open
-                                ),
+                                painter =  painterResource(id = if (uiState.isOpen) R.drawable.door_open else R.drawable.door_closed ),
+                                contentDescription =  stringResource(id = if (uiState.isOpen) R.string.DS_closed else R.string.DS_open),
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(35.dp)
                             )

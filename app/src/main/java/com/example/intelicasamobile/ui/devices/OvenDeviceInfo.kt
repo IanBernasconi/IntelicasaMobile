@@ -118,7 +118,6 @@ fun OvenDeviceInfo(
 
     IntelicasaMobileTheme {
         Column(modifier = modifier) {
-
             Row(
                 modifier = modifier
                     .fillMaxWidth()
@@ -163,13 +162,13 @@ fun OvenDeviceInfo(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = "${Math.floor(localTemperature.toDouble())}°C",
+                            text = "${localTemperature}°C",
                             modifier = Modifier.padding(end = 4.dp)
                         )
                         Slider(value = localTemperature.toFloat(),
                             onValueChange = { localTemperature = it.toInt() },
                             valueRange = 90f..220f,
-                            steps = 1,
+                            steps = 0,
                             enabled = !(disabled || loading),
                             modifier = Modifier.width(125.dp),
                             colors = SliderDefaults.colors(
