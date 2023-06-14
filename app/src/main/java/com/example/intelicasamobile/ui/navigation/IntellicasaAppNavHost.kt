@@ -199,7 +199,7 @@ private fun AppNavHost(
                     }
 
                     WindowWidthSizeClass.Medium -> {
-                        screen.content()
+                        screen.tabletContent()
                     }
 
                     WindowWidthSizeClass.Expanded -> {

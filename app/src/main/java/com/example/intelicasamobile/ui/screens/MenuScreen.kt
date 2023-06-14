@@ -91,31 +91,34 @@ fun DialogButton(@StringRes title: Int, @StringRes text: Int, modifier: Modifier
         }
     }
     if (showDialog) {
+        val drawerWidth = dimensionResource(id = R.dimen.drawer_width)
+
         Dialog(onDismissRequest = { showDialog = false }) {
             Column(
-                modifier = modifier.background(Color.Transparent),
+                modifier = modifier
+                    .background(Color.Transparent)
+                    .fillMaxSize()
+//                    .padding(start = drawerWidth)
+                ,
                 verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Card(modifier = modifier) {
+                Card(modifier = modifier.fillMaxWidth()) {
                     Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
                         Text(
                             text = stringResource(id = text),
                             modifier = modifier
-                                .padding(
-                                    horizontal = dimensionResource(id = R.dimen.padding_medium),
-                                    vertical = dimensionResource(
-                                        id = R.dimen.padding_medium
-                                    ),
-                                )
+                                .padding(dimensionResource(id = R.dimen.padding_medium))
                                 .fillMaxWidth(),
                             style = TextStyle(fontSize = 20.sp),
                             textAlign = TextAlign.Center,
-
                         )
                     }
                 }
             }
         }
+
+
     }
 }
 
@@ -126,7 +129,9 @@ fun TabletMenuScreen() {
         Row {
             Spacer(modifier = Modifier.weight(1f))
             Column(
-                modifier = Modifier.fillMaxSize().weight(2f),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(2f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly
 

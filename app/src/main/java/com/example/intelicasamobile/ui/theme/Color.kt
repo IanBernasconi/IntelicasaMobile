@@ -12,6 +12,6 @@ val BlueDarken2 = Color(0xFF1976D2)
 //secondary
 val LightSecondary = Color(0xFF064174)
 //tertiary
-val LightTertiary = Color(0xFF92C2F2)
+val LightTertiary = Color(0xFFdef6ff)
 //background
 val BlueLighten5 = Color(0xFF81D4FA)

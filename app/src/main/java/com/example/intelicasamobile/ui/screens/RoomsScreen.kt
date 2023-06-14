@@ -56,6 +56,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 fun RoomsScreen(
     devicesModel: DevicesViewModel = viewModel(),
     roomsModel: RoomsViewModel = viewModel(),
+    minWidth: Int = R.dimen.card_small,
 ) {
     val roomsState by roomsModel.roomsUiState.collectAsState()
     val devicesState by devicesModel.devicesUiState.collectAsState()
@@ -97,39 +98,42 @@ fun RoomsScreen(
                         if (roomsState.rooms.isNotEmpty()) {
                             currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
 
-                            DevicesList(
-                                offset = DpOffset(
-                                    with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() },
-                                    0.dp
-                                ),
-                                roomsModel = roomsModel,
-                                devicesModel = devicesModel,
-                                index = (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
-                            )
-                            DevicesList(
-                                offset = DpOffset(
-                                    with(LocalDensity.current) { (offsetX * 1.5f).toDp() }, 0.dp
-                                ),
-                                setIndex = { index ->
-                                    currentIndex = index
-                                    roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
-                                },
-                                roomsModel = roomsModel,
-                                devicesModel = devicesModel,
-                                index = currentIndex
-                            )
-                            DevicesList(
-                                offset = DpOffset(
-                                    with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() },
-                                    0.dp
-                                ),
-                                roomsModel = roomsModel,
-                                devicesModel = devicesModel,
-                                index = (currentIndex + 1) % roomsState.rooms.size
-                            )
-                        }
-                    }
+                    DevicesList(
+                        offset = DpOffset(
+                            with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() },
+                            0.dp
+                        ),
+                        roomsModel = roomsModel,
+                        devicesModel = devicesModel,
+                        index = (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size,
+                        minWidth = minWidth
+                    )
+                    DevicesList(
+                        offset = DpOffset(
+                            with(LocalDensity.current) { (offsetX * 1.5f).toDp() }, 0.dp
+                        ),
+                        setIndex = { index ->
+                            currentIndex = index
+                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+                        },
+                        roomsModel = roomsModel,
+                        devicesModel = devicesModel,
+                        index = currentIndex,
+                        minWidth = minWidth
+                    )
+                    DevicesList(
+                        offset = DpOffset(
+                            with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() },
+                            0.dp
+                        ),
+                        roomsModel = roomsModel,
+                        devicesModel = devicesModel,
+                        index = (currentIndex + 1) % roomsState.rooms.size,
+                        minWidth = minWidth
+                    )
                 }
+            }
+        }
     }
 }
 
@@ -140,6 +144,7 @@ fun DevicesList(
     offset: DpOffset = DpOffset(0.dp, 0.dp),
     index: Int,
     setIndex: (Int) -> Unit = {},
+    minWidth: Int = R.dimen.card_small,
 ) {
     val roomsState by roomsModel.roomsUiState.collectAsState()
     val devicesState by devicesModel.devicesUiState.collectAsState()
@@ -185,7 +190,7 @@ fun DevicesList(
             }
 
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_small)),
+                columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
                 state = stateGrid,
                 contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
@@ -234,5 +239,5 @@ fun TabletRoomsScreen(
     devicesModel: DevicesViewModel = viewModel(),
     roomsModel: RoomsViewModel = viewModel(),
 ) {
-    RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel)
+    RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel, minWidth = R.dimen.card_large)
 }
