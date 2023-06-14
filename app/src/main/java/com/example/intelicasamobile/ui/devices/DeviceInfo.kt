@@ -1,12 +1,19 @@
 package com.example.intelicasamobile.ui.devices
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,35 +70,33 @@ fun DeviceInfo(
     modifier: Modifier = Modifier,
     roomsViewModel: RoomsViewModel = viewModel(),
 ) {
-    IntelicasaMobileTheme {
-        Card(modifier = modifier) {
-            Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
-                Column {
-                    DeviceInfoHeader(device = device)
-                    when (device) {
-                        is LightDevice -> LightDeviceInfo(
-                            device = device,
-                        )
+    Card(modifier = modifier) {
+        Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
+            Column {
+                DeviceInfoHeader(device = device)
+                when (device) {
+                    is LightDevice -> LightDeviceInfo(
+                        device = device,
+                    )
 
-                        is ACDevice -> {
-                            ACDeviceInfo(
-                                device = device,
-                            )
-                        }
-
-                        is VacuumDevice -> VacuumDeviceInfo(
-                            device = device,
-                            roomsViewModel = roomsViewModel
-                        )
-
-                        is OvenDevice -> OvenDeviceInfo(
-                            device = device,
-                        )
-
-                        is DoorDevice -> DoorDeviceInfo(
+                    is ACDevice -> {
+                        ACDeviceInfo(
                             device = device,
                         )
                     }
+
+                    is VacuumDevice -> VacuumDeviceInfo(
+                        device = device,
+                        roomsViewModel = roomsViewModel
+                    )
+
+                    is OvenDevice -> OvenDeviceInfo(
+                        device = device,
+                    )
+
+                    is DoorDevice -> DoorDeviceInfo(
+                        device = device,
+                    )
                 }
             }
         }
