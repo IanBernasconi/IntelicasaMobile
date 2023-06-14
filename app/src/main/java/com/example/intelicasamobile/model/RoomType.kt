@@ -7,13 +7,12 @@ enum class RoomType(
     @DrawableRes val imageResourceId: Int,
     val apiName: String = ""
 ) {
-    // TODO: Add missing room types
-    LIVINGROOM(R.drawable.livingroom),
+    LIVINGROOM(R.drawable.livingroom, "Living"),
     KITCHEN(R.drawable.kitchen, "Cocina"),
-    BATHROOM(R.drawable.bathroom),
+    BATHROOM(R.drawable.bathroom, "Baño"),
     GARDEN(R.drawable.garden, "Patio"),
-    BEDROOM(R.drawable.bedroom),
-    OTHER(R.drawable.other);
+    BEDROOM(R.drawable.bedroom, "Dormitorio"),
+    OTHER(R.drawable.other, "Otro");
 
     companion object {
         fun getRoomType(apiName: String): RoomType {
