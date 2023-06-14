@@ -55,7 +55,7 @@ fun RoutineCard(
         Surface(
             color = MaterialTheme.colorScheme.primary
         ) {
-            Column() {
+            Column {
 
                 Row(
                     modifier = modifier.fillMaxWidth(),

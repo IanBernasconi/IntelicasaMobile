@@ -63,7 +63,7 @@ fun DeviceInfo(
     modifier: Modifier = Modifier,
     roomsViewModel: RoomsViewModel = viewModel(),
 ) {
-    IntelicasaMobileTheme() {
+    IntelicasaMobileTheme {
         Card(modifier = modifier) {
             Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
                 Column {

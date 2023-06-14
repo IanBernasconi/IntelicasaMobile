@@ -28,8 +28,8 @@ fun IntelicasaNavigationRail(
     content: @Composable () -> Unit
 ) {
 
-    Row() {
-        NavigationRail() {
+    Row {
+        NavigationRail {
             Image(
                 modifier = Modifier
                     .size(dimensionResource(id = R.dimen.logo_size))

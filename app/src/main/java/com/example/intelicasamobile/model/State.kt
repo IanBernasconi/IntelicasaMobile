@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import com.example.intelicasamobile.R
 
-open class State() {}
+open class State
 
 data class LightState(
     val brightness: Int = 0,

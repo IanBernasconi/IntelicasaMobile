@@ -1,17 +1,16 @@
 package com.example.intelicasamobile.ui.devices
 
-import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,8 +30,8 @@ import com.example.intelicasamobile.model.OvenConvectionMode
 import com.example.intelicasamobile.model.OvenDevice
 import com.example.intelicasamobile.model.OvenGrillMode
 import com.example.intelicasamobile.model.OvenHeatMode
-import com.example.intelicasamobile.ui.components.TextFieldDropdownSelector
 import com.example.intelicasamobile.ui.components.DropdownSelectorItem
+import com.example.intelicasamobile.ui.components.TextFieldDropdownSelector
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
@@ -48,7 +47,6 @@ fun OvenDeviceInfoPreview() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OvenDeviceInfo(
     modifier: Modifier = Modifier,

@@ -58,7 +58,6 @@ fun VacummDeviceInfoPreview() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VacuumDeviceInfo(
     modifier: Modifier = Modifier,

@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -35,7 +34,6 @@ import com.example.intelicasamobile.ui.routines.RoutineHomeCard
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun HomeScreen(
@@ -93,13 +91,13 @@ fun HomeScreenLandscape(
     val state2 = rememberLazyGridState()
     Row {
         Box(Modifier.weight(1f)) {
-            Column() {
+            Column {
                 RoutinesHomeList(state1, routinesModel)
             }
 
         }
         Box(Modifier.weight(1f)) {
-            Column() {
+            Column {
                 DevicesHomeList(state2, R.dimen.card_medium, devicesModel)
             }
         }
@@ -164,7 +162,6 @@ private fun RoutinesHomeList(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, widthDp = 1000, heightDp = 600)
 @Composable
 fun TabletHomeScreen(
@@ -180,13 +177,13 @@ fun TabletHomeScreen(
     {
         Row {
             Box(Modifier.weight(1f)) {
-                Column() {
+                Column {
                     RoutinesHomeList(state1, routinesModel)
                 }
 
             }
             Box(Modifier.weight(1f)) {
-                Column() {
+                Column {
                     DevicesHomeList(state2, R.dimen.card_medium, devicesModel, roomsModel)
                 }
             }

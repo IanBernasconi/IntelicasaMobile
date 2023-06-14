@@ -40,7 +40,7 @@ fun RoutineHomeCard(
     routine: Routine,
     modifier: Modifier = Modifier
 ) {
-    IntelicasaMobileTheme() {
+    IntelicasaMobileTheme {
         Card(
             elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
             modifier = modifier

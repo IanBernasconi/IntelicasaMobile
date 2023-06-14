@@ -25,11 +25,11 @@ class MyNotification(
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         notificationBuilder = NotificationCompat.Builder(context, channelID).apply {
-            setSmallIcon(R.drawable.ic_launcher_foreground)
+            setSmallIcon(R.mipmap.ic_intelicasa_launcher)
             setContentTitle(title)
             setContentText(message)
             setAutoCancel(true)
-            addAction(R.drawable.ic_launcher_foreground, "Open Message", pendingIntent)
+            addAction(R.mipmap.ic_intelicasa_launcher, "Open Message", pendingIntent)
         }
         notificationManager.notify(100, notificationBuilder.build())
 

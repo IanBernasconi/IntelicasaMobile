@@ -38,7 +38,7 @@ fun StateInfo(
     modifier: Modifier = Modifier,
     loading: Boolean = false,
 ) {
-    IntelicasaMobileTheme() {
+    IntelicasaMobileTheme {
         Row(
             modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,

@@ -20,9 +20,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -35,6 +37,9 @@ import com.example.intelicasamobile.model.LightDevice
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Preview(showBackground = true)
 @Composable
@@ -57,8 +62,20 @@ fun LightDeviceInfo(
     var localColor by remember { mutableStateOf(uiState.color) }
     val colorController = rememberColorPickerController()
 
+    var updateTimeout by remember { mutableStateOf<Job?>(null) }
+    val scope = rememberCoroutineScope()
+
     LaunchedEffect(device) {
         colorController.setEnabled(!device.isLoading())
+    }
+
+    fun setColor(color: Color) {
+        updateTimeout?.cancel()
+        updateTimeout = null
+        updateTimeout = scope.launch {
+            delay(250) // wait for 250ms before sending the request
+            device.setColor(color)
+        }
     }
 
     Column(modifier = modifier) {
@@ -153,7 +170,7 @@ fun LightDeviceInfo(
                     Icon(
                         imageVector = Icons.Default.Circle,
                         contentDescription = null,
-                        tint = localColor,
+                        tint = uiState.color,
                         modifier = Modifier
                             .width(50.dp)
                             .height(50.dp)
@@ -170,25 +187,17 @@ fun LightDeviceInfo(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                horizontalAlignment = Alignment.Start
-            ) {
                 HsvColorPicker(
                     modifier = Modifier
-                        .width(250.dp)
+                        .fillMaxWidth()
                         .height(250.dp)
                         .padding(5.dp),
                     controller = colorController,
                     onColorChanged = { colorEnvelope: ColorEnvelope ->
                         localColor = colorEnvelope.color
-                        device.setColor(colorEnvelope.color)
-                    },
+                        setColor(localColor)
+                    }
                 )
             }
-        }
-
     }
 }

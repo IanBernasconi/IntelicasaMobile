@@ -47,7 +47,7 @@ fun DoorDeviceInfo(
 
     val uiState by device.state.collectAsState()
 
-    IntelicasaMobileTheme() {
+    IntelicasaMobileTheme {
         Column(modifier = modifier) {
             Row(
                 modifier = modifier

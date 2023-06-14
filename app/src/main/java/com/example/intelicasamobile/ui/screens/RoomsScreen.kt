@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -93,44 +92,44 @@ fun RoomsScreen(
                         }
                         offsetX = 0f
                     })
-        ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                if (roomsState.rooms.isNotEmpty()) {
-                    currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
+                ) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        if (roomsState.rooms.isNotEmpty()) {
+                            currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
 
-                    DevicesList(
-                        offset = DpOffset(
-                            with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() },
-                            0.dp
-                        ),
-                        roomsModel = roomsModel,
-                        devicesModel = devicesModel,
-                        index = (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
-                    )
-                    DevicesList(
-                        offset = DpOffset(
-                            with(LocalDensity.current) { (offsetX * 1.5f).toDp() }, 0.dp
-                        ),
-                        setIndex = { index ->
-                            currentIndex = index
-                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
-                        },
-                        roomsModel = roomsModel,
-                        devicesModel = devicesModel,
-                        index = currentIndex
-                    )
-                    DevicesList(
-                        offset = DpOffset(
-                            with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() },
-                            0.dp
-                        ),
-                        roomsModel = roomsModel,
-                        devicesModel = devicesModel,
-                        index = (currentIndex + 1) % roomsState.rooms.size
-                    )
+                            DevicesList(
+                                offset = DpOffset(
+                                    with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() },
+                                    0.dp
+                                ),
+                                roomsModel = roomsModel,
+                                devicesModel = devicesModel,
+                                index = (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
+                            )
+                            DevicesList(
+                                offset = DpOffset(
+                                    with(LocalDensity.current) { (offsetX * 1.5f).toDp() }, 0.dp
+                                ),
+                                setIndex = { index ->
+                                    currentIndex = index
+                                    roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+                                },
+                                roomsModel = roomsModel,
+                                devicesModel = devicesModel,
+                                index = currentIndex
+                            )
+                            DevicesList(
+                                offset = DpOffset(
+                                    with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() },
+                                    0.dp
+                                ),
+                                roomsModel = roomsModel,
+                                devicesModel = devicesModel,
+                                index = (currentIndex + 1) % roomsState.rooms.size
+                            )
+                        }
+                    }
                 }
-            }
-        }
     }
 }
 
@@ -173,7 +172,7 @@ fun DevicesList(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-        Column() {
+        Column {
             Row(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
             ) {

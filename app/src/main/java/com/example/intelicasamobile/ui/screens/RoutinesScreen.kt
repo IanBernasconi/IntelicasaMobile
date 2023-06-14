@@ -23,7 +23,6 @@ import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.ui.routines.RoutineCard
-import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
