@@ -125,6 +125,9 @@ fun ShapeDropdownSelector(
                 modifier = modifier
                     .clip(shape)
                     .background(color = color)
+                    .padding(end = dimensionResource(id = R.dimen.padding_small))
+                    .width(
+                        dimensionResource(id = R.dimen.dropdown_width))
 
             ) {
                 stateHolder.selectedItem?.icon?.let {
