@@ -177,7 +177,7 @@ fun DevicesList(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-        Column() {
+        Column {
             Row(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
             ) {

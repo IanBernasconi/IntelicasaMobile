@@ -1,6 +1,7 @@
 package com.example.intelicasamobile.ui.navigation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,11 +12,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.PermanentDrawerSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import androidx.navigation.Navigation
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.Screen
 
@@ -34,13 +38,16 @@ fun IntelicasaAppNavigationDrawer(
     backStackEntry: NavBackStackEntry? = null,
 ) {
     PermanentDrawerSheet(
-        modifier = Modifier.width(dimensionResource(id = R.dimen.drawer_width))
+        drawerContainerColor = MaterialTheme.colorScheme.tertiary,
+        modifier = Modifier
+            .width(dimensionResource(id = R.dimen.drawer_width))
+            .background(MaterialTheme.colorScheme.tertiary)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.padding_medium))
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
         ) {
             Image(
                 modifier = Modifier
@@ -55,13 +62,26 @@ fun IntelicasaAppNavigationDrawer(
             )
         }
         screens.forEach { screen ->
-            NavigationDrawerItem(icon = {
-                Icon(
-                    imageVector = screen.icon,
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp)
-                )
-            },
+            NavigationDrawerItem(
+                shape= RectangleShape,
+                colors = NavigationDrawerItemDefaults.colors(
+                    selectedContainerColor = MaterialTheme.colorScheme.primary,
+                    unselectedContainerColor = MaterialTheme.colorScheme.tertiary,
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedIconColor = MaterialTheme.colorScheme.onTertiary,
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onTertiary,
+                    selectedBadgeColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedBadgeColor = MaterialTheme.colorScheme.onTertiary,
+
+                    ),
+                icon = {
+                    Icon(
+                        imageVector = screen.icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                },
                 label = {
                     Text(
                         text = screen.title,
