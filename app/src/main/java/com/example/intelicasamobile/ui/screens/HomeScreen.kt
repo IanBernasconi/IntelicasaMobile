@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -17,7 +18,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -45,32 +45,32 @@ fun HomeScreen(
 ) {
     val devicesState by devicesModel.devicesUiState.collectAsState()
     val routinesState by routinesModel.routinesUiState.collectAsState()
+
+    // TODO this refresh doesn't work without some previous fetches
     SwipeRefresh(
         state = rememberSwipeRefreshState(devicesState.isLoading || routinesState.isLoading),
         onRefresh = {
             devicesModel.fetchDevices()
             routinesModel.fetchRoutines()
         },
-    ){
+    ) {
         Surface(
-            color = MaterialTheme.colorScheme.background
+            modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
         ) {
             val configuration = LocalConfiguration.current
             val orientation = configuration.orientation
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                HomeScreenPortrait(devicesModel=devicesModel, routinesModel=routinesModel)
+                HomeScreenPortrait(devicesModel = devicesModel, routinesModel = routinesModel)
             } else {
-                HomeScreenLandscape(devicesModel=devicesModel, routinesModel=routinesModel)
+                HomeScreenLandscape(devicesModel = devicesModel, routinesModel = routinesModel)
             }
-
         }
     }
 }
 
 @Composable
 fun HomeScreenPortrait(
-    devicesModel: DevicesViewModel = viewModel(),
-    routinesModel: RoutinesViewModel = viewModel()
+    devicesModel: DevicesViewModel = viewModel(), routinesModel: RoutinesViewModel = viewModel()
 ) {
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
@@ -112,14 +112,10 @@ private fun DevicesHomeList(
     state2: LazyGridState,
     @DimenRes minWidth: Int,
     model: DevicesViewModel = viewModel(),
-    roomsModel: RoomsViewModel = viewModel()
+    roomsModel: RoomsViewModel = viewModel(),
 ) {
 
     val state by model.devicesUiState.collectAsState()
-
-    LaunchedEffect(Unit) {
-        model.fetchDevices()
-    }
 
     CategoryCard(
         title = R.string.devices
@@ -134,7 +130,7 @@ private fun DevicesHomeList(
         items(state.devices.filter { it.meta.favorite }) { device ->
             DeviceCard(
                 device = device,
-                roomsViewModel = roomsModel
+                roomsViewModel = roomsModel,
             )
         }
     }
@@ -143,13 +139,8 @@ private fun DevicesHomeList(
 
 @Composable
 private fun RoutinesHomeList(
-    state1: LazyGridState,
-    model: RoutinesViewModel = viewModel()
+    state1: LazyGridState, model: RoutinesViewModel = viewModel()
 ) {
-
-    LaunchedEffect(Unit) {
-        model.fetchRoutines()
-    }
 
     val state by model.routinesUiState.collectAsState()
 
@@ -181,22 +172,18 @@ fun TabletHomeScreen(
     routinesModel: RoutinesViewModel = viewModel(),
     roomsModel: RoomsViewModel = viewModel()
 ) {
-    Surface(
-        color = MaterialTheme.colorScheme.background
-    ) {
-        val state1 = rememberLazyGridState()
-        val state2 = rememberLazyGridState()
-        Row {
-            Box(Modifier.weight(1f)) {
-                Column() {
-                    RoutinesHomeList(state1, routinesModel)
-                }
-
+    val state1 = rememberLazyGridState()
+    val state2 = rememberLazyGridState()
+    Row {
+        Box(Modifier.weight(1f)) {
+            Column() {
+                RoutinesHomeList(state1, routinesModel)
             }
-            Box(Modifier.weight(1f)) {
-                Column() {
-                    DevicesHomeList(state2, R.dimen.card_medium, devicesModel, roomsModel)
-                }
+
+        }
+        Box(Modifier.weight(1f)) {
+            Column() {
+                DevicesHomeList(state2, R.dimen.card_medium, devicesModel, roomsModel)
             }
         }
     }

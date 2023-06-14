@@ -97,7 +97,9 @@ fun DeviceCard(
                     when (device) {
                         is ACDevice -> {
                             val acState by device.state.collectAsState()
-                            IconButton(onClick = { device.setIsOn(!acState.isOn) }) {
+                            IconButton(
+                                onClick = { device.setIsOn(!acState.isOn) }, enabled = !device.isLoading()
+                            ) {
                                 Image(
                                     painter = painterResource(id = if (acState.isOn) R.drawable.poweron else R.drawable.poweroff),
                                     contentDescription = "Power",
@@ -108,7 +110,9 @@ fun DeviceCard(
 
                         is LightDevice -> {
                             val lightState by device.state.collectAsState()
-                            IconButton(onClick = { device.setIsOn(!lightState.isOn) }) {
+                            IconButton(
+                                onClick = { device.setIsOn(!lightState.isOn) }, enabled = !device.isLoading()
+                            ) {
                                 Image(
                                     painter = painterResource(id = if (lightState.isOn) R.drawable.poweron else R.drawable.poweroff),
                                     contentDescription = "Power",
@@ -119,7 +123,9 @@ fun DeviceCard(
 
                         is OvenDevice -> {
                             val ovenState by device.state.collectAsState()
-                            IconButton(onClick = { device.setIsOn(!ovenState.isOn) }) {
+                            IconButton(
+                                onClick = { device.setIsOn(!ovenState.isOn) }, enabled = !device.isLoading()
+                            ) {
                                 Image(
                                     painter = painterResource(id = if (ovenState.isOn) R.drawable.poweron else R.drawable.poweroff),
                                     contentDescription = "Power",
@@ -184,7 +190,7 @@ fun DeviceCard(
             device = device,
             showDialog = showDialog,
             onDismiss = { showDialog = false },
-            roomsViewModel = roomsViewModel
+            roomsViewModel = roomsViewModel,
         )
     }
 }

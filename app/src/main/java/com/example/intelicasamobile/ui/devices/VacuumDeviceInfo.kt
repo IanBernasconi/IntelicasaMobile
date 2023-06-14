@@ -52,10 +52,8 @@ fun VacummDeviceInfoPreview() {
     val device = VacuumDevice(deviceId = "1", deviceName = "Vacuum")
     IntelicasaMobileTheme {
         VacuumDeviceInfo(
-            state = device,
+            device = device,
             modifier = Modifier,
-            disabled = false,
-            loading = false,
         )
     }
 }
@@ -64,12 +62,10 @@ fun VacummDeviceInfoPreview() {
 @Composable
 fun VacuumDeviceInfo(
     modifier: Modifier = Modifier,
-    disabled: Boolean = false,
-    loading: Boolean = false,
-    state: VacuumDevice = viewModel(),
+    device: VacuumDevice = viewModel(),
     roomsViewModel: RoomsViewModel = viewModel()
 ) {
-    val uiState by state.state.collectAsState()
+    val uiState by device.state.collectAsState()
     val roomsState by roomsViewModel.roomsUiState.collectAsState()
 
     val dropdownModeStateHolder = rememberDropdownSelectorState(
@@ -80,7 +76,8 @@ fun VacuumDeviceInfo(
                 icon = it.imageResourceId
             )
         }, label = stringResource(id = R.string.mode),
-        onItemSelected = { state.setMode(it.value as VacuumCleanMode) },
+        loading = device.isLoading(),
+        onItemSelected = { device.setMode(it.value as VacuumCleanMode) },
         initialItem = DropdownSelectorItem(
             label = stringResource(id = uiState.mode.nameResId),
             value = uiState.mode,
@@ -96,7 +93,8 @@ fun VacuumDeviceInfo(
                 icon = it.roomType.imageResourceId
             )
         }, label = stringResource(id = R.string.room),
-        onItemSelected = { state.setLocation((it.value as Room).id) },
+        loading = device.isLoading(),
+        onItemSelected = { device.setLocation((it.value as Room).id) },
         initialItem = roomsViewModel.getRoomById(uiState.location)?.let {
             DropdownSelectorItem(
                 label = it.name,
@@ -149,7 +147,7 @@ fun VacuumDeviceInfo(
                 }
             }
 
-            if (state.dockLocationId == null) {
+            if (device.dockLocationId == null) {
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
@@ -170,13 +168,13 @@ fun VacuumDeviceInfo(
                 ) {
                     Button(
                         onClick = {
-                            state.setState(VacuumStateEnum.CLEANING)
+                            device.setState(VacuumStateEnum.CLEANING)
                         },
                         elevation = ButtonDefaults.buttonElevation(
                             20.dp, 10.dp, 10.dp, 10.dp, 0.dp
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        enabled = !disabled && !loading && uiState.state != VacuumStateEnum.CLEANING && uiState.batteryLevel > 5
+                        enabled = !device.isLoading() && uiState.state != VacuumStateEnum.CLEANING && uiState.batteryLevel > 5
                     ) {
                         if (uiState.batteryLevel < 5) {
                             Icon(
@@ -190,25 +188,25 @@ fun VacuumDeviceInfo(
                     }
                     Button(
                         onClick = {
-                            state.setState(VacuumStateEnum.PAUSED)
+                            device.setState(VacuumStateEnum.PAUSED)
                         },
                         elevation = ButtonDefaults.buttonElevation(
                             20.dp, 10.dp, 10.dp, 10.dp, 0.dp
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        enabled = !disabled && !loading && uiState.state == VacuumStateEnum.CLEANING
+                        enabled = !device.isLoading() && uiState.state == VacuumStateEnum.CLEANING
                     ) {
                         Text(text = stringResource(id = R.string.VCA_pause))
                     }
                     Button(
                         onClick = {
-                            state.setState(VacuumStateEnum.CHARGING)
+                            device.setState(VacuumStateEnum.CHARGING)
                         },
                         elevation = ButtonDefaults.buttonElevation(
                             20.dp, 10.dp, 10.dp, 10.dp, 0.dp
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        enabled = !disabled && !loading && uiState.state != VacuumStateEnum.CHARGING
+                        enabled = !device.isLoading() && uiState.state != VacuumStateEnum.CHARGING
                     ) {
                         Text(text = stringResource(id = R.string.VCA_charge))
                     }

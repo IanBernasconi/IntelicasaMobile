@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +27,13 @@ class MainActivity : ComponentActivity() {
             val devicesModel by remember { mutableStateOf(DevicesViewModel()) }
             val routinesModel by remember { mutableStateOf(RoutinesViewModel()) }
             val roomsModel by remember { mutableStateOf(RoomsViewModel()) }
+
+            //TODO ask if it is correct to fetch data here at the start
+            LaunchedEffect(Unit) {
+                devicesModel.fetchDevices()
+                routinesModel.fetchRoutines()
+                roomsModel.fetchRooms()
+            }
 
             IntelicasaMobileTheme {
                 // A surface container using the 'background' color from the theme

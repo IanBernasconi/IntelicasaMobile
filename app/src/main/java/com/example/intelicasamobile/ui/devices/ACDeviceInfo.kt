@@ -42,10 +42,8 @@ fun ACDeviceInfoPreview() {
     val device = ACDevice(deviceId = "1", deviceName = "AC Device")
     IntelicasaMobileTheme {
         ACDeviceInfo(
-            state = device,
+            device = device,
             modifier = Modifier,
-            disabled = false,
-            loading = false,
         )
     }
 }
@@ -54,12 +52,10 @@ fun ACDeviceInfoPreview() {
 @Composable
 fun ACDeviceInfo(
     modifier: Modifier = Modifier,
-    disabled: Boolean = false,
-    loading: Boolean = false,
-    state: ACDevice = viewModel(),
+    device: ACDevice = viewModel(),
 ) {
 
-    val uiState by state.state.collectAsState()
+    val uiState by device.state.collectAsState()
 
     var localTemperature by remember { mutableStateOf(uiState.temperature) }
     var localFanSpeed by remember { mutableStateOf(uiState.fanSpeed) }
@@ -68,16 +64,17 @@ fun ACDeviceInfo(
 
     val dropdownModeStateHolder = rememberDropdownSelectorState(items = ACMode.values().map {
         DropdownSelectorItem(
-            label = stringResource(id = it.nameResId),
-            value = it,
-            icon = it.imageResourceId
+            label = stringResource(id = it.nameResId), value = it, icon = it.imageResourceId
         )
-    }, label = stringResource(id = R.string.mode),
+    },
+        label = stringResource(id = R.string.mode),
+        loading = device.isLoading(),
         initialItem = DropdownSelectorItem(
             label = stringResource(id = uiState.mode.nameResId),
             value = uiState.mode,
             icon = uiState.mode.imageResourceId
-        ), onItemSelected = { state.setMode(it.value as ACMode) })
+        ),
+        onItemSelected = { device.setMode(it.value as ACMode) })
 
     IntelicasaMobileTheme {
         Column(modifier = modifier) {
@@ -90,10 +87,9 @@ fun ACDeviceInfo(
             ) {
                 StateInfo(
                     isOn = uiState.isOn,
-                    setIsOn = { state.setIsOn(it) },
+                    setIsOn = { device.setIsOn(it) },
                     modifier = modifier,
-                    disabled = disabled,
-                    loading = loading
+                    loading = device.isLoading()
                 )
             }
 
@@ -125,21 +121,20 @@ fun ACDeviceInfo(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = "${localTemperature}°C",
-                            modifier = modifier.padding(end = 4.dp)
+                            text = "${localTemperature}°C", modifier = modifier.padding(end = 4.dp)
                         )
                         Slider(value = localTemperature.toFloat(),
                             onValueChange = { localTemperature = it.roundToInt() },
                             valueRange = 18f..38f,
                             steps = 0,
-                            enabled = !(disabled || loading),
+                            enabled = !device.isLoading(),
                             modifier = modifier.width(125.dp),
                             colors = SliderDefaults.colors(
                                 thumbColor = MaterialTheme.colorScheme.primary,
                                 activeTrackColor = MaterialTheme.colorScheme.primary,
                                 inactiveTrackColor = MaterialTheme.colorScheme.secondary
                             ),
-                            onValueChangeFinished = { state.setTemperature(localTemperature) })
+                            onValueChangeFinished = { device.setTemperature(localTemperature) })
                     }
                 }
             }
@@ -188,8 +183,8 @@ fun ACDeviceInfo(
                         Slider(
                             value = localVerticalSwing.toFloat(),
                             onValueChange = { localVerticalSwing = floor(it).toInt() },
-                            enabled = !disabled && !loading,
-                            onValueChangeFinished = { state.setVerticalSwing(localVerticalSwing) },
+                            enabled = !device.isLoading(),
+                            onValueChangeFinished = { device.setVerticalSwing(localVerticalSwing) },
                             modifier = modifier.width(125.dp),
                             valueRange = 0f..90f,
                             steps = 3,
@@ -240,8 +235,8 @@ fun ACDeviceInfo(
                         Slider(
                             value = localHorizontalSwing.toFloat(),
                             onValueChange = { localHorizontalSwing = floor(it).toInt() },
-                            enabled = !disabled && !loading,
-                            onValueChangeFinished = { state.setHorizontalSwing(localHorizontalSwing) },
+                            enabled = !device.isLoading(),
+                            onValueChangeFinished = { device.setHorizontalSwing(localHorizontalSwing) },
                             modifier = modifier.width(125.dp),
                             valueRange = -135f..90f,
                             steps = 4,
@@ -290,8 +285,8 @@ fun ACDeviceInfo(
                         Slider(
                             value = localFanSpeed.toFloat(),
                             onValueChange = { localFanSpeed = floor(it).toInt() },
-                            enabled = !disabled && !loading,
-                            onValueChangeFinished = { state.setFanSpeed(localFanSpeed) },
+                            enabled = !device.isLoading(),
+                            onValueChangeFinished = { device.setFanSpeed(localFanSpeed) },
                             modifier = modifier.width(125.dp),
                             valueRange = 0f..100f,
                             steps = 3,

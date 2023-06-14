@@ -49,7 +49,7 @@ class RoutinesViewModel: ViewModel() {
 
     private fun getRoutinesFromNetwork(networkRoutineList: NetworkRoutineList?): List<Routine>? {
         return networkRoutineList?.result?.let { array ->
-            (0 until array.size).map{ index ->
+            array.indices.map{ index ->
                 val networkRoutine = array[index]
                 Routine(
                     id = networkRoutine.id,

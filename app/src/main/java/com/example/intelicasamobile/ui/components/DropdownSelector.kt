@@ -62,7 +62,8 @@ fun TextFieldDropdownSelector(
 ) {
 
     Box {
-        OutlinedTextField(value = stateHolder.value,
+        OutlinedTextField(
+            value = stateHolder.value,
             onValueChange = {},
             label = { Text(text = stateHolder.label) },
             leadingIcon = {
@@ -136,7 +137,11 @@ fun ShapeDropdownSelector(
                             .padding(dimensionResource(id = R.dimen.padding_small), 0.dp)
                     )
                 }
-                Text(text = stateHolder.value, color = textColor, style = TextStyle(fontSize = fontSize.sp))
+                Text(
+                    text = stateHolder.value,
+                    color = textColor,
+                    style = TextStyle(fontSize = fontSize.sp)
+                )
                 Icon(
                     imageVector = stateHolder.icon,
                     contentDescription = "Dropdown",
@@ -154,11 +159,13 @@ fun ShapeDropdownSelector(
 fun InnerDropdownSelector(
     stateHolder: DropdownSelectorStateHolder, modifier: Modifier = Modifier
 ) {
-    Button(onClick = { stateHolder.onExpanded(!(stateHolder.expanded)) },
+    Button(
+        onClick = { stateHolder.onExpanded(!(stateHolder.expanded)) },
         modifier = modifier
             .alpha(0f)
             .width(with(LocalDensity.current) { stateHolder.size.width.toDp() })
-            .height(with(LocalDensity.current) { stateHolder.size.height.toDp() })
+            .height(with(LocalDensity.current) { stateHolder.size.height.toDp() }),
+        enabled = !stateHolder.loading
     ) {}
 
     DropdownMenu(
@@ -166,7 +173,7 @@ fun InnerDropdownSelector(
         onDismissRequest = { stateHolder.onExpanded(false) },
         modifier = Modifier
             .padding(0.dp)
-            .width(with(LocalDensity.current) { stateHolder.size.width.toDp() })
+            .width(with(LocalDensity.current) { stateHolder.size.width.toDp() }),
     ) {
         stateHolder.getItemsToDisplay().forEach { item ->
             DropdownMenuItem(onClick = {

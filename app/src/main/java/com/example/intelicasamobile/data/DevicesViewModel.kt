@@ -71,7 +71,6 @@ class DevicesViewModel: ViewModel() {
         return networkDeviceList?.result?.let{array ->
             (0 until array.size).map{ index ->
                 val networkDevice = array[index]
-                println(networkDevice)
                 when (networkDevice.networkType?.name?.let { DeviceType.getDeviceType(it) }) {
                     DeviceType.LAMP -> LightDevice(
                         initialState = LightState(

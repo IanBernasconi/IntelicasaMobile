@@ -42,10 +42,8 @@ fun OvenDeviceInfoPreview() {
     val device = OvenDevice(deviceId = "1", deviceName = "Horno")
     IntelicasaMobileTheme {
         OvenDeviceInfo(
-            state = device,
+            device = device,
             modifier = Modifier,
-            disabled = false,
-            loading = false,
         )
     }
 }
@@ -54,12 +52,10 @@ fun OvenDeviceInfoPreview() {
 @Composable
 fun OvenDeviceInfo(
     modifier: Modifier = Modifier,
-    disabled: Boolean = false,
-    loading: Boolean = false,
-    state: OvenDevice = viewModel(),
+    device: OvenDevice = viewModel(),
 ) {
 
-    val uiState by state.state.collectAsState()
+    val uiState by device.state.collectAsState()
 
     var localTemperature by remember { mutableStateOf(uiState.temperature) }
 
@@ -73,7 +69,8 @@ fun OvenDeviceInfo(
                 )
             },
             label = stringResource(id = R.string.OI_heat_mode),
-            onItemSelected = { state.setHeatMode(it.value as OvenHeatMode) },
+            loading = device.isLoading(),
+            onItemSelected = { device.setHeatMode(it.value as OvenHeatMode) },
             initialItem = DropdownSelectorItem(
                 label = stringResource(id = uiState.heatMode.nameResId),
                 value = uiState.heatMode,
@@ -88,8 +85,10 @@ fun OvenDeviceInfo(
                 value = it,
                 icon = it.imageResourceId
             )
-        }, label = stringResource(id = R.string.OI_convection_mode), onItemSelected = {
-            state.setConvectionMode(it.value as OvenConvectionMode)
+        }, label = stringResource(id = R.string.OI_convection_mode),
+            loading = device.isLoading(),
+            onItemSelected = {
+            device.setConvectionMode(it.value as OvenConvectionMode)
         }, initialItem = DropdownSelectorItem(
             label = stringResource(id = uiState.convectionMode.nameResId),
             value = uiState.convectionMode,
@@ -107,7 +106,8 @@ fun OvenDeviceInfo(
                 )
             },
             label = stringResource(id = R.string.OI_grill_mode),
-            onItemSelected = { state.setGrillMode(it.value as OvenGrillMode) },
+            loading = device.isLoading(),
+            onItemSelected = { device.setGrillMode(it.value as OvenGrillMode) },
             initialItem = DropdownSelectorItem(
                 label = stringResource(id = uiState.grillMode.nameResId),
                 value = uiState.grillMode,
@@ -127,9 +127,8 @@ fun OvenDeviceInfo(
             ) {
                 StateInfo(
                     isOn = uiState.isOn,
-                    setIsOn = { state.setIsOn(it) },
-                    disabled = disabled,
-                    loading = loading
+                    setIsOn = { device.setIsOn(it) },
+                    loading = device.isLoading()
                 )
             }
 
@@ -169,14 +168,14 @@ fun OvenDeviceInfo(
                             onValueChange = { localTemperature = it.toInt() },
                             valueRange = 90f..220f,
                             steps = 0,
-                            enabled = !(disabled || loading),
+                            enabled = !device.isLoading(),
                             modifier = Modifier.width(125.dp),
                             colors = SliderDefaults.colors(
                                 thumbColor = MaterialTheme.colorScheme.primary,
                                 activeTrackColor = MaterialTheme.colorScheme.primary,
                                 inactiveTrackColor = MaterialTheme.colorScheme.secondary
                             ),
-                            onValueChangeFinished = { state.setTemperature(localTemperature) })
+                            onValueChangeFinished = { device.setTemperature(localTemperature) })
                     }
                 }
             }

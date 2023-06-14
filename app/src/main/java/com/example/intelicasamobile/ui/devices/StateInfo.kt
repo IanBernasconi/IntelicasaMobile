@@ -36,7 +36,6 @@ fun StateInfo(
     isOn: Boolean,
     setIsOn: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    disabled: Boolean = false,
     loading: Boolean = false,
 ) {
     IntelicasaMobileTheme() {
@@ -63,7 +62,7 @@ fun StateInfo(
             ) {
                 Button(
                     onClick = { setIsOn(!isOn) },
-                    enabled = !disabled && !loading,
+                    enabled = !loading,
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                     shape = CircleShape
                     ) {

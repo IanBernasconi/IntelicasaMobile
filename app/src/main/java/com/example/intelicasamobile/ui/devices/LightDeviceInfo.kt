@@ -15,6 +15,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.LightDevice
-import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
@@ -41,154 +41,154 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 fun LightDeviceInfoPreview() {
     val device = LightDevice(deviceId = "1", deviceName = "Luz")
     LightDeviceInfo(
-        state = device
+        device = device
     )
 }
 
 @Composable
 fun LightDeviceInfo(
     modifier: Modifier = Modifier,
-    disabled: Boolean = false,
-    loading: Boolean = false,
-    state: LightDevice = viewModel(),
+    device: LightDevice = viewModel(),
 ) {
 
-    val uiState by state.state.collectAsState()
+    val uiState by device.state.collectAsState()
 
     var localIntensity by remember { mutableStateOf(uiState.brightness) }
     var localColor by remember { mutableStateOf(uiState.color) }
     val colorController = rememberColorPickerController()
 
-    IntelicasaMobileTheme() {
-        Column(modifier = modifier) {
+    LaunchedEffect(device) {
+        colorController.setEnabled(!device.isLoading())
+    }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+    Column(modifier = modifier) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            StateInfo(
+                isOn = uiState.isOn,
+                setIsOn = { device.setIsOn(it) },
+                modifier = modifier,
+                loading = device.isLoading()
+            )
+        }
+
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                horizontalAlignment = Alignment.Start
             ) {
-                StateInfo(
-                    isOn = uiState.isOn,
-                    setIsOn = { state.setIsOn(it) },
-                    modifier = modifier,
-                    disabled = disabled,
-                    loading = loading
+                Text(
+                    text = stringResource(id = R.string.LI_brightness),
+                    style = TextStyle(fontSize = 16.sp)
                 )
             }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                    horizontalAlignment = Alignment.Start
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.LI_brightness),
-                        style = TextStyle(fontSize = 16.sp)
-                    )
-                }
-
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Slider(
-                            value = localIntensity.toFloat(),
-                            onValueChange = { localIntensity = it.toInt() },
-                            onValueChangeFinished = { state.setBrightness(localIntensity) },
-                            valueRange = 0f..100f,
-                            steps = 0,
-                            enabled = !(disabled || loading),
-                            modifier = Modifier.width(150.dp),
-                            colors = SliderDefaults.colors(
-                                thumbColor = MaterialTheme.colorScheme.primary,
-                                activeTrackColor = MaterialTheme.colorScheme.primary,
-                                inactiveTrackColor = MaterialTheme.colorScheme.secondary
-                            )
+                    Slider(
+                        value = localIntensity.toFloat(),
+                        onValueChange = { localIntensity = it.toInt() },
+                        onValueChangeFinished = { device.setBrightness(localIntensity) },
+                        valueRange = 0f..100f,
+                        steps = 0,
+                        enabled = !device.isLoading(),
+                        modifier = Modifier.width(150.dp),
+                        colors = SliderDefaults.colors(
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary,
+                            inactiveTrackColor = MaterialTheme.colorScheme.secondary
                         )
+                    )
 
-                    }
                 }
             }
+        }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                horizontalAlignment = Alignment.Start
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.LI_color),
-                        style = TextStyle(fontSize = 16.sp)
-                    )
-                }
-
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Circle,
-                            contentDescription = null,
-                            tint = localColor,
-                            modifier = Modifier
-                                .width(50.dp)
-                                .height(50.dp)
-                                .padding(5.dp),
-                        )
-                    }
-                }
+                Text(
+                    text = stringResource(id = R.string.LI_color),
+                    style = TextStyle(fontSize = 16.sp)
+                )
             }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                    horizontalAlignment = Alignment.Start
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    HsvColorPicker(modifier = Modifier
-                        .width(250.dp)
-                        .height(250.dp)
-                        .padding(5.dp),
-                        controller = colorController,
-                        onColorChanged = { colorEnvelope: ColorEnvelope ->
-                            localColor = colorEnvelope.color
-                            state.setColor(colorEnvelope.color)
-                        }
+                    Icon(
+                        imageVector = Icons.Default.Circle,
+                        contentDescription = null,
+                        tint = localColor,
+                        modifier = Modifier
+                            .width(50.dp)
+                            .height(50.dp)
+                            .padding(5.dp),
                     )
                 }
             }
         }
+
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                horizontalAlignment = Alignment.Start
+            ) {
+                HsvColorPicker(
+                    modifier = Modifier
+                        .width(250.dp)
+                        .height(250.dp)
+                        .padding(5.dp),
+                    controller = colorController,
+                    onColorChanged = { colorEnvelope: ColorEnvelope ->
+                        localColor = colorEnvelope.color
+                        device.setColor(colorEnvelope.color)
+                    },
+                )
+            }
+        }
+
     }
 }

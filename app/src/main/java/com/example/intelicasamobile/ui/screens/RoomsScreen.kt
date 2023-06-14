@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -24,7 +26,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +49,6 @@ import com.example.intelicasamobile.ui.components.DropdownSelectorItem
 import com.example.intelicasamobile.ui.components.ShapeDropdownSelector
 import com.example.intelicasamobile.ui.components.rememberDropdownSelectorState
 import com.example.intelicasamobile.ui.devices.DeviceCard
-import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -59,84 +59,78 @@ fun RoomsScreen(
     roomsModel: RoomsViewModel = viewModel(),
 ) {
     val roomsState by roomsModel.roomsUiState.collectAsState()
+    val devicesState by devicesModel.devicesUiState.collectAsState()
     var currentIndex by remember { mutableStateOf(roomsState.rooms.indexOf(roomsState.currentRoom)) }
     var offsetX by remember { mutableStateOf(0f) }
     var pixelWidth by remember { mutableStateOf(0) }
 
-
-    LaunchedEffect(Unit) {
-        roomsModel.fetchRooms()
-    }
-
+    // TODO this refresh doesn't work without some previous rooms
     SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing = roomsState.isLoading),
+        state = rememberSwipeRefreshState(roomsState.isLoading || devicesState.isLoading),
         onRefresh = {
             roomsModel.fetchRooms()
             devicesModel.fetchDevices()
-        })
-    {
-        IntelicasaMobileTheme() {
-            Surface(color = MaterialTheme.colorScheme.background,
-                modifier = Modifier
-                    .onGloballyPositioned { pixelWidth = it.size.width }
-                    .fillMaxHeight()
-                    .draggable(orientation = Orientation.Horizontal,
-                        state = rememberDraggableState { delta ->
-                            offsetX += delta
+        }
+    ) {
+        Surface(color = MaterialTheme.colorScheme.background,
+            modifier = Modifier
+                .fillMaxSize()
+                .onGloballyPositioned { pixelWidth = it.size.width }
+                .draggable(orientation = Orientation.Horizontal,
+                    state = rememberDraggableState { delta ->
+                        offsetX += delta
+                    },
+                    onDragStopped = {
+                        if (offsetX > pixelWidth / 3) {
+                            currentIndex =
+                                (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
+                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+
+                        } else if (offsetX < -pixelWidth / 3) {
+                            currentIndex = (currentIndex + 1) % roomsState.rooms.size
+                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+
+                        }
+                        offsetX = 0f
+                    })
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (roomsState.rooms.isNotEmpty()) {
+                    currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
+
+                    DevicesList(
+                        offset = DpOffset(
+                            with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() },
+                            0.dp
+                        ),
+                        roomsModel = roomsModel,
+                        devicesModel = devicesModel,
+                        index = (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
+                    )
+                    DevicesList(
+                        offset = DpOffset(
+                            with(LocalDensity.current) { (offsetX * 1.5f).toDp() }, 0.dp
+                        ),
+                        setIndex = { index ->
+                            currentIndex = index
+                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
                         },
-                        onDragStopped = {
-                            if (offsetX > pixelWidth / 3) {
-                                currentIndex =
-                                    (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
-                                roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
-
-                            } else if (offsetX < -pixelWidth / 3) {
-                                currentIndex = (currentIndex + 1) % roomsState.rooms.size
-                                roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
-
-                            }
-                            offsetX = 0f
-                        })
-            ) {
-                Box() {
-                    if (roomsState.rooms.isNotEmpty()) {
-                        currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
-
-                        DevicesList(
-                            offset = DpOffset(
-                                with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() },
-                                0.dp
-                            ),
-                            roomsModel = roomsModel,
-                            devicesModel = devicesModel,
-                            index = (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size
-                        )
-                        DevicesList(
-                            offset = DpOffset(
-                                with(LocalDensity.current) { (offsetX * 1.5f).toDp() },
-                                0.dp
-                            ),
-                            setIndex = { index ->
-                                currentIndex = index
-                                roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
-                            },
-                            roomsModel = roomsModel,
-                            devicesModel = devicesModel,
-                            index = currentIndex
-                        )
-                        DevicesList(
-                            offset = DpOffset(
-                                with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() },
-                                0.dp
-                            ),
-                            roomsModel = roomsModel,
-                            devicesModel = devicesModel,
-                            index = (currentIndex + 1) % roomsState.rooms.size
-                        )
-                    }
+                        roomsModel = roomsModel,
+                        devicesModel = devicesModel,
+                        index = currentIndex
+                    )
+                    DevicesList(
+                        offset = DpOffset(
+                            with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() },
+                            0.dp
+                        ),
+                        roomsModel = roomsModel,
+                        devicesModel = devicesModel,
+                        index = (currentIndex + 1) % roomsState.rooms.size
+                    )
                 }
             }
-    }
+        }
     }
 }
 
@@ -243,7 +237,5 @@ fun TabletRoomsScreen(
     devicesModel: DevicesViewModel = viewModel(),
     roomsModel: RoomsViewModel = viewModel(),
 ) {
-    IntelicasaMobileTheme() {
-        RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel)
-    }
+    RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel)
 }

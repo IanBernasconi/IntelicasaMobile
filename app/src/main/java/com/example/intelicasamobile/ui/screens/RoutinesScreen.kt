@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -12,7 +13,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -41,8 +41,9 @@ fun RoutinesScreen(
         onRefresh = {
             routinesModel.fetchRoutines()
         },
-    ){
+    ) {
         Surface(
+            modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
             val state = rememberLazyGridState()
@@ -73,25 +74,23 @@ fun TabletRoutinesScreen(
     devicesModel: DevicesViewModel = viewModel()
 ) {
     val routinesState by routinesModel.routinesUiState.collectAsState()
-    IntelicasaMobileTheme() {
-        Surface(
-            color = MaterialTheme.colorScheme.background
-        ) {
-            val state = rememberLazyGridState()
-            Column {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_large)),
-                    state = state,
-                    contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
-                    verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
-                ) {
-                    items(routinesState.routines) { routine ->
-                        RoutineCard(
-                            routine = routine,
-                            devicesModel = devicesModel,
-                            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
-                        )
-                    }
+    Surface(
+        color = MaterialTheme.colorScheme.background
+    ) {
+        val state = rememberLazyGridState()
+        Column {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_large)),
+                state = state,
+                contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+            ) {
+                items(routinesState.routines) { routine ->
+                    RoutineCard(
+                        routine = routine,
+                        devicesModel = devicesModel,
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                    )
                 }
             }
         }

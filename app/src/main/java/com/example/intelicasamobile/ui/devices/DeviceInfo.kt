@@ -30,7 +30,7 @@ fun DeviceInfoPreview() {
 @Preview
 @Composable
 fun DeviceInfoModalPreview() {
-  //  DeviceInfoModal(device = MainUiState().devices[0], showDialog = true, onDismiss = {})
+    //  DeviceInfoModal(device = MainUiState().devices[0], showDialog = true, onDismiss = {})
 }
 
 @Composable
@@ -39,7 +39,7 @@ fun DeviceInfoModal(
     showDialog: Boolean,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
-    roomsViewModel: RoomsViewModel = viewModel()
+    roomsViewModel: RoomsViewModel = viewModel(),
 ) {
     if (showDialog) {
         Dialog(onDismissRequest = { onDismiss() }) {
@@ -47,7 +47,11 @@ fun DeviceInfoModal(
                 modifier = modifier.background(Color.Transparent),
                 verticalArrangement = Arrangement.Center,
             ) {
-                DeviceInfo(device = device, modifier = modifier, roomsViewModel = roomsViewModel)
+                DeviceInfo(
+                    device = device,
+                    modifier = modifier,
+                    roomsViewModel = roomsViewModel,
+                )
             }
         }
     }
@@ -57,7 +61,7 @@ fun DeviceInfoModal(
 fun DeviceInfo(
     device: Device,
     modifier: Modifier = Modifier,
-    roomsViewModel: RoomsViewModel = viewModel()
+    roomsViewModel: RoomsViewModel = viewModel(),
 ) {
     IntelicasaMobileTheme() {
         Card(modifier = modifier) {
@@ -66,26 +70,26 @@ fun DeviceInfo(
                     DeviceInfoHeader(device = device)
                     when (device) {
                         is LightDevice -> LightDeviceInfo(
-                            state = device
+                            device = device,
                         )
 
                         is ACDevice -> {
                             ACDeviceInfo(
-                                state = device
+                                device = device,
                             )
                         }
 
                         is VacuumDevice -> VacuumDeviceInfo(
-                            state = device,
+                            device = device,
                             roomsViewModel = roomsViewModel
                         )
 
                         is OvenDevice -> OvenDeviceInfo(
-                            state = device
+                            device = device,
                         )
 
                         is DoorDevice -> DoorDeviceInfo(
-                            state = device
+                            device = device,
                         )
                     }
                 }

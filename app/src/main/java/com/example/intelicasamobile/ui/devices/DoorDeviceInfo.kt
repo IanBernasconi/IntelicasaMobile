@@ -35,19 +35,17 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 fun DoorDeviceInfoPreview() {
     val device = DoorDevice(deviceId = "1", deviceName = "Door")
     DoorDeviceInfo(
-        state = device
+        device = device
     )
 }
 
 @Composable
 fun DoorDeviceInfo(
     modifier: Modifier = Modifier,
-    disabled: Boolean = false,
-    loading: Boolean = false,
-    state: DoorDevice = viewModel(),
+    device: DoorDevice = viewModel(),
 ) {
 
-    val uiState by state.state.collectAsState()
+    val uiState by device.state.collectAsState()
 
     IntelicasaMobileTheme() {
         Column(modifier = modifier) {
@@ -60,12 +58,12 @@ fun DoorDeviceInfo(
             ) {
                 Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
                     Button(
-                        onClick = { state.setOpen(!uiState.isOpen) },
+                        onClick = { device.setOpen(!uiState.isOpen) },
                         elevation = ButtonDefaults.buttonElevation(
                             20.dp, 10.dp, 10.dp, 10.dp, 0.dp
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        enabled = !disabled && !loading && !uiState.isLocked
+                        enabled = !device.isLoading() && !uiState.isLocked
                     ) {
                         Column(
                             modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally
@@ -87,12 +85,12 @@ fun DoorDeviceInfo(
 
                 Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
                     Button(
-                        onClick = { state.setLocked(!uiState.isLocked) },
+                        onClick = { device.setLocked(!uiState.isLocked) },
                         elevation = ButtonDefaults.buttonElevation(
                             20.dp, 10.dp, 10.dp, 10.dp, 0.dp
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        enabled = !disabled && !loading && !uiState.isOpen
+                        enabled = !device.isLoading() && !uiState.isOpen
                     ) {
                         Column(
                             modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally

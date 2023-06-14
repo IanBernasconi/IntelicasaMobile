@@ -1,5 +1,6 @@
 package com.example.intelicasamobile.model
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
@@ -18,12 +19,18 @@ open class Device(
     val meta: Meta = Meta(),
 ) : ViewModel() {
 
+    private val isLoadingState = mutableStateOf(false)
+
     protected fun triggerNewAction(actionType: ActionTypes, params: List<String> = emptyList()) {
         viewModelScope.launch {
+            isLoadingState.value = true
             val apiService = RetrofitClient.getApiService()
             apiService.triggerEvent(id = id, actionName = actionType.apiName, params = params)
+            isLoadingState.value = false
         }
     }
+
+    fun isLoading(): Boolean = isLoadingState.value
 }
 
 data class ACDevice(
