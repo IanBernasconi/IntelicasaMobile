@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Battery0Bar
 import androidx.compose.material.icons.outlined.Battery1Bar
@@ -64,6 +66,8 @@ fun VacuumDeviceInfo(
     device: VacuumDevice = viewModel(),
     roomsViewModel: RoomsViewModel = viewModel()
 ) {
+
+    val scrollState = rememberScrollState()
     val uiState by device.state.collectAsState()
     val roomsState by roomsViewModel.roomsUiState.collectAsState()
 
@@ -104,7 +108,11 @@ fun VacuumDeviceInfo(
     )
 
     IntelicasaMobileTheme {
-        Column(modifier = modifier) {
+        Column(
+            modifier = modifier.verticalScroll(
+                state = scrollState
+            )
+        ) {
             Row(
                 modifier = modifier
                     .fillMaxWidth()
