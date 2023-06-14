@@ -60,4 +60,10 @@
     <string name="bathroom">Baño</string>
     <string name="garden">Jardín</string>
     <string name="other">Otro</string>
+    <string name="help">Ayuda</string>
+    <string name="contact">Contacto</string>
+    <string name="about">Acerca de</string>
+    <string name="help_text">Texto de ayuda</string>
+    <string name="contact_text">Texto de contacto</string>
+    <string name="about_text">Texto acerca de</string>
 </resources>

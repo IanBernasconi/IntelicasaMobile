@@ -31,12 +31,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.intelicasamobile.MyNotification
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.ui.devices.DeviceInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -120,7 +118,6 @@ fun DialogButton(@StringRes title: Int, @StringRes text: Int, modifier: Modifier
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun TabletMenuScreen() {
