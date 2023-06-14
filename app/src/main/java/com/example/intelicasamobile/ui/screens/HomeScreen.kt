@@ -174,16 +174,21 @@ fun TabletHomeScreen(
 ) {
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
-    Row {
-        Box(Modifier.weight(1f)) {
-            Column() {
-                RoutinesHomeList(state1, routinesModel)
-            }
+    Surface(
+        modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+    )
+    {
+        Row {
+            Box(Modifier.weight(1f)) {
+                Column() {
+                    RoutinesHomeList(state1, routinesModel)
+                }
 
-        }
-        Box(Modifier.weight(1f)) {
-            Column() {
-                DevicesHomeList(state2, R.dimen.card_medium, devicesModel, roomsModel)
+            }
+            Box(Modifier.weight(1f)) {
+                Column() {
+                    DevicesHomeList(state2, R.dimen.card_medium, devicesModel, roomsModel)
+                }
             }
         }
     }

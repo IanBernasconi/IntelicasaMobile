@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,7 +37,6 @@ import androidx.compose.ui.window.Dialog
 import com.example.intelicasamobile.MyNotification
 import com.example.intelicasamobile.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun MenuScreen() {
@@ -101,12 +101,14 @@ fun DialogButton(@StringRes title: Int, @StringRes text: Int, modifier: Modifier
                     Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
                         Text(
                             text = stringResource(id = text),
-                            modifier = modifier.padding(
-                                horizontal = dimensionResource(id = R.dimen.padding_medium),
-                                vertical = dimensionResource(
-                                    id = R.dimen.padding_medium
-                                ),
-                            ).fillMaxWidth(),
+                            modifier = modifier
+                                .padding(
+                                    horizontal = dimensionResource(id = R.dimen.padding_medium),
+                                    vertical = dimensionResource(
+                                        id = R.dimen.padding_medium
+                                    ),
+                                )
+                                .fillMaxWidth(),
                             style = TextStyle(fontSize = 20.sp),
                             textAlign = TextAlign.Center,
 
@@ -121,20 +123,22 @@ fun DialogButton(@StringRes title: Int, @StringRes text: Int, modifier: Modifier
 @Preview(showBackground = true)
 @Composable
 fun TabletMenuScreen() {
-    Surface(
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+    Surface(color = MaterialTheme.colorScheme.background) {
+        Row {
+            Spacer(modifier = Modifier.weight(1f))
+            Column(
+                modifier = Modifier.fillMaxSize().weight(2f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
 
-        ) {
-            DialogButton(R.string.help, R.string.help_text)
-            DialogButton(R.string.contact, R.string.contact_text)
-            DialogButton(R.string.about, R.string.about_text)
-
+            ) {
+                DialogButton(R.string.help, R.string.help_text)
+                DialogButton(R.string.contact, R.string.contact_text)
+                DialogButton(R.string.about, R.string.about_text)
+            }
+            Spacer(modifier = Modifier.weight(1f))
         }
+
     }
 }
 
