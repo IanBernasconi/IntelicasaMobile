@@ -49,6 +49,7 @@
     <string name="VS_charging">Cargando</string>
     <string name="VS_paused">Pausado</string>
     <string name="VCI_no_room_message">El dispositivo debe estar vinculado a una habitación, asigne una en el sitio web</string>
+    <string name="VCI_room">Room to clean</string>
     <string name="VCM_mop">Trapear</string>
     <string name="VCM_vacuum">Aspirar</string>
     <string name="VCA_pause">Pausar</string>

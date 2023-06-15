@@ -191,13 +191,22 @@ fun LightDeviceInfo(
                 }
             }
         }
-        if (showColorPicker) {
-            Dialog(onDismissRequest = { showColorPicker = false }) {
-                HsvColorPicker(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .padding(5.dp),
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                horizontalAlignment = Alignment.Start
+            ) {
+                HsvColorPicker(modifier = Modifier
+                    .width(150.dp)
+                    .height(150.dp),
                     controller = colorController,
                     onColorChanged = { colorEnvelope: ColorEnvelope ->
                         localColor = colorEnvelope.color

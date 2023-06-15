@@ -77,7 +77,7 @@
 
     <!-- Vacuum Cleaner Info -->
     <string name="VCI_no_room_message">The device must be linked to a room. Please assign one in the website</string>
-
+    <string name="VCI_room">Room to clean</string>
     <!-- Vacuum Cleaner Modes -->
     <string name="VCM_mop">Mop</string>
     <string name="VCM_vacuum">Vacuum</string>

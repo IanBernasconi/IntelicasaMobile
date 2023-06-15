@@ -80,7 +80,7 @@ fun HomeScreenPortrait(
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
     Column {
-        RoutinesHomeList(state1 = state1, routinesModel)
+        RoutinesHomeList(state1 = state1, R.dimen.card_small, routinesModel)
         DevicesHomeList(state2 = state2, R.dimen.card_small, devicesModel)
 
     }
@@ -99,7 +99,7 @@ fun HomeScreenLandscape(
     Row {
         Box(Modifier.weight(1f)) {
             Column {
-                RoutinesHomeList(state1, routinesModel)
+                RoutinesHomeList(state1, R.dimen.card_medium,routinesModel)
             }
 
         }
@@ -144,7 +144,9 @@ private fun DevicesHomeList(
 
 @Composable
 private fun RoutinesHomeList(
-    state1: LazyGridState, model: RoutinesViewModel = viewModel()
+    state1: LazyGridState,
+    @DimenRes minWidth: Int,
+    model: RoutinesViewModel = viewModel()
 ) {
 
     val state by model.routinesUiState.collectAsState()
@@ -153,7 +155,7 @@ private fun RoutinesHomeList(
         title = R.string.routines
     )
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(dimensionResource(id = R.dimen.card_small)),
+        columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
         state = state1,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
@@ -192,7 +194,7 @@ fun TabletHomeScreen(
         Row {
             Box(Modifier.weight(1f)) {
                 Column {
-                    RoutinesHomeList(state1, routinesModel)
+                    RoutinesHomeList(state1, R.dimen.card_medium, routinesModel)
                 }
 
             }

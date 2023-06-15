@@ -1,5 +1,6 @@
 package com.example.intelicasamobile.ui.devices
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
@@ -8,7 +9,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -18,17 +23,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.data.RoomsViewModel
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.Device
+import com.example.intelicasamobile.model.DeviceType
 import com.example.intelicasamobile.model.DoorDevice
 import com.example.intelicasamobile.model.LightDevice
 import com.example.intelicasamobile.model.OvenDevice
 import com.example.intelicasamobile.model.VacuumDevice
-import com.example.intelicasamobile.ui.components.SaveButton
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Preview(name = "DeviceInfo")
@@ -40,7 +48,7 @@ fun DeviceInfoPreview() {
 @Preview
 @Composable
 fun DeviceInfoModalPreview() {
-    //  DeviceInfoModal(device = MainUiState().devices[0], showDialog = true, onDismiss = {})
+      DeviceInfoModal(device = Device(id="1", name = "test", deviceType= DeviceType.AIR_CONDITIONER ), showDialog = true, onDismiss = {})
 }
 
 @Composable
@@ -52,7 +60,10 @@ fun DeviceInfoModal(
     roomsViewModel: RoomsViewModel = viewModel(),
 ) {
     if (showDialog) {
-        Dialog(onDismissRequest = { onDismiss() }) {
+        Dialog(
+            onDismissRequest = { onDismiss() },
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
             Column(
                 modifier = modifier.background(Color.Transparent),
                 verticalArrangement = Arrangement.Center,
@@ -61,7 +72,6 @@ fun DeviceInfoModal(
                     device = device,
                     modifier = modifier,
                     roomsViewModel = roomsViewModel,
-                    onDismiss = onDismiss
                 )
             }
         }
@@ -73,46 +83,57 @@ fun DeviceInfo(
     device: Device,
     modifier: Modifier = Modifier,
     roomsViewModel: RoomsViewModel = viewModel(),
-    onDismiss: () -> Unit,
 ) {
-    Card(modifier = modifier) {
-        Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
-            Column {
-                DeviceInfoHeader(device = device)
-                when (device) {
-                    is LightDevice -> LightDeviceInfo(
-                        device = device,
-                    )
-
-                    is ACDevice -> {
-                        ACDeviceInfo(
-                            device = device,
-                        )
-                    }
-
-                    is VacuumDevice -> VacuumDeviceInfo(
-                        device = device,
-                        roomsViewModel = roomsViewModel
-                    )
-
-                    is OvenDevice -> OvenDeviceInfo(
-                        device = device,
-                    )
-
-                    is DoorDevice -> DoorDeviceInfo(
-                        device = device,
-                    )
-
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-
-                ) {
-                    SaveButton(onDismiss = onDismiss)
-                }
+    val configuration = LocalConfiguration.current
+    val orientation = configuration.orientation
+    if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        Card(modifier = modifier.width(300.dp)) {
+            Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
+                Info(device, roomsViewModel, modifier)
+            }
+        }
+    }else{
+        Card(modifier = modifier.width(800.dp)) {
+            Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
+                Info(device, roomsViewModel, modifier)
             }
         }
     }
+}
+
+@Composable
+fun Info(
+    device: Device,
+    roomsViewModel: RoomsViewModel = viewModel(),
+    modifier: Modifier
+) {
+    Column {
+        DeviceInfoHeader(device = device)
+        when (device) {
+            is LightDevice -> LightDeviceInfo(
+                device = device,
+            )
+
+            is ACDevice -> {
+                ACDeviceInfo(
+                    device = device,
+                )
+            }
+
+            is VacuumDevice -> VacuumDeviceInfo(
+                device = device,
+                roomsViewModel = roomsViewModel
+            )
+
+            is OvenDevice -> OvenDeviceInfo(
+                device = device,
+            )
+
+            is DoorDevice -> DoorDeviceInfo(
+                device = device,
+            )
+        }
+    }
+
 }
 
