@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -44,7 +45,13 @@ fun HomeScreen(
     val devicesState by devicesModel.devicesUiState.collectAsState()
     val routinesState by routinesModel.routinesUiState.collectAsState()
 
-    // TODO this refresh doesn't work without some previous fetches
+    LaunchedEffect(Unit) {
+        devicesModel.fetchDevices()
+        routinesModel.fetchRoutines()
+        roomsModel.fetchRooms()
+    }
+
+
     SwipeRefresh(
         state = rememberSwipeRefreshState(devicesState.isLoading || routinesState.isLoading),
         onRefresh = {
@@ -169,6 +176,13 @@ fun TabletHomeScreen(
     routinesModel: RoutinesViewModel = viewModel(),
     roomsModel: RoomsViewModel = viewModel()
 ) {
+
+    LaunchedEffect(Unit) {
+        devicesModel.fetchDevices()
+        routinesModel.fetchRoutines()
+        roomsModel.fetchRooms()
+    }
+
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
     Surface(

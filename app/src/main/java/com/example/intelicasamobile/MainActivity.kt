@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
             val routinesModel by remember { mutableStateOf(RoutinesViewModel()) }
             val roomsModel by remember { mutableStateOf(RoomsViewModel()) }
 
-            //TODO ask if it is correct to fetch data here at the start
             LaunchedEffect(Unit) {
                 devicesModel.fetchDevices()
                 routinesModel.fetchRoutines()

@@ -26,6 +26,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,7 +68,12 @@ fun RoomsScreen(
     var offsetX by remember { mutableStateOf(0f) }
     var pixelWidth by remember { mutableStateOf(0) }
 
-    // TODO this refresh doesn't work without some previous rooms
+    LaunchedEffect(Unit) {
+        devicesModel.fetchDevices()
+        roomsModel.fetchRooms()
+    }
+
+
     SwipeRefresh(state = rememberSwipeRefreshState(roomsState.isLoading || devicesState.isLoading),
         onRefresh = {
             roomsModel.fetchRooms()
