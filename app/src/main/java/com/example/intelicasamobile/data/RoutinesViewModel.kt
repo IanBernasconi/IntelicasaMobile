@@ -33,7 +33,6 @@ class RoutinesViewModel: ViewModel() {
                 apiService.getRoutines()
             }.onSuccess { response ->
                 val routines = getRoutinesFromNetwork(response.body())
-                println("Routines: $routines")
                 _routinesUiState.update { it.copy(
                     routines = routines?: emptyList(),
                     isLoading = false

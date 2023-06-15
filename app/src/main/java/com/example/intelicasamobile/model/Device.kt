@@ -21,6 +21,10 @@ open class Device(
 
     private val isLoadingState = mutableStateOf(false)
 
+    fun setLoadingState(isLoading: Boolean) {
+        isLoadingState.value = isLoading
+    }
+
     protected fun triggerNewAction(actionType: ActionTypes, params: List<String> = emptyList()) {
         viewModelScope.launch {
             isLoadingState.value = true

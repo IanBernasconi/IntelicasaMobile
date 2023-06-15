@@ -90,20 +90,6 @@ fun TextFieldDropdownSelector(
         InnerDropdownSelector(stateHolder = stateHolder, modifier = modifier)
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun ShapeDropDownSelectorPreview() {
-//
-//    val dropdownRoomStateHolder = rememberDropdownSelectorState(items = Datasource.rooms.map {
-//        DropdownSelectorItem(
-//            label = it.name, value = it, icon = it.roomType.imageResourceId
-//        )
-//    }, onItemSelected = {}
-//    )
-//    ShapeDropdownSelector(stateHolder = dropdownRoomStateHolder)
-//}
-
 @Composable
 fun ShapeDropdownSelector(
     stateHolder: DropdownSelectorStateHolder,

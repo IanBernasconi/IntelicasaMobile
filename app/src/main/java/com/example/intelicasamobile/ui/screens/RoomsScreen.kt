@@ -1,6 +1,5 @@
 package com.example.intelicasamobile.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -31,11 +30,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -67,11 +65,12 @@ fun RoomsScreen(
     var offsetX by remember { mutableStateOf(0f) }
     var pixelWidth by remember { mutableStateOf(0) }
 
-    // TODO this refresh doesn't work without some previous rooms
+    val context = LocalContext.current
+
     SwipeRefresh(state = rememberSwipeRefreshState(roomsState.isLoading || devicesState.isLoading),
         onRefresh = {
             roomsModel.fetchRooms()
-            devicesModel.fetchDevices()
+            devicesModel.fetchDevices(context = context)
         }) {
         Surface(color = MaterialTheme.colorScheme.background,
             modifier = Modifier

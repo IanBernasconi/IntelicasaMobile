@@ -18,6 +18,45 @@
 
     <string name="all_devices_room">All</string>
 
+    <!-- Notification info -->
+    <string name="notification_title" translatable="false">Intelicasa</string>
+
+    <string name="door_unlocked_title">Door unlocked</string>
+    <string name="door_unlocked_info">Door %s was unlocked</string>
+
+    <string name="door_locked_title">Door locked</string>
+    <string name="door_locked_info">Door %s was locked</string>
+
+    <string name="door_opened_title">Door opened</string>
+    <string name="door_opened_info">Door %s was opened</string>
+
+    <string name="door_closed_title">Door closed</string>
+    <string name="door_closed_info">Door %s was closed</string>
+
+    <string name="vacuum_full_battery_title">Vacuum finish charging</string>
+    <string name="vacuum_full_battery_info">Vacuum %s has finished charging</string>
+
+    <string name="vacuum_low_battery_title">Vacuum low battery</string>
+    <string name="vacuum_low_battery_info">Vacuum %s has low battery: %d\%</string>
+
+    <string name="vacuum_empty_battery_title">Vacuum shut down</string>
+    <string name="vacuum_empty_battery_info">Vacuum %s has run out of battery</string>
+
+    <string name="oven_on_title">Oven turned on</string>
+    <string name="oven_on_info">Oven %s was turned on</string>
+
+    <string name="oven_off_title">Oven turned off</string>
+    <string name="oven_off_info">Oven %s was turned off</string>
+
+    <string name="lamp_on_title">Lamp turned on</string>
+    <string name="lamp_on_info">Lamp %s was turned on</string>
+
+    <string name="lamp_off_title">Lamp turned off</string>
+    <string name="lamp_off_info">Lamp %s was turned off</string>
+
+    <string name="ac_on_title">Air conditioner turned on</string>
+    <string name="ac_on_info">Air conditioner %s was turned on</string>
+
     <!-- DEVICES -->
     <string name="turn_on">Turn on</string>
     <string name="turn_off">Turn off</string>
@@ -102,5 +141,23 @@
     <string name="help_text">Help Text</string>
     <string name="contact_text">Contact Text</string>
     <string name="about_text">About Text</string>
+
+    <!-- Preferences -->
+    <string name="pref_title">Preferences</string>
+    <string name="pref_key_notifications">Notifications</string>
+    <string name="pref_key_notifications_summary">Enable or disable notifications</string>
+    <string name="pref_on_door_open">On door opened</string>
+    <string name="pref_on_door_closed">On door closed</string>
+    <string name="pref_on_door_locked">On door locked</string>
+    <string name="pref_on_door_unlocked">On door unlocked</string>
+    <string name="pref_on_vacuum_full_battery">On vacuum finished charging</string>
+    <string name="pref_on_vacuum_low_battery">On vacuum low battery</string>
+    <string name="pref_on_vacuum_empty_battery">On vacuum shut down</string>
+    <string name="pref_on_light_on">On light turned on</string>
+    <string name="pref_on_light_off">On light turned off</string>
+    <string name="pref_on_ac_on">On AC turned on</string>
+    <string name="pref_on_ac_off">On AC turned off</string>
+    <string name="pref_on_oven_on">On oven turned on</string>
+    <string name="pref_on_oven_off">On oven turned off</string>
 
 </resources>

@@ -11,13 +11,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,26 +38,79 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.example.intelicasamobile.MyNotification
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.data.persistent.NotificationPreference
+import com.example.intelicasamobile.data.persistent.NotificationPreferences
+import com.example.intelicasamobile.dataStore
+import com.example.intelicasamobile.ui.components.AnimatedCollapsibleItem
 
 @Preview(showBackground = true)
 @Composable
 fun MenuScreen() {
-    Surface(
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
 
+
+        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
-            DialogButton(R.string.help, R.string.help_text)
-            DialogButton(R.string.contact, R.string.contact_text)
-            DialogButton(R.string.about, R.string.about_text)
-
+            Text(
+                text = stringResource(id = R.string.pref_title),
+                style = MaterialTheme.typography.displayLarge,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+            AnimatedCollapsibleItem(title = stringResource(id = R.string.pref_key_notifications)) {
+                NotificationPreferencesOptions()
+            }
         }
+
+}
+
+@Composable
+fun NotificationPreferencesOptions() {
+
+    val notificationPrefs = NotificationPreferences.getInstance(LocalContext.current.dataStore)
+    val preferences = notificationPrefs.preferences.collectAsState()
+
+    LaunchedEffect(Unit) {
+        notificationPrefs.loadPreferences()
+    }
+
+    Column {
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(1),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+        ) {
+            items(preferences.value) { preference ->
+                ToggleRow(preference) {
+                    notificationPrefs.setPreference(preference.type.value, !preference.getValue())
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ToggleRow(
+    preference: NotificationPreference,
+    toggleChange: () -> Unit
+) {
+    val localValue by remember { mutableStateOf(preference.value) }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = dimensionResource(id = R.dimen.padding_medium)),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(id = preference.type.nameResId),
+            style = TextStyle(fontSize = 18.sp)
+        )
+        Switch(
+            checked = localValue.value,
+            onCheckedChange = { toggleChange() },
+            enabled = !preference.loading.value
+        )
     }
 }
 
@@ -60,14 +118,12 @@ fun MenuScreen() {
 fun DialogButton(@StringRes title: Int, @StringRes text: Int, modifier: Modifier = Modifier) {
     var showDialog by remember { mutableStateOf(false) }
 
-    Card(
-        elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
+    Card(elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
         modifier = modifier
             .clickable { showDialog = true }
             .padding(
                 horizontal = dimensionResource(id = R.dimen.padding_large)
-            )
-    ) {
+            )) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -95,8 +151,7 @@ fun DialogButton(@StringRes title: Int, @StringRes text: Int, modifier: Modifier
 
         Dialog(onDismissRequest = { showDialog = false }) {
             Column(
-                modifier = modifier
-                    .background(Color.Transparent)
+                modifier = modifier.background(Color.Transparent)
 //                    .padding(start = drawerWidth)
                 ,
                 verticalArrangement = Arrangement.Center,
@@ -144,16 +199,3 @@ fun TabletMenuScreen() {
 
     }
 }
-
-@Composable
-fun NotificationButton() {
-    val context = LocalContext.current
-    Button(onClick = {
-        val notification =
-            MyNotification(context = context, title = "Test Title", message = "Test Body")
-        notification.fireNotification()
-    }) {
-        Text(text = "Send Notification")
-    }
-}
-

@@ -40,7 +40,11 @@ data class VacuumState(
     val state: VacuumStateEnum = VacuumStateEnum.CHARGING,
     val mode: VacuumCleanMode = VacuumCleanMode.VACUUM,
     val location: String = ""
-) : State()
+) : State() {
+    companion object {
+        const val lowBatteryThreshold = 20
+    }
+}
 
 enum class VacuumStateEnum(
     @StringRes val nameResId: Int,

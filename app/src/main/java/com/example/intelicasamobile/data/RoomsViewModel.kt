@@ -36,7 +36,6 @@ class RoomsViewModel : ViewModel() {
                 apiService.getRooms()
             }.onSuccess { response ->
                 var rooms = getRoomsFromNetwork(response.body())?.toMutableList()
-                println("Rooms: $rooms")
                 if (rooms == null) {
                     rooms = mutableListOf(
                         Room(
@@ -60,7 +59,6 @@ class RoomsViewModel : ViewModel() {
                 }
                 roomsUiState.value.rooms.filter { it.id != "all" }.forEach {
                     fetchRoomDevices(it)
-                    println("Room Fetch: $it")
                 }
                 _roomsUiState.update { it.copy(isLoading = false) }
 
@@ -106,7 +104,6 @@ class RoomsViewModel : ViewModel() {
                 devicesIds.add(devResult.id)
             }
         }
-        println("Devices Ids: $devicesIds")
         return devicesIds
     }
 

@@ -1,10 +1,10 @@
 package com.example.intelicasamobile.ui.devices
 
 import android.content.res.Configuration
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,7 +34,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.LightDevice
@@ -69,8 +68,6 @@ fun LightDeviceInfo(
     var updateTimeout by remember { mutableStateOf<Job?>(null) }
     val scope = rememberCoroutineScope()
 
-    var showColorPicker by remember { mutableStateOf(false) }
-
     var isFirstColorSet = true
 
     LaunchedEffect(device) {
@@ -89,122 +86,144 @@ fun LightDeviceInfo(
         }
     }
 
-    Column(modifier = modifier) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            StateInfo(
-                isOn = uiState.isOn,
-                setIsOn = { device.setIsOn(it) },
-                modifier = modifier,
-                loading = device.isLoading()
-            )
-        }
-
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                horizontalAlignment = Alignment.Start
+    Row {
+        Column(modifier = modifier.weight(1f)) {
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = stringResource(id = R.string.LI_brightness),
-                    style = TextStyle(fontSize = 16.sp)
+                StateInfo(
+                    isOn = uiState.isOn,
+                    setIsOn = { device.setIsOn(it) },
+                    modifier = modifier,
+                    loading = device.isLoading()
                 )
             }
 
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Slider(
-                        value = localIntensity.toFloat(),
-                        onValueChange = { localIntensity = it.toInt() },
-                        onValueChangeFinished = { device.setBrightness(localIntensity) },
-                        valueRange = 0f..100f,
-                        steps = 0,
-                        enabled = !device.isLoading(),
-                        modifier = Modifier.width(150.dp),
-                        colors = SliderDefaults.colors(
-                            thumbColor = MaterialTheme.colorScheme.primary,
-                            activeTrackColor = MaterialTheme.colorScheme.primary,
-                            inactiveTrackColor = MaterialTheme.colorScheme.secondary
-                        )
-                    )
-
-                }
-            }
-        }
-
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text(
-                    text = stringResource(id = R.string.LI_color),
-                    style = TextStyle(fontSize = 16.sp)
-                )
-            }
-
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Circle,
-                        contentDescription = null,
-                        tint = uiState.color,
-                        modifier = Modifier
-                            .width(50.dp)
-                            .height(50.dp)
-                            .padding(5.dp)
-                            .clickable { showColorPicker = true },
-                    )
-                }
-            }
-        }
-        if (showColorPicker) {
-            Dialog(onDismissRequest = { showColorPicker = false }) {
-                HsvColorPicker(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .padding(5.dp),
-                    controller = colorController,
-                    onColorChanged = { colorEnvelope: ColorEnvelope ->
-                        localColor = colorEnvelope.color
-                        setColor(localColor)
+                        .fillMaxWidth(0.5f)
+                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.LI_brightness),
+                        style = TextStyle(fontSize = 16.sp)
+                    )
+                }
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Slider(
+                            value = localIntensity.toFloat(),
+                            onValueChange = { localIntensity = it.toInt() },
+                            onValueChangeFinished = { device.setBrightness(localIntensity) },
+                            valueRange = 0f..100f,
+                            steps = 0,
+                            enabled = !device.isLoading(),
+                            modifier = Modifier.width(150.dp),
+                            colors = SliderDefaults.colors(
+                                thumbColor = MaterialTheme.colorScheme.primary,
+                                activeTrackColor = MaterialTheme.colorScheme.primary,
+                                inactiveTrackColor = MaterialTheme.colorScheme.secondary
+                            )
+                        )
+
                     }
-                )
+                }
             }
+
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.LI_color),
+                        style = TextStyle(fontSize = 16.sp)
+                    )
+                }
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Circle,
+                            contentDescription = null,
+                            tint = uiState.color,
+                            modifier = Modifier
+                                .width(50.dp)
+                                .height(50.dp)
+                                .padding(5.dp),
+                        )
+                    }
+                }
+            }
+
+            if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    HsvColorPicker(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp)
+                            .padding(5.dp),
+                        controller = colorController,
+                        onColorChanged = { colorEnvelope: ColorEnvelope ->
+                            localColor = colorEnvelope.color
+                            setColor(localColor)
+                        }
+                    )
+                }
+            }
+        }
+        if (LocalConfiguration.current.orientation != Configuration.ORIENTATION_PORTRAIT) {
+            HsvColorPicker(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .width(250.dp)
+                    .padding(5.dp),
+                controller = colorController,
+                onColorChanged = { colorEnvelope: ColorEnvelope ->
+                    localColor = colorEnvelope.color
+                    setColor(localColor)
+                }
+            )
         }
     }
 }

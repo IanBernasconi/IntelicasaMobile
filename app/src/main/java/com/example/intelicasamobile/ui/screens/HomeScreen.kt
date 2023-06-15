@@ -21,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -44,11 +45,12 @@ fun HomeScreen(
     val devicesState by devicesModel.devicesUiState.collectAsState()
     val routinesState by routinesModel.routinesUiState.collectAsState()
 
-    // TODO this refresh doesn't work without some previous fetches
+    val context = LocalContext.current
+
     SwipeRefresh(
         state = rememberSwipeRefreshState(devicesState.isLoading || routinesState.isLoading),
         onRefresh = {
-            devicesModel.fetchDevices()
+            devicesModel.fetchDevices(context = context)
             routinesModel.fetchRoutines()
         },
     ) {
