@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val devicesModel by remember { mutableStateOf(DevicesViewModel()) }
+            val devicesModel by remember { mutableStateOf(DevicesViewModel.getInstance()) }
             val routinesModel by remember { mutableStateOf(RoutinesViewModel()) }
             val roomsModel by remember { mutableStateOf(RoomsViewModel()) }
 

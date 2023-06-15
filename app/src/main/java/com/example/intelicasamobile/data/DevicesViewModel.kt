@@ -33,14 +33,33 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-class DevicesViewModel: ViewModel() {
+class DevicesViewModel private constructor() : ViewModel() {
     private val _devicesUiState = MutableStateFlow(DevicesUiState(emptyList()))
     val devicesUiState: StateFlow<DevicesUiState> = _devicesUiState.asStateFlow()
 
     private var fetchJob: Job? = null
 
+    companion object {
+        private var instance: DevicesViewModel? = null
+
+        fun getInstance(): DevicesViewModel {
+            if (instance == null) {
+                instance = DevicesViewModel()
+            }
+            return instance as DevicesViewModel
+        }
+    }
+
     fun dismissMessage() {
         _devicesUiState.update { it.copy(message = null) }
+    }
+
+    fun showSnackBar() {
+        _devicesUiState.update { it.copy(showSnackBar = true) }
+    }
+
+    fun dismissSnackBar() {
+        _devicesUiState.update { it.copy(showSnackBar = false) }
     }
 
     fun fetchDevices(){

@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.network.RetrofitClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,7 @@ open class Device(
             isLoadingState.value = true
             val apiService = RetrofitClient.getApiService()
             apiService.triggerEvent(id = id, actionName = actionType.apiName, params = params)
+            DevicesViewModel.getInstance().showSnackBar()
             isLoadingState.value = false
         }
     }
