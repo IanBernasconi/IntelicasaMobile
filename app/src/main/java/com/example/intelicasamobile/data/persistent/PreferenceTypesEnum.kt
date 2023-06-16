@@ -21,3 +21,10 @@ enum class NotificationType(
     OVEN_ON("onOvenOn", R.string.pref_on_oven_on),
     OVEN_OFF("onOvenOff", R.string.pref_on_oven_off),
 }
+
+enum class ThemePreferenceType(
+    val value: String,
+) {
+    DARK("prefIsDark"),
+    OVERRIDE_SYSTEM("prefSystemOverride"),
+}

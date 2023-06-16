@@ -11,7 +11,7 @@ import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.network.DeviceUpdateService
 import com.example.intelicasamobile.data.network.RetrofitClient
 import com.example.intelicasamobile.data.network.model.NetworkDeviceList
-import com.example.intelicasamobile.data.persistent.NotificationPreferences
+import com.example.intelicasamobile.data.persistent.PreferencesData
 import com.example.intelicasamobile.data.persistent.NotificationType
 import com.example.intelicasamobile.dataStore
 import com.example.intelicasamobile.model.ACDevice
@@ -45,7 +45,7 @@ class DevicesViewModel private constructor() : ViewModel() {
     private val _devicesUiState = MutableStateFlow(DevicesUiState(emptyList()))
     val devicesUiState: StateFlow<DevicesUiState> = _devicesUiState.asStateFlow()
 
-    private var notificationPrefs: NotificationPreferences? = null
+    private var notificationPrefs: PreferencesData? = null
 
     private var fetchJob: Job? = null
 
@@ -62,7 +62,7 @@ class DevicesViewModel private constructor() : ViewModel() {
 
     fun startDeviceUpdateService(context: Context) {
         val intent = Intent(context, DeviceUpdateService::class.java)
-        notificationPrefs = NotificationPreferences.getInstance(context.dataStore)
+        notificationPrefs = PreferencesData.getInstance(context.dataStore)
         context.startService(intent)
     }
 

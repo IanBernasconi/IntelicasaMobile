@@ -107,136 +107,134 @@ fun VacuumDeviceInfo(
         }
     )
 
-    IntelicasaMobileTheme {
-        Column(
-            modifier = modifier.verticalScroll(
-                state = scrollState
-            )
+    Column(
+        modifier = modifier.verticalScroll(
+            state = scrollState
+        )
+    ) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+            Column(
+                modifier = Modifier.fillMaxWidth(0.5f),
+                horizontalAlignment = Alignment.Start
             ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(0.5f),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        text = stringResource(id = uiState.state.nameResId),
-                        style = TextStyle(fontSize = 16.sp)
-                    )
-                }
-
-                Row(modifier = Modifier) {
-                    Icon(
-                        imageVector =
-                        if (uiState.state != VacuumStateEnum.CHARGING)
-                            when (uiState.batteryLevel) {
-                                in 0..5 -> Icons.Outlined.Battery0Bar
-                                in 6..15 -> Icons.Outlined.Battery1Bar
-                                in 15..30 -> Icons.Outlined.Battery2Bar
-                                in 31..45 -> Icons.Outlined.Battery3Bar
-                                in 45..60 -> Icons.Outlined.Battery4Bar
-                                in 61..75 -> Icons.Outlined.Battery5Bar
-                                in 75..90 -> Icons.Outlined.Battery6Bar
-                                else -> Icons.Outlined.BatteryFull
-                            }
-                        else Icons.Outlined.BatteryChargingFull,
-                        contentDescription = null,
-                        modifier = Modifier.width(24.dp)
-                    )
-                    Text(
-                        text = "${uiState.batteryLevel}%", style = TextStyle(fontSize = 16.sp)
-                    )
-                }
+                Text(
+                    text = stringResource(id = uiState.state.nameResId),
+                    style = TextStyle(fontSize = 16.sp)
+                )
             }
 
-            if (device.dockLocationId == null) {
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(
-                            dimensionResource(id = R.dimen.padding_medium),
-                            dimensionResource(id = R.dimen.padding_small)
-                        ),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    Text(text = stringResource(id = R.string.VCI_no_room_message))
-                }
-            } else {
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Button(
-                        onClick = {
-                            device.setState(VacuumStateEnum.CLEANING)
-                        },
-                        elevation = ButtonDefaults.buttonElevation(
-                            20.dp, 10.dp, 10.dp, 10.dp, 0.dp
-                        ),
-                        shape = RoundedCornerShape(5.dp),
-                        enabled = !device.isLoading() && uiState.state != VacuumStateEnum.CLEANING && uiState.batteryLevel > 5
-                    ) {
-                        if (uiState.batteryLevel < 5) {
-                            Icon(
-                                imageVector = Icons.Outlined.BatteryAlert,
-                                contentDescription = null,
-                                modifier = Modifier.width(24.dp)
-                            )
-                        } else {
-                            Text(text = stringResource(id = R.string.VCA_clean))
+            Row(modifier = Modifier) {
+                Icon(
+                    imageVector =
+                    if (uiState.state != VacuumStateEnum.CHARGING)
+                        when (uiState.batteryLevel) {
+                            in 0..5 -> Icons.Outlined.Battery0Bar
+                            in 6..15 -> Icons.Outlined.Battery1Bar
+                            in 15..30 -> Icons.Outlined.Battery2Bar
+                            in 31..45 -> Icons.Outlined.Battery3Bar
+                            in 45..60 -> Icons.Outlined.Battery4Bar
+                            in 61..75 -> Icons.Outlined.Battery5Bar
+                            in 75..90 -> Icons.Outlined.Battery6Bar
+                            else -> Icons.Outlined.BatteryFull
                         }
-                    }
-                    Button(
-                        onClick = {
-                            device.setState(VacuumStateEnum.PAUSED)
-                        },
-                        elevation = ButtonDefaults.buttonElevation(
-                            20.dp, 10.dp, 10.dp, 10.dp, 0.dp
-                        ),
-                        shape = RoundedCornerShape(5.dp),
-                        enabled = !device.isLoading() && uiState.state == VacuumStateEnum.CLEANING
-                    ) {
-                        Text(text = stringResource(id = R.string.VCA_pause))
-                    }
-                    Button(
-                        onClick = {
-                            device.setState(VacuumStateEnum.CHARGING)
-                        },
-                        elevation = ButtonDefaults.buttonElevation(
-                            20.dp, 10.dp, 10.dp, 10.dp, 0.dp
-                        ),
-                        shape = RoundedCornerShape(5.dp),
-                        enabled = !device.isLoading() && uiState.state != VacuumStateEnum.CHARGING
-                    ) {
-                        Text(text = stringResource(id = R.string.VCA_charge))
+                    else Icons.Outlined.BatteryChargingFull,
+                    contentDescription = null,
+                    modifier = Modifier.width(24.dp)
+                )
+                Text(
+                    text = "${uiState.batteryLevel}%", style = TextStyle(fontSize = 16.sp)
+                )
+            }
+        }
+
+        if (device.dockLocationId == null) {
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(
+                        dimensionResource(id = R.dimen.padding_medium),
+                        dimensionResource(id = R.dimen.padding_small)
+                    ),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                Text(text = stringResource(id = R.string.VCI_no_room_message))
+            }
+        } else {
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(
+                    onClick = {
+                        device.setState(VacuumStateEnum.CLEANING)
+                    },
+                    elevation = ButtonDefaults.buttonElevation(
+                        20.dp, 10.dp, 10.dp, 10.dp, 0.dp
+                    ),
+                    shape = RoundedCornerShape(5.dp),
+                    enabled = !device.isLoading() && uiState.state != VacuumStateEnum.CLEANING && uiState.batteryLevel > 5
+                ) {
+                    if (uiState.batteryLevel < 5) {
+                        Icon(
+                            imageVector = Icons.Outlined.BatteryAlert,
+                            contentDescription = null,
+                            modifier = Modifier.width(24.dp)
+                        )
+                    } else {
+                        Text(text = stringResource(id = R.string.VCA_clean))
                     }
                 }
+                Button(
+                    onClick = {
+                        device.setState(VacuumStateEnum.PAUSED)
+                    },
+                    elevation = ButtonDefaults.buttonElevation(
+                        20.dp, 10.dp, 10.dp, 10.dp, 0.dp
+                    ),
+                    shape = RoundedCornerShape(5.dp),
+                    enabled = !device.isLoading() && uiState.state == VacuumStateEnum.CLEANING
+                ) {
+                    Text(text = stringResource(id = R.string.VCA_pause))
+                }
+                Button(
+                    onClick = {
+                        device.setState(VacuumStateEnum.CHARGING)
+                    },
+                    elevation = ButtonDefaults.buttonElevation(
+                        20.dp, 10.dp, 10.dp, 10.dp, 0.dp
+                    ),
+                    shape = RoundedCornerShape(5.dp),
+                    enabled = !device.isLoading() && uiState.state != VacuumStateEnum.CHARGING
+                ) {
+                    Text(text = stringResource(id = R.string.VCA_charge))
+                }
             }
+        }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                TextFieldDropdownSelector(stateHolder = dropdownModeStateHolder)
-            }
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TextFieldDropdownSelector(stateHolder = dropdownModeStateHolder)
+        }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                TextFieldDropdownSelector(stateHolder = dropdownLocationStateHolder)
-            }
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TextFieldDropdownSelector(stateHolder = dropdownLocationStateHolder)
         }
     }
 }

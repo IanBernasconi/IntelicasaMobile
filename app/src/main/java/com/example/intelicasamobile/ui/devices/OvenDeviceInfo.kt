@@ -79,21 +79,22 @@ fun OvenDeviceInfo(
         )
 
     val dropdownConvectionModeStateHolder =
-        rememberDropdownSelectorState(items = OvenConvectionMode.values().map {
-            DropdownSelectorItem(
-                label = stringResource(id = it.nameResId),
-                value = it,
-                icon = it.imageResourceId
-            )
-        }, label = stringResource(id = R.string.OI_convection_mode),
+        rememberDropdownSelectorState(
+            items = OvenConvectionMode.values().map {
+                DropdownSelectorItem(
+                    label = stringResource(id = it.nameResId),
+                    value = it,
+                    icon = it.imageResourceId
+                )
+            }, label = stringResource(id = R.string.OI_convection_mode),
             loading = device.isLoading(),
             onItemSelected = {
-            device.setConvectionMode(it.value as OvenConvectionMode)
-        }, initialItem = DropdownSelectorItem(
-            label = stringResource(id = uiState.convectionMode.nameResId),
-            value = uiState.convectionMode,
-            icon = uiState.convectionMode.imageResourceId
-        )
+                device.setConvectionMode(it.value as OvenConvectionMode)
+            }, initialItem = DropdownSelectorItem(
+                label = stringResource(id = uiState.convectionMode.nameResId),
+                value = uiState.convectionMode,
+                icon = uiState.convectionMode.imageResourceId
+            )
         )
 
     val dropdownGrillModeStateHolder =
@@ -116,100 +117,98 @@ fun OvenDeviceInfo(
         )
 
 
-    IntelicasaMobileTheme {
-        Column(
-            modifier = modifier.verticalScroll(
-                state = scrollState
-            )
+    Column(
+        modifier = modifier.verticalScroll(
+            state = scrollState
+        )
+    ) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+            StateInfo(
+                isOn = uiState.isOn,
+                setIsOn = { device.setIsOn(it) },
+                loading = device.isLoading()
+            )
+        }
+
+
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
+                horizontalAlignment = Alignment.Start
             ) {
-                StateInfo(
-                    isOn = uiState.isOn,
-                    setIsOn = { device.setIsOn(it) },
-                    loading = device.isLoading()
+                Text(
+                    text = stringResource(id = R.string.OI_temperature),
+                    style = TextStyle(fontSize = 16.sp)
                 )
             }
 
-
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+            Column(
+                modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                    horizontalAlignment = Alignment.Start
+                Row(
+                    modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
                 ) {
                     Text(
-                        text = stringResource(id = R.string.OI_temperature),
-                        style = TextStyle(fontSize = 16.sp)
+                        text = "${localTemperature}°C",
+                        modifier = Modifier.padding(end = 4.dp)
                     )
-                }
-
-                Column(
-                    modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
-                ) {
-                    Row(
-                        modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_medium)),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Text(
-                            text = "${localTemperature}°C",
-                            modifier = Modifier.padding(end = 4.dp)
-                        )
-                        Slider(value = localTemperature.toFloat(),
-                            onValueChange = { localTemperature = it.toInt() },
-                            valueRange = 90f..220f,
-                            steps = 0,
-                            enabled = !device.isLoading(),
-                            modifier = Modifier.width(125.dp),
-                            colors = SliderDefaults.colors(
-                                thumbColor = MaterialTheme.colorScheme.primary,
-                                activeTrackColor = MaterialTheme.colorScheme.primary,
-                                inactiveTrackColor = MaterialTheme.colorScheme.secondary
-                            ),
-                            onValueChangeFinished = { device.setTemperature(localTemperature) })
-                    }
+                    Slider(value = localTemperature.toFloat(),
+                        onValueChange = { localTemperature = it.toInt() },
+                        valueRange = 90f..220f,
+                        steps = 0,
+                        enabled = !device.isLoading(),
+                        modifier = Modifier.width(125.dp),
+                        colors = SliderDefaults.colors(
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary,
+                            inactiveTrackColor = MaterialTheme.colorScheme.secondary
+                        ),
+                        onValueChangeFinished = { device.setTemperature(localTemperature) })
                 }
             }
+        }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                TextFieldDropdownSelector(stateHolder = dropdownHeatModeStateHolder)
-            }
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TextFieldDropdownSelector(stateHolder = dropdownHeatModeStateHolder)
+        }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                TextFieldDropdownSelector(stateHolder = dropdownConvectionModeStateHolder)
-            }
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TextFieldDropdownSelector(stateHolder = dropdownConvectionModeStateHolder)
+        }
 
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                TextFieldDropdownSelector(stateHolder = dropdownGrillModeStateHolder)
-            }
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TextFieldDropdownSelector(stateHolder = dropdownGrillModeStateHolder)
         }
     }
 }

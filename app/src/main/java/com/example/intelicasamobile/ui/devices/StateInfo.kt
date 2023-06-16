@@ -38,42 +38,40 @@ fun StateInfo(
     modifier: Modifier = Modifier,
     loading: Boolean = false,
 ) {
-    IntelicasaMobileTheme {
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth(0.5f)
+                .padding(start = dimensionResource(id = R.dimen.padding_large)),
+            horizontalAlignment = Alignment.Start
         ) {
-            Column(
-                modifier = modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text(
-                    text = stringResource(id = R.string.device_state),
-                    style = TextStyle(fontSize = 16.sp)
-                )
-            }
+            Text(
+                text = stringResource(id = R.string.device_state),
+                style = TextStyle(fontSize = 16.sp)
+            )
+        }
 
-            Column(
-                modifier = modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+        Column(
+            modifier = modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                onClick = { setIsOn(!isOn) },
+                enabled = !loading,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                shape = CircleShape
             ) {
-                Button(
-                    onClick = { setIsOn(!isOn) },
-                    enabled = !loading,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                    shape = CircleShape
-                    ) {
-                    Image(
-                        painterResource(id = if (isOn) R.drawable.poweron else R.drawable.poweroff),
-                        contentDescription = if (isOn) stringResource(id = R.string.turn_off) else stringResource(
-                            id = R.string.turn_on
-                        ),
-                        modifier = modifier.size(35.dp)
-                    )
-                }
+                Image(
+                    painterResource(id = if (isOn) R.drawable.poweron else R.drawable.poweroff),
+                    contentDescription = if (isOn) stringResource(id = R.string.turn_off) else stringResource(
+                        id = R.string.turn_on
+                    ),
+                    modifier = modifier.size(35.dp)
+                )
             }
         }
     }

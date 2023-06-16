@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
@@ -14,13 +15,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoomsViewModel
 import com.example.intelicasamobile.data.RoutinesViewModel
-import com.example.intelicasamobile.data.persistent.NotificationPreferences
+import com.example.intelicasamobile.data.persistent.PreferencesData
 import com.example.intelicasamobile.ui.navigation.IntelicasaAppNavHost
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
@@ -31,7 +33,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val notificationPrefs = NotificationPreferences.getInstance(dataStore)
+            val notificationPrefs = PreferencesData.getInstance(dataStore)
 
             val devicesModel by remember { mutableStateOf(DevicesViewModel.getInstance()) }
             val routinesModel by remember { mutableStateOf(RoutinesViewModel()) }

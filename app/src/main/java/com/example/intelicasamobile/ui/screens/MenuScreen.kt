@@ -39,49 +39,87 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.intelicasamobile.R
-import com.example.intelicasamobile.data.persistent.NotificationPreference
-import com.example.intelicasamobile.data.persistent.NotificationPreferences
+import com.example.intelicasamobile.data.persistent.PreferencesData
+import com.example.intelicasamobile.data.persistent.Preference
+import com.example.intelicasamobile.data.persistent.ThemePreferenceType
 import com.example.intelicasamobile.dataStore
 import com.example.intelicasamobile.ui.components.AnimatedCollapsibleItem
+import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Preview(showBackground = true)
 @Composable
 fun MenuScreen() {
 
+    val preferences = PreferencesData.getInstance(LocalContext.current.dataStore)
 
-        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)
-        ) {
+    LaunchedEffect(Unit) {
+        preferences.loadPreferences()
+    }
+
+        Column {
             Text(
                 text = stringResource(id = R.string.pref_title),
                 style = MaterialTheme.typography.displayLarge,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
-            AnimatedCollapsibleItem(title = stringResource(id = R.string.pref_key_notifications)) {
-                NotificationPreferencesOptions()
-            }
-        }
 
+            ThemeSelector(preferences)
+
+            AnimatedCollapsibleItem(title = stringResource(id = R.string.pref_key_notifications)) {
+                NotificationPreferencesOptions(preferences)
+            }
+
+    }
 }
 
 @Composable
-fun NotificationPreferencesOptions() {
-
-    val notificationPrefs = NotificationPreferences.getInstance(LocalContext.current.dataStore)
-    val preferences = notificationPrefs.preferences.collectAsState()
-
-    LaunchedEffect(Unit) {
-        notificationPrefs.loadPreferences()
-    }
+fun ThemeSelector(
+    preferences: PreferencesData
+) {
+    val themePreferences = preferences.themePreferences.collectAsState()
 
     Column {
+        Text(
+            text = stringResource(id = R.string.pref_key_theme),
+            style = MaterialTheme.typography.displayMedium,
+            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+        )
+        themePreferences.value.find { it.type == ThemePreferenceType.OVERRIDE_SYSTEM }?.let {
+            ToggleRow(preference = it, textId = R.string.pref_theme_override, inverted = true) {
+                preferences.setThemePreference(it.type.value, !it.getValue())
+            }
+        }
 
+        themePreferences.value.find { it.type == ThemePreferenceType.DARK }
+            ?.let { themePreference ->
+                ToggleRow(preference = themePreference,
+                    textId = R.string.pref_theme_dark,
+                    enabled = themePreferences.value.find { it.type == ThemePreferenceType.OVERRIDE_SYSTEM }
+                        ?.getValue() == true) {
+                    preferences.setThemePreference(
+                        themePreference.type.value, !themePreference.getValue()
+                    )
+                }
+            }
+    }
+}
+
+@Composable
+fun NotificationPreferencesOptions(
+    preferences: PreferencesData
+) {
+    val notificationPreferences = preferences.notificationPreference.collectAsState()
+
+    Column {
         LazyVerticalGrid(
             columns = GridCells.Fixed(1),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
         ) {
-            items(preferences.value) { preference ->
-                ToggleRow(preference) {
-                    notificationPrefs.setPreference(preference.type.value, !preference.getValue())
+            items(notificationPreferences.value) { preference ->
+                ToggleRow(preference, preference.type.nameResId) {
+                    preferences.setNotificationPreference(
+                        preference.type.value, !preference.getValue()
+                    )
                 }
             }
         }
@@ -90,8 +128,11 @@ fun NotificationPreferencesOptions() {
 
 @Composable
 fun ToggleRow(
-    preference: NotificationPreference,
-    toggleChange: () -> Unit
+    preference: Preference,
+    textId: Int,
+    enabled: Boolean = true,
+    inverted: Boolean = false,
+    toggleChange: () -> Unit,
 ) {
     val localValue by remember { mutableStateOf(preference.value) }
 
@@ -103,13 +144,12 @@ fun ToggleRow(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = stringResource(id = preference.type.nameResId),
-            style = TextStyle(fontSize = 18.sp)
+            text = stringResource(id = textId), style = TextStyle(fontSize = 18.sp)
         )
         Switch(
             checked = localValue.value,
             onCheckedChange = { toggleChange() },
-            enabled = !preference.loading.value
+            enabled = !preference.loading.value && enabled
         )
     }
 }

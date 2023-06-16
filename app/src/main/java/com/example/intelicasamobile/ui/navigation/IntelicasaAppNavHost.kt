@@ -71,7 +71,12 @@ fun IntelicasaAppNavHost(
             "Devices",
             "devices",
             Icons.Filled.Bed,
-            tabletContent = { TabletRoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel) },
+            tabletContent = {
+                TabletRoomsScreen(
+                    devicesModel = devicesModel,
+                    roomsModel = roomsModel
+                )
+            },
             content = { RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel) }),
         Screen(
             "Routines",
@@ -124,57 +129,55 @@ fun IntelicasaAppNavHost(
         }
     }
 
-    IntelicasaMobileTheme {
-        Scaffold(topBar = {
-            IntelicasaTopAppBar()
-        }, bottomBar = {
-            when (navigationType) {
-                AppNavigationType.BOTTOM_NAVIGATION -> {
-                    IntelicasaBottomAppBar(navController = navController, screens = screens)
-                }
+    Scaffold(topBar = {
+        IntelicasaTopAppBar()
+    }, bottomBar = {
+        when (navigationType) {
+            AppNavigationType.BOTTOM_NAVIGATION -> {
+                IntelicasaBottomAppBar(navController = navController, screens = screens)
+            }
 
-                AppNavigationType.NAVIGATION_RAIL -> {
-                    IntelicasaNavigationRail(
+            AppNavigationType.NAVIGATION_RAIL -> {
+                IntelicasaNavigationRail(
+                    navController = navController,
+                    screens = screens,
+                    backStackEntry = backStackEntry
+                ) {
+                    AppNavHost(
                         navController = navController,
                         screens = screens,
-                        backStackEntry = backStackEntry
-                    ) {
-                        AppNavHost(
-                            navController = navController,
-                            screens = screens,
-                            windowSize = windowSize
-                        )
-                    }
+                        windowSize = windowSize
+                    )
                 }
-
-                AppNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
-
-                    PermanentNavigationDrawer(drawerContent = {
-                        IntelicasaAppNavigationDrawer(
-                            screens = screens,
-                            navController = navController,
-                            backStackEntry = backStackEntry
-                        )
-                    }
-                    ) {
-                        AppNavHost(
-                            navController = navController,
-                            screens = screens,
-                            windowSize = windowSize
-                        )
-                    }
-                }
-
-
             }
-        }) { innerPadding ->
-            AppNavHost(
-                navController = navController,
-                screens = screens,
-                windowSize = windowSize,
-                modifier = Modifier.padding(innerPadding)
-            )
+
+            AppNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+
+                PermanentNavigationDrawer(drawerContent = {
+                    IntelicasaAppNavigationDrawer(
+                        screens = screens,
+                        navController = navController,
+                        backStackEntry = backStackEntry
+                    )
+                }
+                ) {
+                    AppNavHost(
+                        navController = navController,
+                        screens = screens,
+                        windowSize = windowSize
+                    )
+                }
+            }
+
+
         }
+    }) { innerPadding ->
+        AppNavHost(
+            navController = navController,
+            screens = screens,
+            windowSize = windowSize,
+            modifier = Modifier.padding(innerPadding)
+        )
     }
 }
 
@@ -185,7 +188,6 @@ private fun AppNavHost(
     screens: List<Screen>,
     modifier: Modifier = Modifier,
     windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact
-
 
 ) {
     NavHost(

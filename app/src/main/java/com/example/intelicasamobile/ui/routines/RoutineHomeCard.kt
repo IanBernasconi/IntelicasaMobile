@@ -45,64 +45,61 @@ fun RoutineHomeCardPreview() {
         )
     }
 }
+
 @Composable
 fun RoutineHomeCard(
     routine: Routine,
     modifier: Modifier = Modifier
 ) {
-    IntelicasaMobileTheme {
-        Card(
-            elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
-            modifier = modifier
+    Card(
+        elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
+        modifier = modifier
+    ) {
+        Surface(
+            color = MaterialTheme.colorScheme.primary
         ) {
-            Surface(
-                color = MaterialTheme.colorScheme.primary
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    .weight(3f),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(dimensionResource(id = R.dimen.padding_small))
-                        .weight(3f),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(
-                        modifier = modifier.weight(2f),
+                Column(
+                    modifier = modifier.weight(2f),
 
                     ) {
-                        Text(
-                            text = routine.name,
-                            fontSize = 20.sp,
-                            textAlign = TextAlign.Start,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-
-                    }
-                    Column(
-                        modifier = modifier.weight(1f),
-                        horizontalAlignment = Alignment.End
-                    ){
-                        IconButton(
-                            onClick = {
-                                CoroutineScope(Dispatchers.Main).launch {
-                                    val apiService = RetrofitClient.getApiService()
-                                    apiService.executeRoutine(id = routine.id)
-                                }
-                            },
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.PlayCircle,
-                                contentDescription = "Play Circle",
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                                modifier = Modifier.size(100.dp)
-                            )
-                        }
-                    }
+                    Text(
+                        text = routine.name,
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
 
                 }
-
+                Column(
+                    modifier = modifier.weight(1f),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    IconButton(
+                        onClick = {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                val apiService = RetrofitClient.getApiService()
+                                apiService.executeRoutine(id = routine.id)
+                            }
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.PlayCircle,
+                            contentDescription = "Play Circle",
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.size(100.dp)
+                        )
+                    }
+                }
             }
         }
     }

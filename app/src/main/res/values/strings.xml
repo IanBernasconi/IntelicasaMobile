@@ -18,6 +18,7 @@
 
     <string name="all_devices_room">All</string>
 
+
     <!-- Notification info -->
     <string name="notification_title" translatable="false">Intelicasa</string>
 
@@ -144,6 +145,14 @@
 
     <!-- Preferences -->
     <string name="pref_title">Preferences</string>
+
+    <!-- Theme Preferences -->
+    <string name="pref_key_theme">Theme</string>
+    <string name="pref_key_theme_summary">Select the theme for the app</string>
+    <string name="pref_theme_dark">Dark</string>
+    <string name="pref_theme_override">Override system settings</string>
+
+    <!-- Notification Preferences -->
     <string name="pref_key_notifications">Notifications</string>
     <string name="pref_key_notifications_summary">Enable or disable notifications</string>
     <string name="pref_on_door_open">On door opened</string>

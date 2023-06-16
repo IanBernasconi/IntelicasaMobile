@@ -13,9 +13,17 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class NotificationPreferences private constructor(private val dataStore: DataStore<Preferences>) :
+class PreferencesData private constructor(private val dataStore: DataStore<Preferences>) :
     ViewModel() {
-    private val _preferences = MutableStateFlow(
+
+    private val _themePreferences = MutableStateFlow(
+        listOf(
+            ThemePreference(ThemePreferenceType.DARK),
+            ThemePreference(ThemePreferenceType.OVERRIDE_SYSTEM),
+        )
+    )
+
+    private val _notificationPreference = MutableStateFlow(
         listOf(
             NotificationPreference(NotificationType.VACUUM_FULL_BATTERY),
             NotificationPreference(NotificationType.VACUUM_LOW_BATTERY),
@@ -40,10 +48,18 @@ class NotificationPreferences private constructor(private val dataStore: DataSto
         NotificationType.VACUUM_EMPTY_BATTERY,
     )
 
-    val preferences: StateFlow<List<NotificationPreference>> = _preferences.asStateFlow()
+    val notificationPreference: StateFlow<List<NotificationPreference>> =
+        _notificationPreference.asStateFlow()
+
+    val themePreferences: StateFlow<List<ThemePreference>> = _themePreferences.asStateFlow()
 
     suspend fun loadPreferences() {
-        for (pref in preferences.value) {
+        for (pref in notificationPreference.value) {
+            pref.loading.value = true
+            pref.setValue(getPreference(pref.type.value))
+            pref.loading.value = false
+        }
+        for (pref in themePreferences.value) {
             pref.loading.value = true
             pref.setValue(getPreference(pref.type.value))
             pref.loading.value = false
@@ -60,12 +76,12 @@ class NotificationPreferences private constructor(private val dataStore: DataSto
     }
 
     fun getLocalPreference(name: String): Boolean {
-        val pref = preferences.value.find { it.type.value == name }
+        val pref = notificationPreference.value.find { it.type.value == name }
         return pref?.getValue() ?: false
     }
 
-    fun setPreference(name: String, value: Boolean) {
-        val pref = preferences.value.find { it.type.value == name }
+    fun setNotificationPreference(name: String, value: Boolean) {
+        val pref = notificationPreference.value.find { it.type.value == name }
         pref?.loading?.value = true
         val key = booleanPreferencesKey(name)
         viewModelScope.launch {
@@ -77,20 +93,38 @@ class NotificationPreferences private constructor(private val dataStore: DataSto
         pref?.loading?.value = false
     }
 
-    private suspend fun setupFirstTimeAsync(): Boolean{
+    fun setThemePreference(name: String, value: Boolean){
+        val pref = themePreferences.value.find { it.type.value == name }
+        pref?.loading?.value = true
+        val key = booleanPreferencesKey(name)
+        viewModelScope.launch {
+            dataStore.edit { preferences ->
+                preferences[key] = value
+            }
+        }
+        pref?.setValue(value)
+        pref?.loading?.value = false
+    }
+
+    private suspend fun setupFirstTimeAsync(): Boolean {
         val key = booleanPreferencesKey("isFirstTime")
         val isFirstTime = dataStore.data
             .map { preferences ->
                 preferences[key] ?: true
             }
             .first()
-        if (isFirstTime){
-            for (pref in preferences.value) {
+        if (isFirstTime) {
+            for (pref in notificationPreference.value) {
                 if (pref.type in initialTruePreferences) {
                     pref.loading.value = true
-                    setPreference(pref.type.value, true)
+                    setNotificationPreference(pref.type.value, true)
                     pref.loading.value = false
                 }
+            }
+            for (pref in themePreferences.value) {
+                pref.loading.value = true
+                setThemePreference(pref.type.value, false)
+                pref.loading.value = false
             }
             dataStore.edit { preferences ->
                 preferences[key] = false
@@ -99,7 +133,7 @@ class NotificationPreferences private constructor(private val dataStore: DataSto
         return isFirstTime
     }
 
-    private fun setupFirstTime(){
+    private fun setupFirstTime() {
         viewModelScope.launch {
             setupFirstTimeAsync()
         }
@@ -107,14 +141,14 @@ class NotificationPreferences private constructor(private val dataStore: DataSto
 
 
     companion object {
-        private var instance: NotificationPreferences? = null
+        private var instance: PreferencesData? = null
 
-        fun getInstance(dataStore: DataStore<Preferences>): NotificationPreferences {
+        fun getInstance(dataStore: DataStore<Preferences>): PreferencesData {
             if (instance == null) {
-                instance = NotificationPreferences(dataStore)
+                instance = PreferencesData(dataStore)
                 instance?.setupFirstTime()
             }
-            return instance as NotificationPreferences
+            return instance as PreferencesData
         }
     }
 

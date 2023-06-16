@@ -47,68 +47,66 @@ fun DoorDeviceInfo(
 
     val uiState by device.state.collectAsState()
 
-    IntelicasaMobileTheme {
-        Column(modifier = modifier) {
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
-                    Button(
-                        onClick = { device.setOpen(!uiState.isOpen) },
-                        elevation = ButtonDefaults.buttonElevation(
-                            20.dp, 10.dp, 10.dp, 10.dp, 0.dp
-                        ),
-                        shape = RoundedCornerShape(5.dp),
-                        enabled = !device.isLoading() && !uiState.isLocked
+    Column(modifier = modifier) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(0.dp, dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
+                Button(
+                    onClick = { device.setOpen(!uiState.isOpen) },
+                    elevation = ButtonDefaults.buttonElevation(
+                        20.dp, 10.dp, 10.dp, 10.dp, 0.dp
+                    ),
+                    shape = RoundedCornerShape(5.dp),
+                    enabled = !device.isLoading() && !uiState.isLocked
+                ) {
+                    Column(
+                        modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Column(
-                            modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                painter =  painterResource(id = if (uiState.isOpen) R.drawable.door_open else R.drawable.door_closed ),
-                                contentDescription =  stringResource(id = if (uiState.isOpen) R.string.DS_closed else R.string.DS_open),
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                                modifier = Modifier.size(35.dp)
+                        Icon(
+                            painter = painterResource(id = if (uiState.isOpen) R.drawable.door_open else R.drawable.door_closed),
+                            contentDescription = stringResource(id = if (uiState.isOpen) R.string.DS_closed else R.string.DS_open),
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.size(35.dp)
+                        )
+                        Text(
+                            text = if (uiState.isOpen) stringResource(id = R.string.DA_close) else stringResource(
+                                id = R.string.DA_open
                             )
-                            Text(
-                                text = if (uiState.isOpen) stringResource(id = R.string.DA_close) else stringResource(
-                                    id = R.string.DA_open
-                                )
-                            )
-                        }
+                        )
                     }
                 }
+            }
 
-                Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
-                    Button(
-                        onClick = { device.setLocked(!uiState.isLocked) },
-                        elevation = ButtonDefaults.buttonElevation(
-                            20.dp, 10.dp, 10.dp, 10.dp, 0.dp
-                        ),
-                        shape = RoundedCornerShape(5.dp),
-                        enabled = !device.isLoading() && !uiState.isOpen
+            Column(modifier = Modifier, horizontalAlignment = Alignment.Start) {
+                Button(
+                    onClick = { device.setLocked(!uiState.isLocked) },
+                    elevation = ButtonDefaults.buttonElevation(
+                        20.dp, 10.dp, 10.dp, 10.dp, 0.dp
+                    ),
+                    shape = RoundedCornerShape(5.dp),
+                    enabled = !device.isLoading() && !uiState.isOpen
+                ) {
+                    Column(
+                        modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Column(
-                            modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                imageVector = if (uiState.isLocked) Icons.Outlined.LockOpen else Icons.Outlined.Lock,
-                                contentDescription = if (uiState.isLocked) stringResource(id = R.string.DS_locked) else stringResource(
-                                    id = R.string.DS_unlocked
-                                ),
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                                modifier = Modifier.size(35.dp)
+                        Icon(
+                            imageVector = if (uiState.isLocked) Icons.Outlined.LockOpen else Icons.Outlined.Lock,
+                            contentDescription = if (uiState.isLocked) stringResource(id = R.string.DS_locked) else stringResource(
+                                id = R.string.DS_unlocked
+                            ),
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.size(35.dp)
+                        )
+                        Text(
+                            text = if (uiState.isLocked) stringResource(id = R.string.DA_unlock) else stringResource(
+                                id = R.string.DA_lock
                             )
-                            Text(
-                                text = if (uiState.isLocked) stringResource(id = R.string.DA_unlock) else stringResource(
-                                    id = R.string.DA_lock
-                                )
-                            )
-                        }
+                        )
                     }
                 }
             }

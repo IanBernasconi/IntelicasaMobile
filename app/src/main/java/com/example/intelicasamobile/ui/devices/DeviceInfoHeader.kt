@@ -23,46 +23,42 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 @Preview(showBackground = true)
 @Composable
 fun DeviceInfoHeaderPreview() {
-    DeviceInfoHeader(device = ACDevice(deviceId = "1", deviceName = "Aire" ))
+    DeviceInfoHeader(device = ACDevice(deviceId = "1", deviceName = "Aire"))
 }
 
 @Composable
 fun DeviceInfoHeader(
-    device: Device,
-    modifier: Modifier = Modifier
+    device: Device, modifier: Modifier = Modifier
 ) {
-    IntelicasaMobileTheme {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(dimensionResource(id = R.dimen.padding_small)),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Image(
+            painter = painterResource(id = device.deviceType.imageResourceId),
+            contentDescription = stringResource(id = device.deviceType.nameResId),
+            modifier = Modifier.size(dimensionResource(id = R.dimen.image_size))
+        )
 
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.padding_small)),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Image(
-                painter = painterResource(id = device.deviceType.imageResourceId),
-                contentDescription = stringResource(id = device.deviceType.nameResId),
-                modifier = Modifier.size(dimensionResource(id = R.dimen.image_size))
-            )
-
-            Text(
-                text = device.name, modifier = Modifier
-                    .padding(
-                        start = dimensionResource(
-                            id = R.dimen.padding_small
-                        )
+        Text(
+            text = device.name, modifier = Modifier
+                .padding(
+                    start = dimensionResource(
+                        id = R.dimen.padding_small
                     )
-                    .align(Alignment.CenterVertically)
-            )
+                )
+                .align(Alignment.CenterVertically)
+        )
 
 
-            IconButton(onClick = {}, enabled = false) {
+        IconButton(onClick = {}, enabled = false) {
 //                Icon(
 //                    imageVector = Icons.Filled.Delete,
 //                    contentDescription = stringResource(id = R.string.delete),
 //                    modifier = Modifier.size(25.dp)
 //                )
-            }
         }
     }
 }

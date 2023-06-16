@@ -2,9 +2,7 @@ package com.example.intelicasamobile.data.persistent
 
 import androidx.compose.runtime.mutableStateOf
 
-class NotificationPreference(
-    val type: NotificationType
-) {
+open class Preference {
     val value = mutableStateOf(false)
     val loading = mutableStateOf(false)
 
