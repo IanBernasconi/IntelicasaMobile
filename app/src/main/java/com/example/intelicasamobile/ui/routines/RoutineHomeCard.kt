@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 @Preview(showBackground = true)
 @Composable
 fun RoutineHomeCardPreview() {
-    IntelicasaMobileTheme() {
+    IntelicasaMobileTheme {
         RoutineHomeCard(
             routine = Routine(
                 id = "1",

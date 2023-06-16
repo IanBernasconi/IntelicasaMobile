@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -101,7 +102,7 @@ fun DeviceCard(
                             ) {
                                 Image(
                                     painter = painterResource(id = if (acState.isOn) R.drawable.poweron else R.drawable.poweroff),
-                                    contentDescription = "Power",
+                                    contentDescription = stringResource(R.string.power),
                                     modifier = Modifier.size(dimensionResource(id = R.dimen.icon_small_size))
                                 )
                             }
@@ -114,7 +115,7 @@ fun DeviceCard(
                             ) {
                                 Image(
                                     painter = painterResource(id = if (lightState.isOn) R.drawable.poweron else R.drawable.poweroff),
-                                    contentDescription = "Power",
+                                    contentDescription = stringResource(id = R.string.power),
                                     modifier = Modifier.size(dimensionResource(id = R.dimen.icon_small_size))
                                 )
                             }
@@ -127,7 +128,7 @@ fun DeviceCard(
                             ) {
                                 Image(
                                     painter = painterResource(id = if (ovenState.isOn) R.drawable.poweron else R.drawable.poweroff),
-                                    contentDescription = "Power",
+                                    contentDescription = stringResource(id = R.string.power),
                                     modifier = Modifier.size(dimensionResource(id = R.dimen.icon_small_size))
                                 )
                             }
@@ -161,7 +162,7 @@ fun DeviceCard(
                                     else if (doorState.isLocked) R.drawable.door_closed_lock
                                     else R.drawable.door_closed
                                 ),
-                                contentDescription = "Door",
+                                contentDescription = stringResource(id = R.string.door),
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(dimensionResource(id = R.dimen.icon_small_size))
                             )

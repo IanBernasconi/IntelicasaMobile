@@ -85,7 +85,7 @@ fun RoutinesScreen(
                                 action = {
                                     TextButton(
                                         onClick = { routinesModel.dismissSnackBar() },
-                                        content = { Text("Dismiss") }
+                                        content = { Text(stringResource(id = R.string.dismiss)) }
                                     )
                                 },
                                 modifier = Modifier.zIndex(10f)
@@ -156,7 +156,7 @@ fun TabletRoutinesScreen(
                             action = {
                                 TextButton(
                                     onClick = { routinesModel.dismissSnackBar() },
-                                    content = { Text("Dismiss") }
+                                    content = { Text(stringResource(id = R.string.dismiss)) }
                                 )
                             },
                             modifier = Modifier.zIndex(10f)

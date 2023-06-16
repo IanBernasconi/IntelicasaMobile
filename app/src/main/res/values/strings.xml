@@ -170,5 +170,13 @@
     <string name="pref_on_ac_off">On AC turned off</string>
     <string name="pref_on_oven_on">On oven turned on</string>
     <string name="pref_on_oven_off">On oven turned off</string>
+    <string name="dropdown" translatable="false">Dropdown</string>
+    <string name="power">Power</string>
+    <string name="star">Star</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="home">Home</string>
+    <string name="menu">Menu</string>
+    <string name="play">Play</string>
+    <string name="device_type">Device Type</string>
 
 </resources>

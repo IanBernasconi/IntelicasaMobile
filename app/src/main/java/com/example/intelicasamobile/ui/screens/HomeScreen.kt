@@ -27,7 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -116,7 +115,7 @@ fun HomeScreen(
                                 action = {
                                     TextButton(
                                         onClick = { devicesModel.dismissSnackBar() },
-                                        content = { Text("Dismiss") }
+                                        content = { Text(stringResource(R.string.dismiss)) }
                                     )
                                 },
                                 modifier = Modifier.zIndex(10f)
@@ -131,7 +130,6 @@ fun HomeScreen(
                     HomeScreenPortrait(
                         devicesModel = devicesModel,
                         routinesModel = routinesModel,
-                        modifier = Modifier.padding(p)
                     )
                 } else {
                     HomeScreenLandscape(
@@ -152,7 +150,7 @@ fun HomeScreen(
 fun HomeScreenPortrait(
     devicesModel: DevicesViewModel = viewModel(),
     routinesModel: RoutinesViewModel = viewModel(),
-    modifier: Modifier = Modifier
+
 ) {
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
@@ -166,9 +164,10 @@ fun HomeScreenPortrait(
 @Preview(showBackground = true, widthDp = 600, heightDp = 400)
 @Composable
 fun HomeScreenLandscape(
+    modifier: Modifier = Modifier,
     devicesModel: DevicesViewModel = viewModel(),
     routinesModel: RoutinesViewModel = viewModel(),
-    roomsModel: RoomsViewModel = viewModel(), modifier: Modifier = Modifier
+    roomsModel: RoomsViewModel = viewModel()
 ) {
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
@@ -305,7 +304,7 @@ fun TabletHomeScreen(
                             action = {
                                 TextButton(
                                     onClick = { devicesModel.dismissSnackBar() },
-                                    content = { Text("Dismiss") }
+                                    content = { Text(stringResource(R.string.dismiss)) }
                                 )
                             },
                             modifier = Modifier.zIndex(10f)

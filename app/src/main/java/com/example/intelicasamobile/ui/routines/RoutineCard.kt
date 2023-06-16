@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,7 +60,7 @@ fun RoutineCard(
         Surface(
             color = MaterialTheme.colorScheme.primary
         ) {
-            Column() {
+            Column {
 
                 Row(
                     modifier = modifier
@@ -96,7 +97,7 @@ fun RoutineCard(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.PlayCircle,
-                                contentDescription = "Play",
+                                contentDescription = stringResource(R.string.play),
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(50.dp),
                             )
@@ -113,7 +114,7 @@ fun RoutineCard(
                         if (it != null) {
                             Image(
                                 painter = painterResource(id = it.deviceType.imageResourceId),
-                                contentDescription = "Device Type",
+                                contentDescription = stringResource(R.string.device_type),
                                 modifier = Modifier
                                     .padding(4.dp, bottom = 10.dp)
                                     .size(dimensionResource(R.dimen.image_size))
@@ -133,7 +134,7 @@ fun RoutineCardPreview() {
     RoutineCard(
         routine = Routine(
             id = "1",
-            name = "Test Routine aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            name = "Test Routine",
             actions = listOf(),
         )
     )

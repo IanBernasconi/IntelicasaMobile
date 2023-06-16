@@ -131,7 +131,7 @@ fun RoomsScreen(
                                 action = {
                                     TextButton(
                                         onClick = { devicesModel.dismissSnackBar() },
-                                        content = { Text("Dismiss") }
+                                        content = { Text(stringResource(id = R.string.dismiss)) }
                                     )
                                 },
                                 modifier = Modifier.zIndex(10f)

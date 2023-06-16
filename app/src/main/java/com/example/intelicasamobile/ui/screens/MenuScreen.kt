@@ -48,7 +48,9 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @Preview(showBackground = true)
 @Composable
-fun MenuScreen() {
+fun MenuScreen(
+    columns: Int = 1,
+) {
 
     val preferences = PreferencesData.getInstance(LocalContext.current.dataStore)
 
@@ -66,7 +68,7 @@ fun MenuScreen() {
             ThemeSelector(preferences)
 
             AnimatedCollapsibleItem(title = stringResource(id = R.string.pref_key_notifications)) {
-                NotificationPreferencesOptions(preferences)
+                NotificationPreferencesOptions(preferences, columns)
             }
 
     }
@@ -106,13 +108,14 @@ fun ThemeSelector(
 
 @Composable
 fun NotificationPreferencesOptions(
-    preferences: PreferencesData
+    preferences: PreferencesData,
+    columns: Int = 1
 ) {
     val notificationPreferences = preferences.notificationPreference.collectAsState()
 
     Column {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(1),
+            columns = GridCells.Fixed(columns),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
         ) {
             items(notificationPreferences.value) { preference ->
@@ -220,22 +223,6 @@ fun DialogButton(@StringRes title: Int, @StringRes text: Int, modifier: Modifier
 @Composable
 fun TabletMenuScreen() {
     Surface(color = MaterialTheme.colorScheme.background) {
-        Row {
-            Spacer(modifier = Modifier.weight(1f))
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(2f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
-
-            ) {
-                DialogButton(R.string.help, R.string.help_text)
-                DialogButton(R.string.contact, R.string.contact_text)
-                DialogButton(R.string.about, R.string.about_text)
-            }
-            Spacer(modifier = Modifier.weight(1f))
-        }
-
+        MenuScreen(2)
     }
 }

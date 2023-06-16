@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.intelicasamobile.R
 
@@ -53,7 +54,7 @@ fun AnimatedCollapsibleItem(
             )
             Icon(
                 imageVector = if (expanded) Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown,
-                contentDescription = "Dropdown",
+                contentDescription = stringResource(R.string.dropdown),
                 modifier = modifier.size(35.dp)
             )
         }
