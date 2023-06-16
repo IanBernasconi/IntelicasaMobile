@@ -19,6 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.DevicesViewModel
+import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.data.network.RetrofitClient
 import com.example.intelicasamobile.model.Routine
 import kotlinx.coroutines.CoroutineScope
@@ -45,7 +48,7 @@ fun RoutineCard(
 ) {
 
     val devicesState by devicesModel.devicesUiState.collectAsState()
-
+    val routinesModel by remember { mutableStateOf(RoutinesViewModel.getInstance()) }
     Card(
         modifier = Modifier
             .size(300.dp, 120.dp)
@@ -87,6 +90,7 @@ fun RoutineCard(
                                 CoroutineScope(Dispatchers.Main).launch {
                                     val apiService = RetrofitClient.getApiService()
                                     apiService.executeRoutine(id = routine.id)
+                                    routinesModel.showSnackBar()
                                 }
                             },
                         ) {

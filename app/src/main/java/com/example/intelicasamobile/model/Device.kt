@@ -31,7 +31,7 @@ open class Device(
             isLoadingState.value = true
             val apiService = RetrofitClient.getApiService()
             apiService.triggerEvent(id = id, actionName = actionType.apiName, params = params)
-            DevicesViewModel.getInstance().showSnackBar()
+            DevicesViewModel.getInstance().stateModified()
             isLoadingState.value = false
         }
     }

@@ -8,36 +8,37 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.Button
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material.Snackbar
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
@@ -61,7 +62,9 @@ fun HomeScreen(
     val devicesState by devicesModel.devicesUiState.collectAsState()
     val routinesState by routinesModel.routinesUiState.collectAsState()
     val snackbarHostState = rememberScaffoldState().snackbarHostState
-
+    val routines_snackbar_message = stringResource(id = R.string.routines_snackbar_message)
+    val devices_snackbar_message = stringResource(id = R.string.devices_snackbar_message)
+    var snackbarMessage by remember{ mutableStateOf(devices_snackbar_message)}
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -71,12 +74,24 @@ fun HomeScreen(
     }
     LaunchedEffect(devicesState.showSnackBar) {
         if (devicesState.showSnackBar) {
-            val result = snackbarHostState.showSnackbar("")
+            snackbarMessage=devices_snackbar_message
+            val result = snackbarHostState.showSnackbar("", duration = SnackbarDuration.Short)
             if (result == SnackbarResult.Dismissed) {
                 devicesModel.dismissSnackBar()
             }
         }
     }
+
+    LaunchedEffect(routinesState.showSnackBar) {
+        if (routinesState.showSnackBar) {
+            snackbarMessage=routines_snackbar_message
+            val result = snackbarHostState.showSnackbar("", duration = SnackbarDuration.Short)
+            if (result == SnackbarResult.Dismissed) {
+                routinesModel.dismissSnackBar()
+            }
+        }
+    }
+
 
     SwipeRefresh(
         state = rememberSwipeRefreshState(devicesState.isLoading || routinesState.isLoading),
@@ -91,36 +106,45 @@ fun HomeScreen(
                 .padding(),
             color = MaterialTheme.colorScheme.background
         ) {
+            Scaffold(
+                snackbarHost = {
+                    SnackbarHost(
+                        hostState = snackbarHostState,
+                        snackbar = {
+                            Snackbar(
+                                content = { Text(snackbarMessage) },
+                                action = {
+                                    TextButton(
+                                        onClick = { devicesModel.dismissSnackBar() },
+                                        content = { Text("Dismiss") }
+                                    )
+                                },
+                                modifier = Modifier.zIndex(10f)
+                            )
+                        }
+                    )
+                },
+            ) { p ->
                 val configuration = LocalConfiguration.current
                 val orientation = configuration.orientation
                 if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                     HomeScreenPortrait(
                         devicesModel = devicesModel,
                         routinesModel = routinesModel,
-                        modifier = Modifier
+                        modifier = Modifier.padding(p)
                     )
                 } else {
                     HomeScreenLandscape(
                         devicesModel = devicesModel,
                         routinesModel = routinesModel,
-                        modifier = Modifier
+                        modifier = Modifier.padding(p)
                     )
                 }
+            }
 
-            }
-            if(devicesState.showSnackBar) {
-                Snackbar(
-                    content = { Text(stringResource(R.string.snackbar_message)) },
-                    action = {
-                        TextButton(
-                            onClick = { devicesModel.dismissSnackBar() },
-                            content = { Text("Dismiss") }
-                        )
-                    },
-                    modifier = Modifier.zIndex(10f)
-                )
-            }
+
         }
+    }
 
 }
 
@@ -151,7 +175,7 @@ fun HomeScreenLandscape(
     Row {
         Box(Modifier.weight(1f)) {
             Column {
-                RoutinesHomeList(state1, R.dimen.card_medium,routinesModel)
+                RoutinesHomeList(state1, R.dimen.card_medium, routinesModel)
             }
 
         }
@@ -223,6 +247,7 @@ private fun RoutinesHomeList(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, widthDp = 1000, heightDp = 600)
 @Composable
 fun TabletHomeScreen(
@@ -231,11 +256,37 @@ fun TabletHomeScreen(
     roomsModel: RoomsViewModel = viewModel()
 ) {
     val context = LocalContext.current
+    val devicesState by devicesModel.devicesUiState.collectAsState()
+    val routinesState by routinesModel.routinesUiState.collectAsState()
+    val snackbarHostState = rememberScaffoldState().snackbarHostState
+    val routines_snackbar_message = stringResource(id = R.string.routines_snackbar_message)
+    val devices_snackbar_message = stringResource(id = R.string.devices_snackbar_message)
+    var snackbarMessage by remember{ mutableStateOf(devices_snackbar_message)}
 
     LaunchedEffect(Unit) {
         devicesModel.fetchDevices(context = context)
         routinesModel.fetchRoutines()
         roomsModel.fetchRooms()
+    }
+
+    LaunchedEffect(devicesState.showSnackBar) {
+        if (devicesState.showSnackBar) {
+            snackbarMessage=devices_snackbar_message
+            val result = snackbarHostState.showSnackbar("", duration = SnackbarDuration.Short)
+            if (result == SnackbarResult.Dismissed) {
+                devicesModel.dismissSnackBar()
+            }
+        }
+    }
+
+    LaunchedEffect(routinesState.showSnackBar) {
+        if (routinesState.showSnackBar) {
+            snackbarMessage=routines_snackbar_message
+            val result = snackbarHostState.showSnackbar("", duration = SnackbarDuration.Short)
+            if (result == SnackbarResult.Dismissed) {
+                routinesModel.dismissSnackBar()
+            }
+        }
     }
 
     val state1 = rememberLazyGridState()
@@ -244,16 +295,37 @@ fun TabletHomeScreen(
         modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
     )
     {
-        Row {
-            Box(Modifier.weight(1f)) {
-                Column {
-                    RoutinesHomeList(state1, R.dimen.card_medium, routinesModel)
-                }
+        Scaffold(
+            snackbarHost = {
+                SnackbarHost(
+                    hostState = snackbarHostState,
+                    snackbar = {
+                        Snackbar(
+                            content = { Text(snackbarMessage) },
+                            action = {
+                                TextButton(
+                                    onClick = { devicesModel.dismissSnackBar() },
+                                    content = { Text("Dismiss") }
+                                )
+                            },
+                            modifier = Modifier.zIndex(10f)
+                        )
+                    }
+                )
+            },
+        ) { p ->
 
-            }
-            Box(Modifier.weight(1f)) {
-                Column {
-                    DevicesHomeList(state2, R.dimen.card_medium, devicesModel, roomsModel)
+            Row(Modifier.padding(p)) {
+                Box(Modifier.weight(1f)) {
+                    Column {
+                        RoutinesHomeList(state1, R.dimen.card_medium, routinesModel)
+                    }
+
+                }
+                Box(Modifier.weight(1f)) {
+                    Column {
+                        DevicesHomeList(state2, R.dimen.card_medium, devicesModel, roomsModel)
+                    }
                 }
             }
         }

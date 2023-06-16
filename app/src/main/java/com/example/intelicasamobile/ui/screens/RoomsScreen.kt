@@ -20,10 +20,19 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarResult
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,6 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.DevicesViewModel
@@ -53,6 +63,7 @@ import com.example.intelicasamobile.ui.devices.DeviceCard
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun RoomsScreen(
@@ -65,12 +76,21 @@ fun RoomsScreen(
     var currentIndex by remember { mutableStateOf(roomsState.rooms.indexOf(roomsState.currentRoom)) }
     var offsetX by remember { mutableStateOf(0f) }
     var pixelWidth by remember { mutableStateOf(0) }
-
+    val snackbarHostState = rememberScaffoldState().snackbarHostState
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         devicesModel.fetchDevices(context = context)
         roomsModel.fetchRooms()
+    }
+
+    LaunchedEffect(devicesState.showSnackBar) {
+        if (devicesState.showSnackBar) {
+            val result = snackbarHostState.showSnackbar("", duration = SnackbarDuration.Short)
+            if (result == SnackbarResult.Dismissed) {
+                devicesModel.dismissSnackBar()
+            }
+        }
     }
 
 
@@ -101,43 +121,65 @@ fun RoomsScreen(
                         offsetX = 0f
                     })
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                if (roomsState.rooms.isNotEmpty()) {
-                    currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
+            Scaffold(
+                snackbarHost = {
+                    SnackbarHost(
+                        hostState = snackbarHostState,
+                        snackbar = {
+                            Snackbar(
+                                content = { Text(stringResource(R.string.devices_snackbar_message)) },
+                                action = {
+                                    TextButton(
+                                        onClick = { devicesModel.dismissSnackBar() },
+                                        content = { Text("Dismiss") }
+                                    )
+                                },
+                                modifier = Modifier.zIndex(10f)
+                            )
+                        }
+                    )
+                },
+            ) { p ->
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(p)) {
+                    if (roomsState.rooms.isNotEmpty()) {
+                        currentIndex = roomsState.rooms.indexOf(roomsState.currentRoom)
 
-                    DevicesList(
-                        offset = DpOffset(
-                            with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() },
-                            0.dp
-                        ),
-                        roomsModel = roomsModel,
-                        devicesModel = devicesModel,
-                        index = (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size,
-                        minWidth = minWidth
-                    )
-                    DevicesList(
-                        offset = DpOffset(
-                            with(LocalDensity.current) { (offsetX * 1.5f).toDp() }, 0.dp
-                        ),
-                        setIndex = { index ->
-                            currentIndex = index
-                            roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
-                        },
-                        roomsModel = roomsModel,
-                        devicesModel = devicesModel,
-                        index = currentIndex,
-                        minWidth = minWidth
-                    )
-                    DevicesList(
-                        offset = DpOffset(
-                            with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() },
-                            0.dp
-                        ),
-                        roomsModel = roomsModel,
-                        devicesModel = devicesModel,
-                        index = (currentIndex + 1) % roomsState.rooms.size,
-                        minWidth = minWidth
-                    )
+                        DevicesList(
+                            offset = DpOffset(
+                                with(LocalDensity.current) { (-pixelWidth + offsetX * 1.5f).toDp() },
+                                0.dp
+                            ),
+                            roomsModel = roomsModel,
+                            devicesModel = devicesModel,
+                            index = (currentIndex - 1 + roomsState.rooms.size) % roomsState.rooms.size,
+                            minWidth = minWidth
+                        )
+                        DevicesList(
+                            offset = DpOffset(
+                                with(LocalDensity.current) { (offsetX * 1.5f).toDp() }, 0.dp
+                            ),
+                            setIndex = { index ->
+                                currentIndex = index
+                                roomsModel.setCurrentRoom(roomsState.rooms[currentIndex])
+                            },
+                            roomsModel = roomsModel,
+                            devicesModel = devicesModel,
+                            index = currentIndex,
+                            minWidth = minWidth
+                        )
+                        DevicesList(
+                            offset = DpOffset(
+                                with(LocalDensity.current) { (pixelWidth + offsetX * 1.5f).toDp() },
+                                0.dp
+                            ),
+                            roomsModel = roomsModel,
+                            devicesModel = devicesModel,
+                            index = (currentIndex + 1) % roomsState.rooms.size,
+                            minWidth = minWidth
+                        )
+                    }
                 }
             }
         }

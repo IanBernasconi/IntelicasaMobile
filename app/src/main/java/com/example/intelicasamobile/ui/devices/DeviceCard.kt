@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoomsViewModel
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.Device
@@ -64,7 +65,8 @@ fun DeviceCard(
     roomsViewModel: RoomsViewModel = viewModel(),
 ) {
     var showDialog by remember { mutableStateOf(false) }
-
+    val devicesModel by remember { mutableStateOf(DevicesViewModel.getInstance()) }
+    val devicesState by devicesModel.devicesUiState.collectAsState()
     Card(elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
         modifier = modifier.clickable { showDialog = true }) {
         Box(
@@ -186,7 +188,14 @@ fun DeviceCard(
         DeviceInfoModal(
             device = device,
             showDialog = showDialog,
-            onDismiss = { showDialog = false },
+            onDismiss = {
+                showDialog = false
+
+                if(devicesState.stateModified){
+                    devicesModel.showSnackBar()
+                    devicesModel.resetStateModified()
+                }
+            },
             roomsViewModel = roomsViewModel,
         )
     }

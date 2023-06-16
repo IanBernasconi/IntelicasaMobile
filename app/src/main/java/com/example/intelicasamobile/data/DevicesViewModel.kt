@@ -75,6 +75,13 @@ class DevicesViewModel private constructor() : ViewModel() {
         _devicesUiState.update { it.copy(message = null) }
     }
 
+    fun stateModified(){
+        _devicesUiState.update { it.copy(stateModified = true) }
+    }
+
+    fun resetStateModified(){
+        _devicesUiState.update { it.copy(stateModified = false) }
+    }
     fun showSnackBar() {
         _devicesUiState.update { it.copy(showSnackBar = true) }
     }
