@@ -75,6 +75,14 @@ class DevicesViewModel private constructor() : ViewModel() {
         _devicesUiState.update { it.copy(message = null) }
     }
 
+    fun showSnackBar() {
+        _devicesUiState.update { it.copy(showSnackBar = true) }
+    }
+
+    fun dismissSnackBar() {
+        _devicesUiState.update { it.copy(showSnackBar = false) }
+    }
+
     fun fetchDevices(sendNotification: Boolean = true, context: Context) {
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch {
@@ -106,7 +114,7 @@ class DevicesViewModel private constructor() : ViewModel() {
 
     private fun getDevicesFromNetwork(networkDeviceList: NetworkDeviceList?): List<Device>? {
         return networkDeviceList?.result?.let { array ->
-            (array.indices).map { index ->
+            array.indices.map { index ->
                 val networkDevice = array[index]
                 when (networkDevice.networkType?.name?.let { DeviceType.getDeviceType(it) }) {
                     DeviceType.LAMP -> LightDevice(

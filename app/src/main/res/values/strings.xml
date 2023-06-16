@@ -10,7 +10,7 @@
     <string name="routines">Routines</string>
     <string name="devices">Devices</string>
     <string name="delete">Delete</string>
-
+    <string name="save">Save</string>
     <string name="auto_mode">Auto</string>
 
     <string name="device_state">State</string>
@@ -117,7 +117,7 @@
 
     <!-- Vacuum Cleaner Info -->
     <string name="VCI_no_room_message">The device must be linked to a room. Please assign one in the website</string>
-
+    <string name="VCI_room">Room to clean</string>
     <!-- Vacuum Cleaner Modes -->
     <string name="VCM_mop">Mop</string>
     <string name="VCM_vacuum">Vacuum</string>
@@ -142,6 +142,7 @@
     <string name="help_text">Help Text</string>
     <string name="contact_text">Contact Text</string>
     <string name="about_text">About Text</string>
+    <string name="snackbar_message">State updated successfully</string>
 
     <!-- Preferences -->
     <string name="pref_title">Preferences</string>

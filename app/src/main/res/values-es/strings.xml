@@ -55,6 +55,7 @@
     <string name="VS_charging">Cargando</string>
     <string name="VS_paused">Pausado</string>
     <string name="VCI_no_room_message">El dispositivo debe estar vinculado a una habitación, asigne una en el sitio web</string>
+    <string name="VCI_room">Room to clean</string>
     <string name="VCM_mop">Trapear</string>
     <string name="VCM_vacuum">Aspirar</string>
     <string name="VCA_pause">Pausar</string>
@@ -72,6 +73,7 @@
     <string name="help_text">Texto de ayuda</string>
     <string name="contact_text">Texto de contacto</string>
     <string name="about_text">Texto acerca de</string>
+    <string name="save">Guardar</string>
     <string name="vacuum_empty_battery_title">Aspiradora sin bateria</string>
     <string name="vacuum_empty_battery_info">La aspiradoea %s se ha quedado sin bateria</string>
 </resources>

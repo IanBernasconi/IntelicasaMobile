@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -34,6 +35,11 @@ fun RoutinesScreen(
     devicesModel: DevicesViewModel = viewModel()
 ) {
     val routinesState by routinesModel.routinesUiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        devicesModel.fetchDevices()
+        routinesModel.fetchRoutines()
+    }
 
     SwipeRefresh(
         state = rememberSwipeRefreshState(routinesState.isLoading),
@@ -73,6 +79,12 @@ fun TabletRoutinesScreen(
     devicesModel: DevicesViewModel = viewModel()
 ) {
     val routinesState by routinesModel.routinesUiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        devicesModel.fetchDevices()
+        routinesModel.fetchRoutines()
+    }
+
     Surface(
         color = MaterialTheme.colorScheme.background
     ) {
