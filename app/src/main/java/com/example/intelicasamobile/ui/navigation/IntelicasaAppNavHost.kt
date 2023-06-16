@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bed
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.PermanentNavigationDrawer
@@ -27,9 +28,11 @@ import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.model.AppNavigationType
 import com.example.intelicasamobile.model.Screen
 import com.example.intelicasamobile.ui.screens.HomeScreen
+import com.example.intelicasamobile.ui.screens.MenuScreen
 import com.example.intelicasamobile.ui.screens.RoomsScreen
 import com.example.intelicasamobile.ui.screens.RoutinesScreen
 import com.example.intelicasamobile.ui.screens.TabletHomeScreen
+import com.example.intelicasamobile.ui.screens.TabletMenuScreen
 import com.example.intelicasamobile.ui.screens.TabletRoomsScreen
 import com.example.intelicasamobile.ui.screens.TabletRoutinesScreen
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
@@ -45,52 +48,38 @@ fun IntelicasaAppNavHost(
     windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
 ) {
 
-    val screens = listOf(
-        Screen(
-            "Home",
-            "home",
-            Icons.Filled.Home,
-            tabletContent = {
-                TabletHomeScreen(
-                    devicesModel = devicesModel,
-                    routinesModel = routinesModel,
-                    roomsModel = roomsModel
-                )
-            },
-            content = {
-                HomeScreen(
-                    devicesModel = devicesModel,
-                    routinesModel = routinesModel,
-                    roomsModel = roomsModel
-                )
-            }),
-        Screen(
-            "Devices",
-            "devices",
-            Icons.Filled.Bed,
-            tabletContent = {
-                TabletRoomsScreen(
-                    devicesModel = devicesModel,
-                    roomsModel = roomsModel
-                )
-            },
-            content = { RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel) }),
-        Screen(
-            "Routines",
-            "routines",
-            Icons.Filled.PlayArrow,
-            tabletContent = {
-                TabletRoutinesScreen(
-                    routinesModel = routinesModel,
-                    devicesModel = devicesModel
-                )
-            },
-            content = {
-                RoutinesScreen(
-                    routinesModel = routinesModel,
-                    devicesModel = devicesModel
-                )
-            })
+    val screens = listOf(Screen("Home", "home", Icons.Filled.Home, tabletContent = {
+        TabletHomeScreen(
+            devicesModel = devicesModel,
+            routinesModel = routinesModel,
+            roomsModel = roomsModel
+        )
+    }, content = {
+        HomeScreen(
+            devicesModel = devicesModel,
+            routinesModel = routinesModel,
+            roomsModel = roomsModel
+        )
+    }),
+        Screen("Devices", "devices", Icons.Filled.Bed, tabletContent = {
+            TabletRoomsScreen(
+                devicesModel = devicesModel, roomsModel = roomsModel
+            )
+        }, content = { RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel) }),
+        Screen("Routines", "routines", Icons.Filled.PlayArrow, tabletContent = {
+            TabletRoutinesScreen(
+                routinesModel = routinesModel, devicesModel = devicesModel
+            )
+        }, content = {
+            RoutinesScreen(
+                routinesModel = routinesModel, devicesModel = devicesModel
+            )
+        }),
+        Screen("Menu",
+            "menu",
+            Icons.Filled.Menu,
+            tabletContent = { TabletMenuScreen() },
+            content = { MenuScreen() })
     )
     val navigationType: AppNavigationType
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -98,17 +87,15 @@ fun IntelicasaAppNavHost(
     val orientation = configuration.orientation
     when (windowSize) {
         WindowWidthSizeClass.Compact -> {
-            navigationType = if (orientation == Configuration.ORIENTATION_PORTRAIT)
-                AppNavigationType.BOTTOM_NAVIGATION
-            else
-                AppNavigationType.NAVIGATION_RAIL
+            navigationType =
+                if (orientation == Configuration.ORIENTATION_PORTRAIT) AppNavigationType.BOTTOM_NAVIGATION
+                else AppNavigationType.NAVIGATION_RAIL
         }
 
         WindowWidthSizeClass.Medium -> {
-            navigationType = if (orientation == Configuration.ORIENTATION_PORTRAIT)
-                AppNavigationType.BOTTOM_NAVIGATION
-            else
-                AppNavigationType.NAVIGATION_RAIL
+            navigationType =
+                if (orientation == Configuration.ORIENTATION_PORTRAIT) AppNavigationType.BOTTOM_NAVIGATION
+                else AppNavigationType.NAVIGATION_RAIL
         }
 
         WindowWidthSizeClass.Expanded -> {
@@ -135,9 +122,7 @@ fun IntelicasaAppNavHost(
                     backStackEntry = backStackEntry
                 ) {
                     AppNavHost(
-                        navController = navController,
-                        screens = screens,
-                        windowSize = windowSize
+                        navController = navController, screens = screens, windowSize = windowSize
                     )
                 }
             }
@@ -150,12 +135,9 @@ fun IntelicasaAppNavHost(
                         navController = navController,
                         backStackEntry = backStackEntry
                     )
-                }
-                ) {
+                }) {
                     AppNavHost(
-                        navController = navController,
-                        screens = screens,
-                        windowSize = windowSize
+                        navController = navController, screens = screens, windowSize = windowSize
                     )
                 }
             }

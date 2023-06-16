@@ -61,8 +61,11 @@ fun HomeScreen(
     val devicesState by devicesModel.devicesUiState.collectAsState()
     val routinesState by routinesModel.routinesUiState.collectAsState()
     val snackbarHostState = rememberScaffoldState().snackbarHostState
+
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
-        devicesModel.fetchDevices()
+        devicesModel.fetchDevices(context = context)
         routinesModel.fetchRoutines()
         roomsModel.fetchRooms()
     }
@@ -74,10 +77,6 @@ fun HomeScreen(
             }
         }
     }
-
-
-    val context = LocalContext.current
-
 
     SwipeRefresh(
         state = rememberSwipeRefreshState(devicesState.isLoading || routinesState.isLoading),
@@ -231,9 +230,10 @@ fun TabletHomeScreen(
     routinesModel: RoutinesViewModel = viewModel(),
     roomsModel: RoomsViewModel = viewModel()
 ) {
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        devicesModel.fetchDevices()
+        devicesModel.fetchDevices(context = context)
         routinesModel.fetchRoutines()
         roomsModel.fetchRooms()
     }

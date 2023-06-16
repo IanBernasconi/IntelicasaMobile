@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
@@ -15,7 +14,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -33,7 +31,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val notificationPrefs = PreferencesData.getInstance(dataStore)
+            val preferences = PreferencesData.getInstance(dataStore)
+
 
             val devicesModel by remember { mutableStateOf(DevicesViewModel.getInstance()) }
             val routinesModel by remember { mutableStateOf(RoutinesViewModel()) }
@@ -46,7 +45,7 @@ class MainActivity : ComponentActivity() {
                 devicesModel.fetchDevices(false, context)
                 routinesModel.fetchRoutines()
                 roomsModel.fetchRooms()
-                notificationPrefs.loadPreferences()
+                preferences.loadPreferences()
             }
 
             IntelicasaMobileTheme {

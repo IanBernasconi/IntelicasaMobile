@@ -69,7 +69,7 @@ fun RoomsScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        devicesModel.fetchDevices()
+        devicesModel.fetchDevices(context = context)
         roomsModel.fetchRooms()
     }
 

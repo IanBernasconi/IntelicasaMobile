@@ -17,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -36,8 +37,10 @@ fun RoutinesScreen(
 ) {
     val routinesState by routinesModel.routinesUiState.collectAsState()
 
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
-        devicesModel.fetchDevices()
+        devicesModel.fetchDevices(context = context)
         routinesModel.fetchRoutines()
     }
 
@@ -80,8 +83,10 @@ fun TabletRoutinesScreen(
 ) {
     val routinesState by routinesModel.routinesUiState.collectAsState()
 
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
-        devicesModel.fetchDevices()
+        devicesModel.fetchDevices(context = context)
         routinesModel.fetchRoutines()
     }
 
