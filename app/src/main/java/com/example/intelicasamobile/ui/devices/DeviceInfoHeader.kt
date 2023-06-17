@@ -15,6 +15,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +27,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.Device
@@ -41,8 +44,11 @@ fun DeviceInfoHeader(
     device: Device,
     modifier: Modifier = Modifier
 ) {
-    IntelicasaMobileTheme {
+    fun favoriteHandler(device: Device) {
+        device.toggleNewFavorite(device.meta.favorite)
+    }
 
+    IntelicasaMobileTheme {
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -66,7 +72,10 @@ fun DeviceInfoHeader(
                     )
                     .align(Alignment.CenterVertically)
             )
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(
+                onClick = { favoriteHandler(device)},
+                enabled = !device.isLoading()
+            ) {
                 Icon(
                     imageVector = Icons.Default.Star,
                     contentDescription = stringResource(R.string.star),
@@ -76,5 +85,8 @@ fun DeviceInfoHeader(
             }
         }
     }
+
+
 }
+
 

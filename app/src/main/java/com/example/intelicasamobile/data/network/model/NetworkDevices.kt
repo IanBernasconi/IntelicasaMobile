@@ -64,3 +64,8 @@ data class NetworkMeta (
     @SerializedName("category" ) var category : NetworkCategory? = NetworkCategory()
 
 )
+
+data class UpdateBody(
+    var name : String? = null,
+    var meta : NetworkMeta?   = NetworkMeta()
+)

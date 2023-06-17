@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.network.RetrofitClient
+import com.example.intelicasamobile.data.network.model.NetworkMeta
+import com.example.intelicasamobile.data.network.model.UpdateBody
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,6 +39,18 @@ open class Device(
     }
 
     fun isLoading(): Boolean = isLoadingState.value
+
+    fun toggleNewFavorite(isFavorite: Boolean) {
+        viewModelScope.launch {
+            isLoadingState.value = true
+            val apiService = RetrofitClient.getApiService()
+            val favorite = !meta.favorite
+            apiService.toggleFavorite(id = id, params = UpdateBody(name = name, meta = NetworkMeta(favorite = favorite)))
+            meta.favorite = favorite
+            DevicesViewModel.getInstance().stateModified()
+            isLoadingState.value = false
+        }
+    }
 }
 
 data class ACDevice(
@@ -57,7 +71,7 @@ data class ACDevice(
         triggerNewAction(
             actionType = if (isOn) ActionTypes.TURN_ON else ActionTypes.TURN_OFF
         )
-
+        println("isOn: $isOn")
     }
 
     fun setTemperature(temperature: Int) {
