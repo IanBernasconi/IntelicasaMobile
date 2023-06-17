@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val windowSize = calculateWindowSizeClass(this)
-                    IntelicasaAppNavHost(windowSize = windowSize.widthSizeClass, devicesModel = devicesModel, routinesModel = routinesModel, roomsModel = roomsModel)
+                    IntelicasaAppNavHost(windowWidthSize = windowSize.widthSizeClass, windowHeightSize = windowSize.heightSizeClass ,devicesModel = devicesModel, routinesModel = routinesModel, roomsModel = roomsModel)
                 }
             }
         }

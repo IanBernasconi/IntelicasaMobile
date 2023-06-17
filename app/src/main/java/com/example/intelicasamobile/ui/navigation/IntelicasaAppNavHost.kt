@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,7 +38,6 @@ import com.example.intelicasamobile.ui.screens.TabletHomeScreen
 import com.example.intelicasamobile.ui.screens.TabletMenuScreen
 import com.example.intelicasamobile.ui.screens.TabletRoomsScreen
 import com.example.intelicasamobile.ui.screens.TabletRoutinesScreen
-import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, name = "Intelicasa")
@@ -47,7 +47,8 @@ fun IntelicasaAppNavHost(
     routinesModel: RoutinesViewModel = viewModel(),
     roomsModel: RoomsViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
-    windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
+    windowWidthSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
+    windowHeightSize: WindowHeightSizeClass = WindowHeightSizeClass.Compact,
 ) {
 
     val screens = listOf(Screen(stringResource(R.string.home), "home", Icons.Filled.Home, tabletContent = {
@@ -84,11 +85,11 @@ fun IntelicasaAppNavHost(
             tabletContent = { TabletMenuScreen() },
             content = { MenuScreen() })
     )
-    val navigationType: AppNavigationType
+    var navigationType: AppNavigationType = AppNavigationType.BOTTOM_NAVIGATION
     val backStackEntry by navController.currentBackStackEntryAsState()
     val configuration = LocalConfiguration.current
     val orientation = configuration.orientation
-    when (windowSize) {
+    when (windowWidthSize) {
         WindowWidthSizeClass.Compact -> {
             navigationType =
                 if (orientation == Configuration.ORIENTATION_PORTRAIT) AppNavigationType.BOTTOM_NAVIGATION
@@ -102,7 +103,19 @@ fun IntelicasaAppNavHost(
         }
 
         WindowWidthSizeClass.Expanded -> {
-            navigationType = AppNavigationType.PERMANENT_NAVIGATION_DRAWER
+            when(windowHeightSize) {
+                WindowHeightSizeClass.Compact -> {
+                    navigationType = AppNavigationType.NAVIGATION_RAIL
+                }
+
+                WindowHeightSizeClass.Medium -> {
+                    navigationType = AppNavigationType.PERMANENT_NAVIGATION_DRAWER
+                }
+
+                WindowHeightSizeClass.Expanded -> {
+                    navigationType = AppNavigationType.PERMANENT_NAVIGATION_DRAWER
+                }
+            }
         }
 
         else -> {
@@ -125,7 +138,7 @@ fun IntelicasaAppNavHost(
                     backStackEntry = backStackEntry
                 ) {
                     AppNavHost(
-                        navController = navController, screens = screens, windowSize = windowSize
+                        navController = navController, screens = screens, windowSize = windowWidthSize
                     )
                 }
             }
@@ -140,7 +153,7 @@ fun IntelicasaAppNavHost(
                     )
                 }) {
                     AppNavHost(
-                        navController = navController, screens = screens, windowSize = windowSize
+                        navController = navController, screens = screens, windowSize = windowWidthSize
                     )
                 }
             }
@@ -151,7 +164,7 @@ fun IntelicasaAppNavHost(
         AppNavHost(
             navController = navController,
             screens = screens,
-            windowSize = windowSize,
+            windowSize = windowWidthSize,
             modifier = Modifier.padding(innerPadding)
         )
     }
