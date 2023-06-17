@@ -17,6 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import com.example.intelicasamobile.IntelicasaApplication
+import com.example.intelicasamobile.MainActivity
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.Screen
 
@@ -58,6 +60,7 @@ fun IntelicasaNavigationRail(
                     },
                     selected = backStackEntry?.destination?.route == screen.route,
                     onClick = {
+                        IntelicasaApplication.currentPath = screen.route
                         navController.navigate(screen.route) {
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true

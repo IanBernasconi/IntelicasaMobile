@@ -25,6 +25,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.intelicasamobile.IntelicasaApplication
+import com.example.intelicasamobile.MainActivity
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.Device
@@ -41,6 +43,9 @@ fun DeviceInfoHeader(
     device: Device,
     modifier: Modifier = Modifier
 ) {
+
+    val currentPath = IntelicasaApplication.currentPath
+
     IntelicasaMobileTheme {
 
         Row(

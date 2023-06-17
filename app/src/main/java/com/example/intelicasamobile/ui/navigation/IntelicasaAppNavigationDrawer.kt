@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.Navigation
+import com.example.intelicasamobile.IntelicasaApplication
+import com.example.intelicasamobile.MainActivity
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.model.Screen
 
@@ -90,6 +92,7 @@ fun IntelicasaAppNavigationDrawer(
                     )
                 },
                 onClick = {
+                    IntelicasaApplication.currentPath = screen.route
                     navController.navigate(screen.route) {
                         popUpTo(navController.graph.startDestinationId)
                         launchSingleTop = true

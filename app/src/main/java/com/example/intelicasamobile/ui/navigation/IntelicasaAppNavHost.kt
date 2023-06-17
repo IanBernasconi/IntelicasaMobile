@@ -50,7 +50,6 @@ fun IntelicasaAppNavHost(
     windowWidthSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
     windowHeightSize: WindowHeightSizeClass = WindowHeightSizeClass.Compact,
 ) {
-
     val screens = listOf(Screen(stringResource(R.string.home), "home", Icons.Filled.Home, tabletContent = {
         TabletHomeScreen(
             devicesModel = devicesModel,
@@ -177,7 +176,6 @@ private fun AppNavHost(
     screens: List<Screen>,
     modifier: Modifier = Modifier,
     windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact
-
 ) {
     NavHost(
         navController = navController, startDestination = screens.first().route, modifier = modifier

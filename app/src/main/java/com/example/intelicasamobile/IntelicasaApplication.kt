@@ -18,7 +18,9 @@ class IntelicasaApplication : Application() {
 
     companion object {
         const val CHANNEL_ID = "com.example.intelicasamobile.devices"
+        var currentPath = "home"
     }
+
 
     private fun createNotificationChannel(){
         val name = getString(R.string.channel_name)
