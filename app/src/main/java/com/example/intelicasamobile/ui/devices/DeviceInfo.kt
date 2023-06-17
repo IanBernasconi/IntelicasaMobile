@@ -88,13 +88,13 @@ fun DeviceInfo(
     if (orientation == Configuration.ORIENTATION_PORTRAIT) {
         Card(modifier = modifier.width(300.dp)) {
             Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
-                Info(device, roomsViewModel, modifier)
+                Info(device, roomsViewModel)
             }
         }
     }else{
         Card(modifier = modifier.width(800.dp)) {
             Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
-                Info(device, roomsViewModel, modifier)
+                Info(device, roomsViewModel)
             }
         }
     }
@@ -104,8 +104,7 @@ fun DeviceInfo(
 @Composable
 fun Info(
     device: Device,
-    roomsViewModel: RoomsViewModel = viewModel(),
-    modifier: Modifier
+    roomsViewModel: RoomsViewModel = viewModel()
 ) {
     Column {
         DeviceInfoHeader(device = device)

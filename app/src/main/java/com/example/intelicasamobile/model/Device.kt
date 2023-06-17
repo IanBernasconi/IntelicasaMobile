@@ -31,7 +31,7 @@ open class Device(
             isLoadingState.value = true
             val apiService = RetrofitClient.getApiService()
             apiService.triggerEvent(id = id, actionName = actionType.apiName, params = params)
-            DevicesViewModel.getInstance().showSnackBar()
+            DevicesViewModel.getInstance().stateModified()
             isLoadingState.value = false
         }
     }
@@ -52,7 +52,6 @@ data class ACDevice(
 
     private val _state: MutableStateFlow<ACState> = MutableStateFlow(initialState)
     val state: StateFlow<ACState> = _state.asStateFlow()
-
     fun setIsOn(isOn: Boolean) {
         _state.update { it.copy(isOn = isOn) }
         triggerNewAction(

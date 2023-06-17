@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -22,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoomsViewModel
 import com.example.intelicasamobile.data.RoutinesViewModel
@@ -48,7 +50,7 @@ fun IntelicasaAppNavHost(
     windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
 ) {
 
-    val screens = listOf(Screen("Home", "home", Icons.Filled.Home, tabletContent = {
+    val screens = listOf(Screen(stringResource(R.string.home), "home", Icons.Filled.Home, tabletContent = {
         TabletHomeScreen(
             devicesModel = devicesModel,
             routinesModel = routinesModel,
@@ -61,12 +63,12 @@ fun IntelicasaAppNavHost(
             roomsModel = roomsModel
         )
     }),
-        Screen("Devices", "devices", Icons.Filled.Bed, tabletContent = {
+        Screen(stringResource(id = R.string.devices), "devices", Icons.Filled.Bed, tabletContent = {
             TabletRoomsScreen(
                 devicesModel = devicesModel, roomsModel = roomsModel
             )
         }, content = { RoomsScreen(devicesModel = devicesModel, roomsModel = roomsModel) }),
-        Screen("Routines", "routines", Icons.Filled.PlayArrow, tabletContent = {
+        Screen(stringResource(id = R.string.routines), "routines", Icons.Filled.PlayArrow, tabletContent = {
             TabletRoutinesScreen(
                 routinesModel = routinesModel, devicesModel = devicesModel
             )
@@ -75,7 +77,8 @@ fun IntelicasaAppNavHost(
                 routinesModel = routinesModel, devicesModel = devicesModel
             )
         }),
-        Screen("Menu",
+        Screen(
+                    stringResource(R.string.menu),
             "menu",
             Icons.Filled.Menu,
             tabletContent = { TabletMenuScreen() },

@@ -69,7 +69,7 @@ fun DeviceInfoHeader(
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
                     imageVector = Icons.Default.Star,
-                    contentDescription = "Star",
+                    contentDescription = stringResource(R.string.star),
                     tint = if(device.meta.favorite)Color.Yellow else Color.Gray,
                     modifier = Modifier.size(50.dp),
                 )

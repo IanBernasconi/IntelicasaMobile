@@ -47,7 +47,7 @@ fun DropdownPreview() {
         DropdownSelectorItem(
             label = stringResource(id = it.nameResId), value = it, icon = it.imageResourceId
         )
-    }, label = "Modo", initialItem = DropdownSelectorItem(
+    }, label = stringResource(id = R.string.mode), initialItem = DropdownSelectorItem(
         label = stringResource(id = mode.nameResId),
         value = mode,
         icon = mode.imageResourceId,
@@ -80,7 +80,7 @@ fun TextFieldDropdownSelector(
             trailingIcon = {
                 Icon(
                     imageVector = stateHolder.icon,
-                    contentDescription = "Dropdown",
+                    contentDescription = stringResource(id =R.string.dropdown),
                     modifier = modifier.size(35.dp)
                 )
             },
@@ -131,7 +131,7 @@ fun ShapeDropdownSelector(
                 )
                 Icon(
                     imageVector = stateHolder.icon,
-                    contentDescription = "Dropdown",
+                    contentDescription = stringResource(id = R.string.dropdown ),
                     modifier = modifier.size(35.dp),
                     tint = textColor
                 )

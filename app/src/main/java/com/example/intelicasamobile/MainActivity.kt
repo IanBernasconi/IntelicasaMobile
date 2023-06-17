@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
             val preferences = PreferencesData.getInstance(dataStore)
 
             val devicesModel by remember { mutableStateOf(DevicesViewModel.getInstance()) }
-            val routinesModel by remember { mutableStateOf(RoutinesViewModel()) }
+            val routinesModel by remember { mutableStateOf(RoutinesViewModel.getInstance()) }
             val roomsModel by remember { mutableStateOf(RoomsViewModel()) }
 
             LaunchedEffect(Unit) {

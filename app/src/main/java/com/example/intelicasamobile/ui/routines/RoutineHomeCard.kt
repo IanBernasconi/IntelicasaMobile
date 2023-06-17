@@ -16,6 +16,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -25,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.data.network.RetrofitClient
 import com.example.intelicasamobile.model.Routine
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
@@ -35,7 +39,7 @@ import kotlinx.coroutines.launch
 @Preview(showBackground = true)
 @Composable
 fun RoutineHomeCardPreview() {
-    IntelicasaMobileTheme() {
+    IntelicasaMobileTheme {
         RoutineHomeCard(
             routine = Routine(
                 id = "1",
@@ -51,6 +55,7 @@ fun RoutineHomeCard(
     routine: Routine,
     modifier: Modifier = Modifier
 ) {
+    val routinesModel by remember { mutableStateOf(RoutinesViewModel.getInstance()) }
     Card(
         elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
         modifier = modifier
@@ -89,6 +94,7 @@ fun RoutineHomeCard(
                             CoroutineScope(Dispatchers.Main).launch {
                                 val apiService = RetrofitClient.getApiService()
                                 apiService.executeRoutine(id = routine.id)
+                                routinesModel.showSnackBar()
                             }
                         },
                     ) {

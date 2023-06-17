@@ -19,10 +19,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
 import com.example.intelicasamobile.data.DevicesViewModel
+import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.data.network.RetrofitClient
 import com.example.intelicasamobile.model.Routine
 import kotlinx.coroutines.CoroutineScope
@@ -45,7 +49,7 @@ fun RoutineCard(
 ) {
 
     val devicesState by devicesModel.devicesUiState.collectAsState()
-
+    val routinesModel by remember { mutableStateOf(RoutinesViewModel.getInstance()) }
     Card(
         modifier = Modifier
             .size(300.dp, 120.dp)
@@ -56,7 +60,7 @@ fun RoutineCard(
         Surface(
             color = MaterialTheme.colorScheme.primary
         ) {
-            Column() {
+            Column {
 
                 Row(
                     modifier = modifier
@@ -87,12 +91,13 @@ fun RoutineCard(
                                 CoroutineScope(Dispatchers.Main).launch {
                                     val apiService = RetrofitClient.getApiService()
                                     apiService.executeRoutine(id = routine.id)
+                                    routinesModel.showSnackBar()
                                 }
                             },
                         ) {
                             Icon(
                                 imageVector = Icons.Default.PlayCircle,
-                                contentDescription = "Play",
+                                contentDescription = stringResource(R.string.play),
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(50.dp),
                             )
@@ -109,7 +114,7 @@ fun RoutineCard(
                         if (it != null) {
                             Image(
                                 painter = painterResource(id = it.deviceType.imageResourceId),
-                                contentDescription = "Device Type",
+                                contentDescription = stringResource(R.string.device_type),
                                 modifier = Modifier
                                     .padding(4.dp, bottom = 10.dp)
                                     .size(dimensionResource(R.dimen.image_size))
@@ -129,7 +134,7 @@ fun RoutineCardPreview() {
     RoutineCard(
         routine = Routine(
             id = "1",
-            name = "Test Routine aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            name = "Test Routine",
             actions = listOf(),
         )
     )

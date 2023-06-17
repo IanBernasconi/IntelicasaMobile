@@ -36,12 +36,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoomsViewModel
 import com.example.intelicasamobile.model.ACDevice
 import com.example.intelicasamobile.model.Device
@@ -64,7 +66,8 @@ fun DeviceCard(
     roomsViewModel: RoomsViewModel = viewModel(),
 ) {
     var showDialog by remember { mutableStateOf(false) }
-
+    val devicesModel by remember { mutableStateOf(DevicesViewModel.getInstance()) }
+    val devicesState by devicesModel.devicesUiState.collectAsState()
     Card(elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
         modifier = modifier.clickable { showDialog = true }) {
         Box(
@@ -99,7 +102,7 @@ fun DeviceCard(
                             ) {
                                 Image(
                                     painter = painterResource(id = if (acState.isOn) R.drawable.poweron else R.drawable.poweroff),
-                                    contentDescription = "Power",
+                                    contentDescription = stringResource(R.string.power),
                                     modifier = Modifier.size(dimensionResource(id = R.dimen.icon_small_size))
                                 )
                             }
@@ -112,7 +115,7 @@ fun DeviceCard(
                             ) {
                                 Image(
                                     painter = painterResource(id = if (lightState.isOn) R.drawable.poweron else R.drawable.poweroff),
-                                    contentDescription = "Power",
+                                    contentDescription = stringResource(id = R.string.power),
                                     modifier = Modifier.size(dimensionResource(id = R.dimen.icon_small_size))
                                 )
                             }
@@ -125,7 +128,7 @@ fun DeviceCard(
                             ) {
                                 Image(
                                     painter = painterResource(id = if (ovenState.isOn) R.drawable.poweron else R.drawable.poweroff),
-                                    contentDescription = "Power",
+                                    contentDescription = stringResource(id = R.string.power),
                                     modifier = Modifier.size(dimensionResource(id = R.dimen.icon_small_size))
                                 )
                             }
@@ -159,7 +162,7 @@ fun DeviceCard(
                                     else if (doorState.isLocked) R.drawable.door_closed_lock
                                     else R.drawable.door_closed
                                 ),
-                                contentDescription = "Door",
+                                contentDescription = stringResource(id = R.string.door),
                                 tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(dimensionResource(id = R.dimen.icon_small_size))
                             )
@@ -186,7 +189,14 @@ fun DeviceCard(
         DeviceInfoModal(
             device = device,
             showDialog = showDialog,
-            onDismiss = { showDialog = false },
+            onDismiss = {
+                showDialog = false
+
+                if(devicesState.stateModified){
+                    devicesModel.showSnackBar()
+                    devicesModel.resetStateModified()
+                }
+            },
             roomsViewModel = roomsViewModel,
         )
     }

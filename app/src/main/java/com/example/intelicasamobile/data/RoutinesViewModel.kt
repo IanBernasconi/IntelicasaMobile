@@ -15,15 +15,33 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class RoutinesViewModel: ViewModel() {
+class RoutinesViewModel private constructor(): ViewModel() {
     private val _routinesUiState = MutableStateFlow(RoutinesUiState(emptyList()))
     val routinesUiState: StateFlow<RoutinesUiState> = _routinesUiState.asStateFlow()
 
     private var fetchJob: Job? = null
+
+    companion object{
+        private var instance: RoutinesViewModel? = null
+
+        fun getInstance(): RoutinesViewModel {
+            if(instance == null){
+                instance = RoutinesViewModel()
+            }
+            return instance as RoutinesViewModel
+        }
+    }
     fun dismissMessage() {
         _routinesUiState.update { it.copy(message = null) }
     }
 
+    fun showSnackBar() {
+        _routinesUiState.update { it.copy(showSnackBar = true) }
+    }
+
+    fun dismissSnackBar() {
+        _routinesUiState.update { it.copy(showSnackBar = false) }
+    }
     fun fetchRoutines(){
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch {
