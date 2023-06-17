@@ -4,6 +4,7 @@ import com.example.intelicasamobile.data.network.model.NetworkDevice
 import com.example.intelicasamobile.data.network.model.NetworkDeviceList
 import com.example.intelicasamobile.data.network.model.NetworkRoomsList
 import com.example.intelicasamobile.data.network.model.NetworkRoutineList
+import com.example.intelicasamobile.data.network.model.UpdateBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -32,4 +33,6 @@ interface ApiService {
     @GET("/api/rooms/{id}/devices")
     suspend fun getDevicesByRoom(@Path("id") id: String): Response<NetworkDeviceList>
 
+    @PUT("/api/devices/{id}")
+    suspend fun toggleFavorite(@Path("id") id: String, @Body params: UpdateBody): Response<Unit>
 }
