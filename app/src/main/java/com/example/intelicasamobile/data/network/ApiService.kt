@@ -1,5 +1,6 @@
 package com.example.intelicasamobile.data.network
 
+import com.example.intelicasamobile.data.network.model.NetworkDevice
 import com.example.intelicasamobile.data.network.model.NetworkDeviceList
 import com.example.intelicasamobile.data.network.model.NetworkRoomsList
 import com.example.intelicasamobile.data.network.model.NetworkRoutineList
@@ -12,6 +13,9 @@ import retrofit2.http.Path
 interface ApiService {
     @GET("/api/devices")
     suspend fun getDevices(): Response<NetworkDeviceList>
+
+    @GET("/api/devices/{id}")
+    suspend fun getDevice(@Path("id") id: String): Response<NetworkDevice>
 
     @GET("/api/routines")
     suspend fun getRoutines(): Response<NetworkRoutineList>

@@ -37,10 +37,8 @@ fun RoutinesScreen(
 ) {
     val routinesState by routinesModel.routinesUiState.collectAsState()
 
-    val context = LocalContext.current
-
     LaunchedEffect(Unit) {
-        devicesModel.fetchDevices(context = context)
+        devicesModel.fetchDevices()
         routinesModel.fetchRoutines()
     }
 
@@ -83,10 +81,8 @@ fun TabletRoutinesScreen(
 ) {
     val routinesState by routinesModel.routinesUiState.collectAsState()
 
-    val context = LocalContext.current
-
     LaunchedEffect(Unit) {
-        devicesModel.fetchDevices(context = context)
+        devicesModel.fetchDevices()
         routinesModel.fetchRoutines()
     }
 

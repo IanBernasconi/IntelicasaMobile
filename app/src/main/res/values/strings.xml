@@ -58,6 +58,9 @@
     <string name="ac_on_title">Air conditioner turned on</string>
     <string name="ac_on_info">Air conditioner %s was turned on</string>
 
+    <string name="ac_off_title">Air conditioner turned off</string>
+    <string name="ac_off_info">Air conditioner %s was turned off</string>
+
     <!-- DEVICES -->
     <string name="turn_on">Turn on</string>
     <string name="turn_off">Turn off</string>
@@ -169,5 +172,9 @@
     <string name="pref_on_ac_off">On AC turned off</string>
     <string name="pref_on_oven_on">On oven turned on</string>
     <string name="pref_on_oven_off">On oven turned off</string>
+
+    <!-- Notification channel -->
+    <string name="channel_name">Intelicasa devices</string>
+    <string name="channel_description">Notifications from Intelicasa regarding devices status updates</string>
 
 </resources>

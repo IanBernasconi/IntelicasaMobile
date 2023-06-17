@@ -8,6 +8,10 @@ data class NetworkDeviceList (
 
 )
 
+data class NetworkDevice(
+    @SerializedName("result" ) var result : NetworkDevicesResult
+)
+
 data class NetworkType (
 
     @SerializedName("id"         ) var id         : String? = null,

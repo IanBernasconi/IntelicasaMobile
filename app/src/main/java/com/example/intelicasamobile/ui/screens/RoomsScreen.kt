@@ -66,10 +66,8 @@ fun RoomsScreen(
     var offsetX by remember { mutableStateOf(0f) }
     var pixelWidth by remember { mutableStateOf(0) }
 
-    val context = LocalContext.current
-
     LaunchedEffect(Unit) {
-        devicesModel.fetchDevices(context = context)
+        devicesModel.fetchDevices()
         roomsModel.fetchRooms()
     }
 
@@ -77,7 +75,7 @@ fun RoomsScreen(
     SwipeRefresh(state = rememberSwipeRefreshState(roomsState.isLoading || devicesState.isLoading),
         onRefresh = {
             roomsModel.fetchRooms()
-            devicesModel.fetchDevices(context = context)
+            devicesModel.fetchDevices()
         }) {
         Surface(color = MaterialTheme.colorScheme.background,
             modifier = Modifier

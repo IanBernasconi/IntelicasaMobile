@@ -1,67 +1,43 @@
 package com.example.intelicasamobile
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.Manifest
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 
-class Notifications(
-    var context: Context,
-    var title: String,
-    var message: String
-) {
-    private val channelID: String = "com.example.intelicasamobile"
-    private val channelName: String = "Intelicasa"
-    private val notificationManager =
-        context.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+class Notifications {
 
-//    lateinit var notificationChannel: NotificationChannel
-//    lateinit var notificationBuilder: NotificationCompat.Builder
+    companion object {
+        fun showNotification(context: Context, title: String, message: String, id: Int = 100) {
 
-    private fun createNotificationChannel() {
-        val channel = NotificationChannel(
-            channelID,
-            channelName,
-            NotificationManager.IMPORTANCE_HIGH
-        ).apply {
-            description = "Channel for device update notifications"
-            enableLights(true)
-            enableVibration(true)
-            setShowBadge(true)
+            val intent = Intent(context, MainActivity::class.java).apply {
+                putExtra("device_id", id)
+            }
+            val pendingIntent =
+                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+            val notification = NotificationCompat.Builder(context, IntelicasaApplication.CHANNEL_ID)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.logointeli)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .build()
+
+            with(NotificationManagerCompat.from(context)) {
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return
+                }
+                notify(id, notification)
+            }
         }
-        notificationManager.createNotificationChannel(channel)
     }
-
-    fun showNotification(id: Int = 100) {
-        createNotificationChannel()
-
-        val notification = NotificationCompat.Builder(context, channelID)
-            .setContentTitle(title)
-            .setContentText(message)
-            .setSmallIcon(R.mipmap.ic_intelicasa_launcher)
-            .setAutoCancel(true)
-            .build()
-
-        notificationManager.notify(id, notification)
-    }
-
-//    fun fireNotification(){
-//        notificationChannel = NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH).apply {
-//            enableLights(true)
-//            enableVibration(true)
-//        }
-//        notificationManager.createNotificationChannel(notificationChannel)
-//
-//        val intent = Intent(context, MainActivity::class.java)
-//        val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-//        notificationBuilder = NotificationCompat.Builder(context, channelID).apply {
-//            setSmallIcon(R.mipmap.ic_intelicasa_launcher)
-//            setContentTitle(title)
-//            setContentText(message)
-//            setAutoCancel(true)
-//            addAction(R.mipmap.ic_intelicasa_launcher, "Open Message", pendingIntent)
-//        }
-//        notificationManager.notify(100, notificationBuilder.build())
-//
-//    }
 }
