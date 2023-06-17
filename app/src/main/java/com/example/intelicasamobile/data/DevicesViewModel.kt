@@ -44,7 +44,6 @@ class DevicesViewModel private constructor() : ViewModel() {
 
     companion object {
         private var instance: DevicesViewModel? = null
-
         fun getInstance(): DevicesViewModel {
             if (instance == null) {
                 instance = DevicesViewModel()
@@ -54,13 +53,31 @@ class DevicesViewModel private constructor() : ViewModel() {
     }
 
     suspend fun fetchDevice(deviceId: String): Device? {
+        var device: Device? = null
         return suspendCoroutine { continuation ->
             viewModelScope.launch {
                 runCatching {
                     val apiService = RetrofitClient.getApiService()
                     apiService.getDevice(deviceId)
                 }.onSuccess { response ->
-                    val device = response.body()?.result?.let { getDeviceFromNetwork(it) }
+                    device = response.body()?.result?.let { getDeviceFromNetwork(it) }
+                    if (device != null) {
+                        if (devicesUiState.value.devices.find{ it.id == device?.id } != null) {
+                            _devicesUiState.update {
+                                it.copy(
+                                    devices = it.devices.map { d ->
+                                        if (d.id == device?.id) {
+                                            device!!
+                                        } else {
+                                            d
+                                        }
+                                    }
+                                )
+                            }
+                        } else {
+                            _devicesUiState.update { it.copy(devices = it.devices + device!!) }
+                        }
+                    }
                     continuation.resume(device) // Resume the coroutine with the device
                 }.onFailure {
                     continuation.resume(null) // Resume the coroutine with null to indicate failure
@@ -68,8 +85,6 @@ class DevicesViewModel private constructor() : ViewModel() {
             }
         }
     }
-
-
 
 
     fun dismissMessage() {

@@ -25,9 +25,12 @@ class PreferencesData private constructor(private val dataStore: DataStore<Prefe
 
     private val _notificationPreference = MutableStateFlow(
         listOf(
-            NotificationPreference(NotificationType.VACUUM_FULL_BATTERY),
-            NotificationPreference(NotificationType.VACUUM_LOW_BATTERY),
-            NotificationPreference(NotificationType.VACUUM_EMPTY_BATTERY),
+//            NotificationPreference(NotificationType.VACUUM_FULL_BATTERY),
+//            NotificationPreference(NotificationType.VACUUM_LOW_BATTERY),
+//            NotificationPreference(NotificationType.VACUUM_EMPTY_BATTERY),
+            NotificationPreference(NotificationType.VACUUM_ON),
+            NotificationPreference(NotificationType.VACUUM_OFF),
+            NotificationPreference(NotificationType.VACUUM_DOCK),
             NotificationPreference(NotificationType.DOOR_UNLOCK),
             NotificationPreference(NotificationType.DOOR_OPEN),
             NotificationPreference(NotificationType.DOOR_CLOSE),
@@ -43,9 +46,10 @@ class PreferencesData private constructor(private val dataStore: DataStore<Prefe
 
     private val initialTruePreferences = listOf(
         NotificationType.DOOR_UNLOCK,
-        NotificationType.VACUUM_FULL_BATTERY,
-        NotificationType.VACUUM_LOW_BATTERY,
-        NotificationType.VACUUM_EMPTY_BATTERY,
+        NotificationType.VACUUM_OFF,
+//        NotificationType.VACUUM_FULL_BATTERY,
+//        NotificationType.VACUUM_LOW_BATTERY,
+//        NotificationType.VACUUM_EMPTY_BATTERY,
     )
 
     val notificationPreference: StateFlow<List<NotificationPreference>> =

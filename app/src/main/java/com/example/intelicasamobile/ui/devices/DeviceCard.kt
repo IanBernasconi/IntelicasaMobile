@@ -27,6 +27,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,6 +54,7 @@ import com.example.intelicasamobile.model.LightDevice
 import com.example.intelicasamobile.model.OvenDevice
 import com.example.intelicasamobile.model.VacuumDevice
 import com.example.intelicasamobile.model.VacuumStateEnum
+import com.example.intelicasamobile.receiver
 
 @Preview(showBackground = true)
 @Composable
@@ -68,6 +71,7 @@ fun DeviceCard(
     var showDialog by remember { mutableStateOf(false) }
     val devicesModel by remember { mutableStateOf(DevicesViewModel.getInstance()) }
     val devicesState by devicesModel.devicesUiState.collectAsState()
+
     Card(elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
         modifier = modifier.clickable { showDialog = true }) {
         Box(
@@ -98,7 +102,11 @@ fun DeviceCard(
                         is ACDevice -> {
                             val acState by device.state.collectAsState()
                             IconButton(
-                                onClick = { device.setIsOn(!acState.isOn) }, enabled = !device.isLoading()
+                                onClick = {
+                                    device.setIsOn(!acState.isOn)
+                                    receiver.addCurrentDeviceId(device.id)
+                                    receiver.removeCurrentDeviceId(device.id)
+                                }, enabled = !device.isLoading()
                             ) {
                                 Image(
                                     painter = painterResource(id = if (acState.isOn) R.drawable.poweron else R.drawable.poweroff),
@@ -111,7 +119,11 @@ fun DeviceCard(
                         is LightDevice -> {
                             val lightState by device.state.collectAsState()
                             IconButton(
-                                onClick = { device.setIsOn(!lightState.isOn) }, enabled = !device.isLoading()
+                                onClick = {
+                                    device.setIsOn(!lightState.isOn)
+                                    receiver.addCurrentDeviceId(device.id)
+                                    receiver.removeCurrentDeviceId(device.id)
+                                }, enabled = !device.isLoading()
                             ) {
                                 Image(
                                     painter = painterResource(id = if (lightState.isOn) R.drawable.poweron else R.drawable.poweroff),
@@ -124,7 +136,11 @@ fun DeviceCard(
                         is OvenDevice -> {
                             val ovenState by device.state.collectAsState()
                             IconButton(
-                                onClick = { device.setIsOn(!ovenState.isOn) }, enabled = !device.isLoading()
+                                onClick = {
+                                    device.setIsOn(!ovenState.isOn)
+                                    receiver.addCurrentDeviceId(device.id)
+                                    receiver.removeCurrentDeviceId(device.id)
+                                }, enabled = !device.isLoading()
                             ) {
                                 Image(
                                     painter = painterResource(id = if (ovenState.isOn) R.drawable.poweron else R.drawable.poweroff),
@@ -192,7 +208,7 @@ fun DeviceCard(
             onDismiss = {
                 showDialog = false
 
-                if(devicesState.stateModified){
+                if (devicesState.stateModified) {
                     devicesModel.showSnackBar()
                     devicesModel.resetStateModified()
                 }
