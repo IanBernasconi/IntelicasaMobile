@@ -47,7 +47,7 @@ class SkipNotificationReceiver() : BroadcastReceiver(), CoroutineScope {
     private fun startEmptyDelay() {
         removeJob?.cancel()
         removeJob = launch {
-            delay(30000)
+            delay(20000)
             emptyDevicesList()
         }
     }

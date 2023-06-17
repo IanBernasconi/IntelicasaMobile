@@ -50,7 +50,6 @@ fun DeviceInfoHeader(
         device.toggleNewFavorite(device.meta.favorite)
     }
 
-
     val currentPath = IntelicasaApplication.currentPath
 
     IntelicasaMobileTheme {

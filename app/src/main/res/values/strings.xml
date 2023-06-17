@@ -43,6 +43,15 @@
     <string name="vacuum_empty_battery_title">Vacuum shut down</string>
     <string name="vacuum_empty_battery_info">Vacuum %s has run out of battery</string>
 
+    <string name="vacuum_cleaning_title">Vacuum cleaning</string>
+    <string name="vacuum_cleaning_info">Vacuum %s is cleaning</string>
+
+    <string name="vacuum_paused_title">Vacuum paused</string>
+    <string name="vacuum_paused_info">Vacuum %s is paused</string>
+
+    <string name="vacuum_charging_title">Vacuum charging</string>
+    <string name="vacuum_charging_info">Vacuum %s is charging</string>
+
     <string name="oven_on_title">Oven turned on</string>
     <string name="oven_on_info">Oven %s was turned on</string>
 
@@ -167,6 +176,9 @@
     <string name="pref_on_vacuum_full_battery">On vacuum finished charging</string>
     <string name="pref_on_vacuum_low_battery">On vacuum low battery</string>
     <string name="pref_on_vacuum_empty_battery">On vacuum shut down</string>
+    <string name="pref_on_vacuum_cleaning">On vacuum started cleaning</string>
+    <string name="pref_on_vacuum_charging">On vacuum started charging</string>
+    <string name="pref_on_vacuum_paused">On vacuum paused</string>
     <string name="pref_on_light_on">On light turned on</string>
     <string name="pref_on_light_off">On light turned off</string>
     <string name="pref_on_ac_on">On AC turned on</string>

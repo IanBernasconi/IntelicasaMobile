@@ -13,6 +13,7 @@ import com.example.intelicasamobile.data.persistent.NotificationType
 import com.example.intelicasamobile.data.persistent.PreferencesData
 import com.example.intelicasamobile.dataStore
 import com.example.intelicasamobile.model.DeviceType
+import com.example.intelicasamobile.model.LightDevice
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import java.io.BufferedReader
@@ -123,6 +124,32 @@ class DeviceUpdateService : Service() {
                                 message = getString(R.string.door_closed_info, device.name)
                                 showNotification = true
                             }
+                        }
+                    } else if (it.value["newStatus"] == "inactive" || it.value["newStatus"] == "active" || it.value["newStatus"] == "docked") {
+                        if (device.deviceType == DeviceType.VACUUM_CLEANER){
+                           when(it.value["newStatus"]){
+                                 "inactive" -> {
+                                      if (notificationPrefs.getLocalPreference(NotificationType.VACUUM_OFF.value)) {
+                                        title = getString(R.string.vacuum_paused_title)
+                                        message = getString(R.string.vacuum_paused_info, device.name)
+                                        showNotification = true
+                                      }
+                                 }
+                                 "docked" -> {
+                                      if (notificationPrefs.getLocalPreference(NotificationType.VACUUM_ON.value)) {
+                                        title = getString(R.string.vacuum_charging_title)
+                                        message = getString(R.string.vacuum_charging_info, device.name)
+                                        showNotification = true
+                                      }
+                                 }
+                                 "active" -> {
+                                      if (notificationPrefs.getLocalPreference(NotificationType.VACUUM_DOCK.value)) {
+                                        title = getString(R.string.vacuum_cleaning_title)
+                                        message = getString(R.string.vacuum_cleaning_info, device.name)
+                                        showNotification = true
+                                      }
+                                 }
+                           }
                         }
                     }
                 }
