@@ -26,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -152,7 +153,7 @@ fun TabletRoutinesScreen(
                     hostState = snackbarHostState,
                     snackbar = {
                         Snackbar(
-                            content = { Text(stringResource(R.string.routines_snackbar_message)) },
+                            content = { Text(stringResource(R.string.routines_snackbar_message), color= Color.White) },
                             action = {
                                 TextButton(
                                     onClick = { routinesModel.dismissSnackBar() },
