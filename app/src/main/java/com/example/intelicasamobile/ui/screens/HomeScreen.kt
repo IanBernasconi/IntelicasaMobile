@@ -236,18 +236,25 @@ private fun RoutinesHomeList(
     CategoryCard(
         title = R.string.featured_routines
     )
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
-        state = state1,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-        horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
-        contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
-    ) {
-        items(state.routines.filter { it.meta.favorite }) { routine ->
-            RoutineHomeCard(
-                routine = routine,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
-            )
+    if (state.routines.isEmpty()) {
+        Text(
+            text = stringResource(id = R.string.no_routines),
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+        )
+    } else {
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
+            state = state1,
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)),
+            contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
+        ) {
+            items(state.routines.filter { it.meta.favorite }) { routine ->
+                RoutineHomeCard(
+                    routine = routine,
+                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                )
+            }
         }
     }
 }

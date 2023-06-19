@@ -18,6 +18,13 @@
 
     <string name="all_devices_room">All</string>
 
+    <string name="no_routines">You don\'t have routines yet.</string>
+    <string name="no_devices">You don\'t have devices yet.</string>
+
+    <string name="no_devices_in_room">You don\'t have devices in this room yet.</string>
+
+    <string name="no_favorite_routines">You don\'t have featured routines yet.</string>
+    <string name="no_favorite_devices">You don\'t have featured devices yet.</string>
 
     <!-- Notification info -->
     <string name="notification_title" translatable="false">Intelicasa</string>
