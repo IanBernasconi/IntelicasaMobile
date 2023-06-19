@@ -70,6 +70,7 @@ fun DeviceInfoModal(
                     device = device,
                     modifier = modifier,
                     roomsViewModel = roomsViewModel,
+                    onDismiss = onDismiss
                 )
             }
         }
@@ -81,6 +82,7 @@ fun DeviceInfo(
     device: Device,
     modifier: Modifier = Modifier,
     roomsViewModel: RoomsViewModel = viewModel(),
+    onDismiss: () -> Unit
 ) {
 
     val configuration = LocalConfiguration.current
@@ -88,13 +90,13 @@ fun DeviceInfo(
     if (orientation == Configuration.ORIENTATION_PORTRAIT) {
         Card(modifier = modifier.width(300.dp)) {
             Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
-                Info(device, roomsViewModel)
+                Info(device, roomsViewModel, onDismiss)
             }
         }
     }else{
         Card(modifier = modifier.width(800.dp)) {
             Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
-                Info(device, roomsViewModel)
+                Info(device, roomsViewModel, onDismiss)
             }
         }
     }
@@ -104,10 +106,11 @@ fun DeviceInfo(
 @Composable
 fun Info(
     device: Device,
-    roomsViewModel: RoomsViewModel = viewModel()
+    roomsViewModel: RoomsViewModel = viewModel(),
+    onDismiss: () -> Unit
 ) {
     Column {
-        DeviceInfoHeader(device = device)
+        DeviceInfoHeader(device = device, onDismiss = onDismiss)
         when (device) {
             is LightDevice -> LightDeviceInfo(
                 device = device,

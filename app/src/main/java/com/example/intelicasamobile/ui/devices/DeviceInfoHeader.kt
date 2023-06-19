@@ -38,15 +38,18 @@ import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 @Preview(showBackground = true)
 @Composable
 fun DeviceInfoHeaderPreview() {
-    DeviceInfoHeader(device = ACDevice(deviceId = "1", deviceName = "Aire" ))
+    DeviceInfoHeader(device = ACDevice(deviceId = "1", deviceName = "Aire" ), {})
 }
 
 @Composable
 fun DeviceInfoHeader(
     device: Device,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     fun favoriteHandler(device: Device) {
+        if(IntelicasaApplication.currentPath == "home")
+            onDismiss()
         device.toggleNewFavorite(device.meta.favorite)
     }
 
