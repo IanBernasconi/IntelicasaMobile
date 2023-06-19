@@ -25,6 +25,12 @@
     <string name="vacuum_full_battery_info">La aspiradora %s ha terminado su carga</string>
     <string name="vacuum_low_battery_title">Aspiradora con bateria baja</string>
     <string name="vacuum_low_battery_info">La aspiradora %s tiene bateria baja: %d\%</string>
+    <string name="vacuum_cleaning_title">Aspiradora limpiando</string>
+    <string name="vacuum_cleaning_info">La aspiradora %s esta limpiando</string>
+    <string name="vacuum_paused_title">Aspiradora pausada</string>
+    <string name="vacuum_paused_info">La aspiradora %s fue pausada</string>
+    <string name="vacuum_charging_title">Aspiradora cargando</string>
+    <string name="vacuum_charging_info">La aspiradora %s esta cargando</string>
     <string name="oven_on_title">Horno encendido</string>
     <string name="oven_on_info">El horno %s fue encendido</string>
     <string name="oven_off_title">Horno apagado</string>
@@ -35,6 +41,8 @@
     <string name="lamp_off_info">La lámpara %s fue apagada</string>
     <string name="ac_on_title">Aire encendido</string>
     <string name="ac_on_info">El aire %s fue encendido</string>
+    <string name="ac_off_title">Aire apagado</string>
+    <string name="ac_off_info">El aire %s fue apagado</string>
     <string name="turn_on">Prender</string>
     <string name="turn_off">Apagar</string>
     <string name="LI_brightness">Intensidad</string>
@@ -91,14 +99,14 @@
     <string name="about_text">Texto acerca de</string>
     <string name="save">Guardar</string>
     <string name="vacuum_empty_battery_title">Aspiradora sin bateria</string>
-    <string name="vacuum_empty_battery_info">La aspiradoea %s se ha quedado sin bateria</string>
+    <string name="vacuum_empty_battery_info">La aspiradora %s se ha quedado sin bateria</string>
     <string name="devices_snackbar_message">Estado actualizado exitosamente</string>
     <string name="routines_snackbar_message">Rutina ejecutada exitosamente</string>
     <string name="pref_title">Preferencias</string>
     <string name="pref_key_theme">Tema</string>
     <string name="pref_key_theme_summary">Selecciona el tema para la app</string>
     <string name="pref_theme_dark">Oscuro</string>
-    <string name="pref_theme_override">Sobreescribir ajustes del sistema</string>
+    <string name="pref_theme_override">Reemplazar ajustes del sistema</string>
     <string name="pref_key_notifications">Notificaciones</string>
     <string name="pref_key_notifications_summary">Habilitar o deshabilitar notificaciones</string>
     <string name="pref_on_door_open">Cuando se abre la puerta</string>
@@ -108,6 +116,9 @@
     <string name="pref_on_vacuum_full_battery">Cuando la aspiradora finaliza la carga</string>
     <string name="pref_on_vacuum_low_battery">Cuando la aspiradora tiene poca batería</string>
     <string name="pref_on_vacuum_empty_battery">Cuando se apaga la aspiradora</string>
+    <string name="pref_on_vacuum_cleaning">Cuando la aspiradora comienza a limpiar</string>
+    <string name="pref_on_vacuum_charging">Cuando la aspiradora comienza a cargar</string>
+    <string name="pref_on_vacuum_paused">Cuando la aspiradora es pausada</string>
     <string name="pref_on_light_on">Cuando se prende la luz</string>
     <string name="pref_on_light_off">Cuando se apaga la luz</string>
     <string name="pref_on_ac_on">Cuando se prende el aire</string>
@@ -121,4 +132,13 @@
     <string name="menu">Menú</string>
     <string name="play">Ejecutar</string>
     <string name="device_type">Tipo de dispositivo</string>
+    <string name="rooms">Habitaciones</string>
+    <string name="featured_routines">Rutinas destacadas</string>
+    <string name="featured_devices">Dispositivos destacados</string>
+    <string name="no_favorite_routines">Aún no tienes rutinas destacadas.</string>
+    <string name="no_favorite_devices">Aún no tienes dispositivos destacados.</string>
+    <string name="no_routines">Aún no tienes rutinas.</string>
+    <string name="no_devices">Aún no tienes dispositivos.</string>
+    <string name="no_devices_in_room">Aún no tienes dispositivos en esta habitación.</string>
+
 </resources>

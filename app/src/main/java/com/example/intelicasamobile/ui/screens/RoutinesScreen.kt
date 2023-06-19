@@ -22,11 +22,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,6 +66,12 @@ fun RoutinesScreen(
         }
     }
 
+    DisposableEffect(Unit){
+        onDispose {
+            routinesModel.dismissSnackBar()
+        }
+    }
+
     SwipeRefresh(
         state = rememberSwipeRefreshState(routinesState.isLoading),
         onRefresh = {
@@ -81,7 +88,7 @@ fun RoutinesScreen(
                         hostState = snackbarHostState,
                         snackbar = {
                             Snackbar(
-                                content = {  Text(stringResource(R.string.routines_snackbar_message)) },
+                                content = {  Text(stringResource(R.string.routines_snackbar_message), color=Color.White) },
                                 action = {
                                     TextButton(
                                         onClick = { routinesModel.dismissSnackBar() },
@@ -152,7 +159,7 @@ fun TabletRoutinesScreen(
                     hostState = snackbarHostState,
                     snackbar = {
                         Snackbar(
-                            content = { Text(stringResource(R.string.routines_snackbar_message)) },
+                            content = { Text(stringResource(R.string.routines_snackbar_message), color= Color.White) },
                             action = {
                                 TextButton(
                                     onClick = { routinesModel.dismissSnackBar() },

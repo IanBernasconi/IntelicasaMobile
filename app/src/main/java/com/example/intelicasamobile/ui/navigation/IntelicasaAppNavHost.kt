@@ -63,7 +63,7 @@ fun IntelicasaAppNavHost(
             roomsModel = roomsModel
         )
     }),
-        Screen(stringResource(id = R.string.devices), "devices", Icons.Filled.Bed, tabletContent = {
+        Screen(stringResource(id = R.string.rooms), "rooms", Icons.Filled.Bed, tabletContent = {
             TabletRoomsScreen(
                 devicesModel = devicesModel, roomsModel = roomsModel
             )
