@@ -205,7 +205,7 @@ private fun DevicesHomeList(
     val state by model.devicesUiState.collectAsState()
 
     CategoryCard(
-        title = R.string.devices
+        title = R.string.featured_devices
     )
     LazyVerticalGrid(
         columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
@@ -234,7 +234,7 @@ private fun RoutinesHomeList(
     val state by model.routinesUiState.collectAsState()
 
     CategoryCard(
-        title = R.string.routines
+        title = R.string.featured_routines
     )
     LazyVerticalGrid(
         columns = GridCells.Adaptive(dimensionResource(id = minWidth)),

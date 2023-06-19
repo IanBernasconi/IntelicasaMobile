@@ -133,4 +133,6 @@
     <string name="play">Ejecutar</string>
     <string name="device_type">Tipo de dispositivo</string>
     <string name="rooms">Habitaciones</string>
+    <string name="featured_routines">Rutinas destacadas</string>
+    <string name="featured_devices">Dispositivos destacados</string>
 </resources>
