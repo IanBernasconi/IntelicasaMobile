@@ -37,8 +37,8 @@ import com.example.intelicasamobile.ui.components.AnimatedCollapsibleItem
 
 @Preview(showBackground = true)
 @Composable
-fun MenuScreen(
-    columns: Int = 1
+fun SettingsScreen(
+    columns: Int = 1,
 ) {
     val preferences = PreferencesData.getInstance(LocalContext.current.dataStore)
 
@@ -148,10 +148,11 @@ fun ToggleRow(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
-fun TabletMenuScreen() {
+fun TabletSettingsScreen() {
     Surface(color = MaterialTheme.colorScheme.background) {
-        MenuScreen(2)
+        SettingsScreen(2)
     }
 }

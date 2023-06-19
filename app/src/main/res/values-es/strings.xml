@@ -140,5 +140,6 @@
     <string name="no_routines">Aún no tienes rutinas.</string>
     <string name="no_devices">Aún no tienes dispositivos.</string>
     <string name="no_devices_in_room">Aún no tienes dispositivos en esta habitación.</string>
+    <string name="settings">Ajustes</string>
 
 </resources>

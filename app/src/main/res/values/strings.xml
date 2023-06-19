@@ -207,5 +207,6 @@
     <string name="rooms">Rooms</string>
     <string name="featured_routines">Featured Routines</string>
     <string name="featured_devices">Featured Devices</string>
+    <string name="settings">Settings</string>
 
 </resources>
