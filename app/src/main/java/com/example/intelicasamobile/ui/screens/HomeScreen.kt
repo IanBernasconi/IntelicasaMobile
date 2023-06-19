@@ -26,6 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,8 +34,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,7 +65,6 @@ fun HomeScreen(
     val routines_snackbar_message = stringResource(id = R.string.routines_snackbar_message)
     val devices_snackbar_message = stringResource(id = R.string.devices_snackbar_message)
     var snackbarMessage by remember{ mutableStateOf(devices_snackbar_message)}
-    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         devicesModel.fetchDevices()
@@ -91,6 +91,13 @@ fun HomeScreen(
         }
     }
 
+    DisposableEffect(Unit){
+        onDispose {
+            devicesModel.dismissSnackBar()
+            routinesModel.dismissSnackBar()
+        }
+    }
+
 
     SwipeRefresh(
         state = rememberSwipeRefreshState(devicesState.isLoading || routinesState.isLoading),
@@ -111,7 +118,7 @@ fun HomeScreen(
                         hostState = snackbarHostState,
                         snackbar = {
                             Snackbar(
-                                content = { Text(snackbarMessage) },
+                                content = { Text(snackbarMessage, color= Color.White) },
                                 action = {
                                     TextButton(
                                         onClick = { devicesModel.dismissSnackBar() },
@@ -198,7 +205,7 @@ private fun DevicesHomeList(
     val state by model.devicesUiState.collectAsState()
 
     CategoryCard(
-        title = R.string.devices
+        title = R.string.featured_devices
     )
     LazyVerticalGrid(
         columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
@@ -227,7 +234,7 @@ private fun RoutinesHomeList(
     val state by model.routinesUiState.collectAsState()
 
     CategoryCard(
-        title = R.string.routines
+        title = R.string.featured_routines
     )
     LazyVerticalGrid(
         columns = GridCells.Adaptive(dimensionResource(id = minWidth)),
@@ -254,7 +261,6 @@ fun TabletHomeScreen(
     routinesModel: RoutinesViewModel = viewModel(),
     roomsModel: RoomsViewModel = viewModel()
 ) {
-    val context = LocalContext.current
     val devicesState by devicesModel.devicesUiState.collectAsState()
     val routinesState by routinesModel.routinesUiState.collectAsState()
     val snackbarHostState = rememberScaffoldState().snackbarHostState
@@ -300,7 +306,7 @@ fun TabletHomeScreen(
                     hostState = snackbarHostState,
                     snackbar = {
                         Snackbar(
-                            content = { Text(snackbarMessage) },
+                            content = { Text(snackbarMessage, color= Color.White) },
                             action = {
                                 TextButton(
                                     onClick = { devicesModel.dismissSnackBar() },
