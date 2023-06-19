@@ -132,4 +132,5 @@
     <string name="menu">Menú</string>
     <string name="play">Ejecutar</string>
     <string name="device_type">Tipo de dispositivo</string>
+    <string name="rooms">Habitaciones</string>
 </resources>

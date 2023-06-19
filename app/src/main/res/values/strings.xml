@@ -197,5 +197,6 @@
     <!-- Notification channel -->
     <string name="channel_name" translatable="false">Intelicasa devices</string>
     <string name="channel_description" translatable="false">Notifications from Intelicasa regarding devices status updates</string>
+    <string name="rooms">Rooms</string>
 
 </resources>
