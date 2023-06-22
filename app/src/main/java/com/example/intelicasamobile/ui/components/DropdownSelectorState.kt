@@ -10,12 +10,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
 class DropdownSelectorItem(
     val label: String = "",
     val value: Any,
-    @DrawableRes val icon: Int? = null,
+    val tint: Color = Color.Unspecified,
+    @DrawableRes val icon: Int? = null
 )
 
 class DropdownSelectorStateHolder(

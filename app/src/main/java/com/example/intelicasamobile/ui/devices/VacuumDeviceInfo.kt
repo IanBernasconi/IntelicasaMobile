@@ -26,6 +26,7 @@ import androidx.compose.material.icons.outlined.BatteryFull
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -79,7 +80,8 @@ fun VacuumDeviceInfo(
             DropdownSelectorItem(
                 label = stringResource(id = it.nameResId),
                 value = it,
-                icon = it.imageResourceId
+                icon = it.imageResourceId,
+                tint = MaterialTheme.colorScheme.onBackground
             )
         }, label = stringResource(id = R.string.mode),
         loading = device.isLoading(),
@@ -87,7 +89,8 @@ fun VacuumDeviceInfo(
         initialItem = DropdownSelectorItem(
             label = stringResource(id = uiState.mode.nameResId),
             value = uiState.mode,
-            icon = uiState.mode.imageResourceId
+            icon = uiState.mode.imageResourceId,
+            tint = MaterialTheme.colorScheme.onBackground
         )
     )
 

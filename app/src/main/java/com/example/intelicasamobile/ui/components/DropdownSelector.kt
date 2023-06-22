@@ -68,12 +68,13 @@ fun TextFieldDropdownSelector(
             label = { Text(text = stateHolder.label) },
             leadingIcon = {
                 stateHolder.selectedItem?.icon?.let {
-                    Image(
+                    Icon(
                         painter = painterResource(id = it),
                         contentDescription = null,
                         modifier = modifier
                             .size(dimensionResource(id = R.dimen.image_size))
-                            .padding(dimensionResource(id = R.dimen.padding_small), 0.dp)
+                            .padding(dimensionResource(id = R.dimen.padding_small), 0.dp),
+                        tint = stateHolder.selectedItem?.tint ?: Color.Unspecified
                     )
                 }
             },
@@ -170,14 +171,15 @@ fun InnerDropdownSelector(
             }, text = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     item.icon?.let {
-                        Image(
+                        Icon(
                             painter = painterResource(id = it),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(50.dp)
                                 .padding(
                                     dimensionResource(id = R.dimen.padding_small), 0.dp
-                                )
+                                ),
+                            tint = item.tint
                         )
                     }
                     Text(

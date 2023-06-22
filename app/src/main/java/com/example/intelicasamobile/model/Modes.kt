@@ -7,9 +7,10 @@ import com.example.intelicasamobile.R
 enum class ACMode(
     @DrawableRes val imageResourceId: Int,
     val value : String,
-    @StringRes val nameResId: Int
+    @StringRes val nameResId: Int,
+    val changeColor: Boolean = false
 ) {
-    FAN(R.drawable.acventilationmode, "fan", R.string.ACM_fan),
+    FAN(R.drawable.acventilationmode, "fan", R.string.ACM_fan, true),
     COOL(R.drawable.accoldmode, "cool", R.string.ACM_cool),
     HEAT(R.drawable.acheatmode, "heat", R.string.ACM_heat);
 

@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -67,7 +68,10 @@ fun ACDeviceInfo(
 
     val dropdownModeStateHolder = rememberDropdownSelectorState(items = ACMode.values().map {
         DropdownSelectorItem(
-            label = stringResource(id = it.nameResId), value = it, icon = it.imageResourceId
+            label = stringResource(id = it.nameResId),
+            value = it,
+            icon = it.imageResourceId,
+            tint = if (it.changeColor) MaterialTheme.colorScheme.onBackground else Color.Unspecified
         )
     },
         label = stringResource(id = R.string.mode),
@@ -75,7 +79,8 @@ fun ACDeviceInfo(
         initialItem = DropdownSelectorItem(
             label = stringResource(id = uiState.mode.nameResId),
             value = uiState.mode,
-            icon = uiState.mode.imageResourceId
+            icon = uiState.mode.imageResourceId,
+            tint = if (uiState.mode.changeColor) MaterialTheme.colorScheme.onBackground else Color.Unspecified
         ),
         onItemSelected = { device.setMode(it.value as ACMode) }
     )

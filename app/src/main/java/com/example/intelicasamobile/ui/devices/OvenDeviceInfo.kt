@@ -68,7 +68,8 @@ fun OvenDeviceInfo(
                 DropdownSelectorItem(
                     label = stringResource(id = it.nameResId),
                     value = it,
-                    icon = it.imageResourceId
+                    icon = it.imageResourceId,
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             },
             label = stringResource(id = R.string.OI_heat_mode),
@@ -77,7 +78,8 @@ fun OvenDeviceInfo(
             initialItem = DropdownSelectorItem(
                 label = stringResource(id = uiState.heatMode.nameResId),
                 value = uiState.heatMode,
-                icon = uiState.heatMode.imageResourceId
+                icon = uiState.heatMode.imageResourceId,
+                tint = MaterialTheme.colorScheme.onBackground
             )
         )
 
@@ -87,7 +89,8 @@ fun OvenDeviceInfo(
                 DropdownSelectorItem(
                     label = stringResource(id = it.nameResId),
                     value = it,
-                    icon = it.imageResourceId
+                    icon = it.imageResourceId,
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }, label = stringResource(id = R.string.OI_convection_mode),
             loading = device.isLoading(),
@@ -96,7 +99,8 @@ fun OvenDeviceInfo(
             }, initialItem = DropdownSelectorItem(
                 label = stringResource(id = uiState.convectionMode.nameResId),
                 value = uiState.convectionMode,
-                icon = uiState.convectionMode.imageResourceId
+                icon = uiState.convectionMode.imageResourceId,
+                tint = MaterialTheme.colorScheme.onBackground
             )
         )
 
@@ -106,7 +110,8 @@ fun OvenDeviceInfo(
                 DropdownSelectorItem(
                     label = stringResource(id = it.nameResId),
                     value = it,
-                    icon = it.imageResourceId
+                    icon = it.imageResourceId,
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             },
             label = stringResource(id = R.string.OI_grill_mode),
@@ -115,7 +120,8 @@ fun OvenDeviceInfo(
             initialItem = DropdownSelectorItem(
                 label = stringResource(id = uiState.grillMode.nameResId),
                 value = uiState.grillMode,
-                icon = uiState.grillMode.imageResourceId
+                icon = uiState.grillMode.imageResourceId,
+                tint = MaterialTheme.colorScheme.onBackground
             )
         )
 
