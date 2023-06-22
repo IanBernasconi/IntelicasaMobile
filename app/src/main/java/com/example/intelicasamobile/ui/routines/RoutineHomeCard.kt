@@ -27,10 +27,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.intelicasamobile.R
+import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.data.network.RetrofitClient
 import com.example.intelicasamobile.model.Routine
+import com.example.intelicasamobile.receiver
 import com.example.intelicasamobile.ui.theme.IntelicasaMobileTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,9 +56,10 @@ fun RoutineHomeCardPreview() {
 @Composable
 fun RoutineHomeCard(
     routine: Routine,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val routinesModel by remember { mutableStateOf(RoutinesViewModel.getInstance()) }
+    val devicesModel by remember { mutableStateOf(DevicesViewModel.getInstance()) }
     Card(
         elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation)),
         modifier = modifier
@@ -91,10 +95,15 @@ fun RoutineHomeCard(
                 ) {
                     IconButton(
                         onClick = {
+                            routine.actions.forEach { action ->
+                                receiver.addCurrentDeviceId(action.deviceId)
+                                receiver.removeCurrentDeviceId(action.deviceId)
+                            }
                             CoroutineScope(Dispatchers.Main).launch {
                                 val apiService = RetrofitClient.getApiService()
                                 apiService.executeRoutine(id = routine.id)
                                 routinesModel.showSnackBar()
+                                devicesModel.fetchDevices()
                             }
                         },
                     ) {

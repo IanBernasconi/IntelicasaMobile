@@ -160,7 +160,6 @@ fun HomeScreen(
 fun HomeScreenPortrait(
     devicesModel: DevicesViewModel = viewModel(),
     routinesModel: RoutinesViewModel = viewModel(),
-
 ) {
     val state1 = rememberLazyGridState()
     val state2 = rememberLazyGridState()
@@ -231,7 +230,8 @@ private fun DevicesHomeList(
 private fun RoutinesHomeList(
     state1: LazyGridState,
     @DimenRes minWidth: Int,
-    model: RoutinesViewModel = viewModel()
+    model: RoutinesViewModel = viewModel(),
+    devicesModel: DevicesViewModel = viewModel(),
 ) {
 
     val state by model.routinesUiState.collectAsState()
@@ -283,7 +283,7 @@ private fun RoutinesHomeList(
             items(state.routines.filter { it.meta.favorite }) { routine ->
                 RoutineHomeCard(
                     routine = routine,
-                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small)),
                 )
             }
         }

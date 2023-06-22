@@ -76,6 +76,7 @@ fun RoutinesScreen(
         state = rememberSwipeRefreshState(routinesState.isLoading),
         onRefresh = {
             routinesModel.fetchRoutines()
+            devicesModel.fetchDevices()
         },
     ) {
         Surface(

@@ -37,6 +37,7 @@ import com.example.intelicasamobile.data.DevicesViewModel
 import com.example.intelicasamobile.data.RoutinesViewModel
 import com.example.intelicasamobile.data.network.RetrofitClient
 import com.example.intelicasamobile.model.Routine
+import com.example.intelicasamobile.receiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,13 +51,13 @@ fun RoutineCard(
 
     val devicesState by devicesModel.devicesUiState.collectAsState()
     val routinesModel by remember { mutableStateOf(RoutinesViewModel.getInstance()) }
+    val routinesState by routinesModel.routinesUiState.collectAsState()
     Card(
         modifier = Modifier
             .size(300.dp, 120.dp)
             .padding(4.dp),
         elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.card_elevation))
     ) {
-
         Surface(
             color = MaterialTheme.colorScheme.primary
         ) {
@@ -88,12 +89,18 @@ fun RoutineCard(
                     ){
                         IconButton(
                             onClick = {
+                                routine.actions.forEach { action ->
+                                    receiver.addCurrentDeviceId(action.deviceId)
+                                    receiver.removeCurrentDeviceId(action.deviceId)
+                                }
                                 CoroutineScope(Dispatchers.Main).launch {
                                     val apiService = RetrofitClient.getApiService()
                                     apiService.executeRoutine(id = routine.id)
                                     routinesModel.showSnackBar()
+                                    devicesModel.fetchDevices()
                                 }
                             },
+                            enabled = !routinesState.isLoading
                         ) {
                             Icon(
                                 imageVector = Icons.Default.PlayCircle,
