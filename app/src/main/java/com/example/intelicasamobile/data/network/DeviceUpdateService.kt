@@ -208,26 +208,32 @@ class DeviceUpdateService : Service() {
         val responseCode = connection.responseCode
         return if (responseCode == HttpURLConnection.HTTP_OK) {
             val stream = BufferedReader(InputStreamReader(connection.inputStream))
-            var line: String?
-            val response = StringBuffer()
             val eventList = arrayListOf<NetworkEvents>()
-            while (stream.readLine().also { line = it } != null) {
-                when {
-                    line!!.startsWith("data:") -> {
-                        response.append(line!!.substring(5))
-                    }
 
-                    line!!.isEmpty() -> {
-                        val gson = Gson()
-                        val event = gson.fromJson(response.toString(), NetworkEvents::class.java)
-                        eventList.add(event)
-                        Log.d(TAG, "fetchEvents: Event: $response")
-                        response.setLength(0)
+            try {
+                var line: String?
+                val response = StringBuffer()
+                while (stream.readLine().also { line = it } != null) {
+                    when {
+                        line!!.startsWith("data:") -> {
+                            response.append(line!!.substring(5))
+                        }
+
+                        line!!.isEmpty() -> {
+                            val gson = Gson()
+                            val event =
+                                gson.fromJson(response.toString(), NetworkEvents::class.java)
+                            eventList.add(event)
+                            Log.d(TAG, "fetchEvents: Event: $response")
+                            response.setLength(0)
+                        }
                     }
                 }
+            } catch (e: Exception) {
+                Log.e(TAG, "fetchEvents: Error: ${e.message}")
+            } finally {
+                stream.close()
             }
-
-            stream.close()
             eventList
         } else {
             null
