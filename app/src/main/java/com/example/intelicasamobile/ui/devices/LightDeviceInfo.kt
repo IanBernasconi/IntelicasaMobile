@@ -66,6 +66,7 @@ fun LightDeviceInfo(
 
     val uiState by device.state.collectAsState()
 
+    var localColor by remember { mutableStateOf(uiState.color) }
     val colorController = rememberColorPickerController()
 
     val scrollState = rememberScrollState()
@@ -80,8 +81,8 @@ fun LightDeviceInfo(
         Column(modifier = modifier) {
             LightState(device = device, isOn = uiState.isOn, modifier = modifier)
             LightBrightness(device = device, brightness = uiState.brightness, modifier = modifier)
-            LightColorBox(color = uiState.color, modifier = modifier)
-            LightColorPicker(device = device, color = uiState.color, colorPickerController = colorController, modifier = modifier)
+            LightColorBox(color = localColor, modifier = modifier)
+            LightColorPicker(device = device, color = localColor, setColorLocal = {localColor = it} ,colorPickerController = colorController, modifier = modifier)
         }
     } else {
         Row(
@@ -101,7 +102,8 @@ fun LightDeviceInfo(
             Column(
                 modifier = modifier.fillMaxSize()
             ) {
-                LightColorPicker(device = device, color = uiState.color, colorPickerController = colorController, modifier = modifier)
+                LightColorPicker(device = device, color = localColor, setColorLocal = {localColor = it}, colorPickerController = colorController, modifier = modifier)
+                LightColorPicker(device = device, color = localColor, setColorLocal = {localColor = it}, colorPickerController = colorController, modifier = modifier)
             }
         }
     }
@@ -237,6 +239,7 @@ fun LightColorBox(
 fun LightColorPicker(
     device: LightDevice = viewModel(),
     color: Color,
+    setColorLocal: (Color) -> Unit = {},
     colorPickerController: ColorPickerController,
     modifier: Modifier
 ) {
@@ -276,6 +279,7 @@ fun LightColorPicker(
                 controller = colorPickerController,
                 onColorChanged = { colorEnvelope: ColorEnvelope ->
                     localColor = colorEnvelope.color
+                    setColorLocal(localColor)
                     setColor(localColor)
                 }
             )
